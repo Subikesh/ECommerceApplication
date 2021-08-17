@@ -1,33 +1,40 @@
 package com.example.ecommerceapplication.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.ecommerceapplication.R
-import com.example.ecommerceapplication.ui.home.filterplaceholder.FilterPlaceholderContent
+import android.widget.*
+import androidx.fragment.app.Fragment
+import com.example.ecommerceapplication.databinding.FragmentFilterBinding
 
 /**
  * A fragment representing a list of Filters.
  */
 class FilterFragment : Fragment() {
 
+    companion object {
+        val categoryList =
+            mutableListOf("Mobiles", "Electronics", "Groceries", "Fashion", "Furniture", "Kitchen products")
+        fun newInstance() = FilterFragment()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_filter_list, container, false)
+        val binding = FragmentFilterBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            view.adapter = MyFilterRecyclerViewAdapter(FilterPlaceholderContent.FILTERS)
-        }
+        // Creating dropdown menu for category selection
+        val spinner = binding.filterCategorySpinner
+        val adapter =
+            activity?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, categoryList) }
+        spinner.adapter = adapter
+
+        val text: String = spinner.selectedItem.toString()
+        Log.i("FilterFragment", "$text is selected");
         return view
-    }
-
-    companion object {
-        fun newInstance() = FilterFragment()
     }
 }

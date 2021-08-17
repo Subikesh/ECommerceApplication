@@ -29,6 +29,6 @@
     <fragment
             android:id="@+id/filterFragment"
             android:name="com.example.ecommerceapplication.ui.home.FilterFragment"
-            android:label="fragment_filter_list"
-            tools:layout="@layout/fragment_filter_list" />
+            android:label="@string/title_filter"
+            tools:layout="@layout/fragment_filter" />
 </navigation>

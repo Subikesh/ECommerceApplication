@@ -8,12 +8,16 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.domain.session.SessionManager
+import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentUserBinding
 
 class UserFragment : Fragment() {
 
     private lateinit var userViewModel: UserViewModel
     private var _binding: FragmentUserBinding? = null
+    private lateinit var session: SessionManager
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,6 +38,15 @@ class UserFragment : Fragment() {
         userViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
+        // Let user navigate to login_page if not authenticated or profile page if authenticated
+        session = SessionManager(requireActivity())
+        if (session.isLoggedIn()) {
+            findNavController().navigate(R.id.action_navigation_user_to_profileFragment)
+        } else {
+            findNavController().navigate(R.id.action_navigation_user_to_loginFragment)
+        }
+
         return root
     }
 

@@ -16,10 +16,23 @@
     </fragment>
 
     <fragment
+            android:id="@+id/filterFragment"
+            android:name="com.example.ecommerceapplication.ui.home.FilterFragment"
+            android:label="@string/title_filter"
+            tools:layout="@layout/fragment_filter" />
+
+    <fragment
             android:id="@+id/navigation_user"
             android:name="com.example.ecommerceapplication.ui.user.UserFragment"
             android:label="@string/title_user"
-            tools:layout="@layout/fragment_user" />
+            tools:layout="@layout/fragment_user" >
+        <action
+                android:id="@+id/action_navigation_user_to_loginFragment"
+                app:destination="@id/loginFragment" />
+        <action
+                android:id="@+id/action_navigation_user_to_profileFragment"
+                app:destination="@id/profileFragment" />
+    </fragment>
 
     <fragment
             android:id="@+id/navigation_settings"
@@ -27,8 +40,12 @@
             android:label="@string/title_settings"
             tools:layout="@layout/fragment_settings" />
     <fragment
-            android:id="@+id/filterFragment"
-            android:name="com.example.ecommerceapplication.ui.home.FilterFragment"
-            android:label="@string/title_filter"
-            tools:layout="@layout/fragment_filter" />
+            android:id="@+id/loginFragment"
+            android:name="com.example.ecommerceapplication.ui.user.LoginFragment"
+            android:label="LoginFragment" />
+    <fragment
+            android:id="@+id/profileFragment"
+            android:name="com.example.ecommerceapplication.ui.user.ProfileFragment"
+            android:label="fragment_profile"
+            tools:layout="@layout/fragment_profile" />
 </navigation>

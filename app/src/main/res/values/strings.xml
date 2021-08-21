@@ -8,4 +8,8 @@
     <string name="price">Price</string>
     <string name="sort">Sort By</string>
     <string name="apply">Apply</string>
+    <string name="username_hint">Enter Username</string>
+    <string name="password_hint">Enter Password</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
 </resources>

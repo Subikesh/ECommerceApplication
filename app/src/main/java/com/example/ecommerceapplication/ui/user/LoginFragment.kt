@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.domain.session.SessionManager
+import androidx.navigation.fragment.findNavController
+import com.example.data.db.EcommerceContract
+import com.example.data.session.SessionManager
+import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -34,7 +37,19 @@ class LoginFragment : Fragment() {
         val signupButton = binding.loginSignUp
 
         loginButton.setOnClickListener {
-            session.setLogin(true)
+            val userFound = EcommerceContract.UserEntry.findEntry(
+                requireActivity(),
+                userText.text.toString(),
+                passText.text.toString()
+            )
+            if (userFound) {
+                session.login = true
+                findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
+            } else {
+                session.login = false
+            }
+            // TODO: change backstack of navigation from profile page to login page or home page
+            // TODO: if user not found, do something
         }
     }
 

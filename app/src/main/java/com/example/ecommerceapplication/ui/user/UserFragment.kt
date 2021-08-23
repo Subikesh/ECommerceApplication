@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.domain.session.SessionManager
+import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentUserBinding
 

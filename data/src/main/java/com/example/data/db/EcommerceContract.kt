@@ -7,7 +7,7 @@ import android.provider.BaseColumns._ID
 import android.widget.Toast
 
 object EcommerceContract {
-    const val DATABASE_VERSION = 1
+    const val DATABASE_VERSION = 2
 
     /**
      * Local file name of the database
@@ -18,7 +18,7 @@ object EcommerceContract {
      * Data types for database columns
      */
     private const val TEXT_TYPE = "TEXT"
-    private const val INT_TYPE = "INT"
+    private const val INT_TYPE = "INTEGER"
 
     /**
      * User table contract
@@ -30,13 +30,13 @@ object EcommerceContract {
         const val COLUMN_EMAIL = "email"
 
         const val CREATE_TABLE = "CREATE TABLE IF NOT EXISTS $TABLE_NAME (" +
-                "$_ID $INT_TYPE PRIMARY KEY, " +
-                "$COLUMN_EMAIL $TEXT_TYPE UNIQUE NOT NULL" +
+                "$_ID $INT_TYPE PRIMARY KEY AUTOINCREMENT, " +
+                "$COLUMN_EMAIL $TEXT_TYPE UNIQUE NOT NULL, " +
                 "$COLUMN_USERNAME $TEXT_TYPE NOT NULL, " +
                 "$COLUMN_PASSWORD $TEXT_TYPE NOT NULL);"
         const val DELETE_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME;"
 
-        fun addEntry(context: Context, username: String, password: String, email: String) {
+        fun addEntry(context: Context, username: String, password: String, email: String): Long {
 
             val db = EcommerceDbHelper(context).writableDatabase
 
@@ -46,16 +46,17 @@ object EcommerceContract {
                 put(COLUMN_EMAIL, email)
             }
 
-            db.insert(TABLE_NAME, null, values)
+            val inserted = db.insert(TABLE_NAME, null, values)
             db.close()
+            return inserted
         }
 
-        fun findEntry(context: Context, username: String, password: String): Boolean {
+        fun findEntry(context: Context, email: String, password: String): Boolean {
             val db = EcommerceDbHelper(context).writableDatabase
 
             val projection = arrayOf(_ID, COLUMN_USERNAME)
-            val selection = "$COLUMN_USERNAME = ? AND $COLUMN_PASSWORD = ?"
-            val selectionArgs = arrayOf(username, password)
+            val selection = "$COLUMN_EMAIL = ? AND $COLUMN_PASSWORD = ?"
+            val selectionArgs = arrayOf(email, password)
 
             val cursor =
                 db.query(TABLE_NAME, projection, selection, selectionArgs, null, null, null)
@@ -64,7 +65,7 @@ object EcommerceContract {
                 cursor.close()
                 return false
             }
-            Toast.makeText(context, "$username logged in!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "$email logged in!", Toast.LENGTH_SHORT).show()
             cursor.close()
             return true
         }

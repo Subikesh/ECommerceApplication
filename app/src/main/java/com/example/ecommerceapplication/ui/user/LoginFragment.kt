@@ -1,9 +1,11 @@
 package com.example.ecommerceapplication.ui.user
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.data.db.EcommerceContract
@@ -31,7 +33,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userText = binding.loginUser
+        val mailText = binding.loginEmail
         val passText = binding.loginPassword
         val loginButton = binding.loginSubmit
         val signupButton = binding.loginSignUp
@@ -39,21 +41,39 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
             val userFound = EcommerceContract.UserEntry.findEntry(
                 requireActivity(),
-                userText.text.toString(),
+                mailText.text.toString(),
                 passText.text.toString()
             )
             if (userFound) {
                 session.login = true
-                findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
             } else {
                 session.login = false
             }
             // TODO: change backstack of navigation from profile page to login page or home page
             // TODO: if user not found, do something
         }
+
+        signupButton.setOnClickListener {
+            Log.i(TAG, "onViewCreated: signup processing")
+            val inserted = EcommerceContract.UserEntry.addEntry(
+                requireActivity(),
+                "username",
+                passText.text.toString(),
+                mailText.text.toString()
+            )
+            if (inserted < 0) {
+                Log.i(TAG, "onViewCreated: no user created")
+                Toast.makeText(context, "no user created", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.i(TAG, "onViewCreated: \"$inserted userId created\"")
+                Toast.makeText(context, "$inserted userId created", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     companion object {
+        private const val TAG = "LoginFragment"
         fun newInstance() = LoginFragment()
     }
 }

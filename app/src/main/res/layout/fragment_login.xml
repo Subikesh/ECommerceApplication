@@ -14,7 +14,7 @@
             android:layout_marginTop="50dp" />
 
     <EditText
-            android:id="@+id/login_user"
+            android:id="@+id/login_email"
             style="@style/login_text_view"
             android:hint="@string/username_hint" />
 

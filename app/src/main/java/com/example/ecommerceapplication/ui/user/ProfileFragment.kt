@@ -5,16 +5,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.R
+import com.example.ecommerceapplication.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
+
+    private var _binding: FragmentProfileBinding? = null
+    private lateinit var session: SessionManager
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        session = SessionManager(requireContext())
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val logoutBtn = binding.logoutButton
+        logoutBtn.setOnClickListener {
+            session.login = false
+            findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
+        }
     }
 
     companion object {

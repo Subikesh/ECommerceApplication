@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SessionManager(val _context: Context) {
-    var preferences: SharedPreferences = _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    var preferences: SharedPreferences =
+        _context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     var editor: SharedPreferences.Editor = preferences.edit()
     var login: Boolean
         get() = preferences.getBoolean(KEY_LOGGED_IN, false)

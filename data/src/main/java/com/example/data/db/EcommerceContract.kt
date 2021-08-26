@@ -36,12 +36,19 @@ object EcommerceContract {
                 "$COLUMN_PASSWORD $TEXT_TYPE NOT NULL);"
         const val DELETE_TABLE = "DROP TABLE IF EXISTS $TABLE_NAME;"
 
-        fun addEntry(context: Context, username: String, password: String, email: String): Long {
+        /**
+         * Inserts a new user to the table with the given parameters
+         * @param context activity fragment
+         * @param userMail User's email
+         * @param password User password
+         * @return user id inserted. -1 if some error occurs
+         */
+        fun addEntry(context: Context, userMail: String, password: String, email: String): Long {
 
             val db = EcommerceDbHelper(context).writableDatabase
 
             val values = ContentValues().apply {
-                put(COLUMN_USERNAME, username)
+                put(COLUMN_USERNAME, userMail)
                 put(COLUMN_PASSWORD, password)
                 put(COLUMN_EMAIL, email)
             }

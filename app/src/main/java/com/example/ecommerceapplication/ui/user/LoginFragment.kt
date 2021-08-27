@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.data.db.EcommerceContract
+import com.example.data.db.EcommerceDatabase
+import com.example.data.entities.User
 import com.example.data.session.SessionManager
+import com.example.data.usecases.Authentication
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private lateinit var session: SessionManager
+    private lateinit var db: EcommerceDatabase
 
     private val binding get() = _binding!!
 
@@ -38,7 +43,9 @@ class LoginFragment : Fragment() {
         val loginButton = binding.loginSubmit
         val signupButton = binding.loginSignUp
 
-        loginButton.setOnClickListener {
+        val authentication = Authentication(requireActivity())
+
+        /*loginButton.setOnClickListener {
             val userFound = EcommerceContract.UserEntry.findEntry(
                 requireActivity(),
                 mailText.text.toString(),
@@ -69,6 +76,24 @@ class LoginFragment : Fragment() {
                 Log.i(TAG, "onViewCreated: \"$inserted userId created\"")
                 Toast.makeText(context, "$inserted userId created", Toast.LENGTH_SHORT).show()
             }
+        }*/
+
+        loginButton.setOnClickListener {
+            var user: User?
+            lifecycleScope.launch {
+                user =
+                    authentication.userLogin(mailText.text.toString(), passText.text.toString())
+                Log.d(TAG, "onViewCreated: User: $user")
+                if (user == null)
+                    Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT).show()
+                else
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
+                Log.d(TAG, "onViewCreated: Login done ${user?.email ?: "Null"}")
+            }
+        }
+
+        signupButton.setOnClickListener {
+            // TODO: create signup functionality
         }
     }
 

@@ -83,17 +83,32 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch {
                 user =
                     authentication.userLogin(mailText.text.toString(), passText.text.toString())
-                Log.d(TAG, "onViewCreated: User: $user")
                 if (user == null)
-                    Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
+                        .show()
                 else
                     findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
-                Log.d(TAG, "onViewCreated: Login done ${user?.email ?: "Null"}")
+                Log.d(TAG, "onViewCreated: Login done $user")
             }
         }
 
         signupButton.setOnClickListener {
-            // TODO: create signup functionality
+            var user: User?
+            lifecycleScope.launch {
+                user = authentication.userSignup(
+                    mailText.text.toString(),
+                    passText.text.toString(),
+                    mailText.text.toString()
+                )
+                Log.d(TAG, "onViewCreated: returned user: $user")
+                if (user != null) {
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
+                    Log.d(TAG, "onViewCreated: User logged in")
+                } else {
+                    Toast.makeText(context, "User email already exists", Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "onViewCreated: User not logged in")
+                }
+            }
         }
     }
 

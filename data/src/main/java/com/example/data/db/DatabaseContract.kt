@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 
 object DatabaseContract {
-    const val DATABASE_VERSION = 1
+    const val DATABASE_VERSION = 2
 
     /**
      * Local file name of the database
@@ -31,7 +31,7 @@ object DatabaseContract {
             context,
             EcommerceDatabase::class.java,
             DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
     object User {
         const val TABLE_NAME = "User"

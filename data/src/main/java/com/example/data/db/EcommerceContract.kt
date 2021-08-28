@@ -24,7 +24,7 @@ object EcommerceContract {
      * User table contract
      */
     object UserEntry : BaseColumns {
-        const val TABLE_NAME = "User"
+        const val TABLE_NAME = "user"
         const val COLUMN_USERNAME = "username"
         const val COLUMN_PASSWORD = "password"
         const val COLUMN_EMAIL = "email"

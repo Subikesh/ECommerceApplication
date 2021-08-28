@@ -16,7 +16,7 @@
     <EditText
             android:id="@+id/login_email"
             style="@style/login_text_view"
-            android:hint="@string/username_hint" />
+            android:hint="@string/email_hint" />
 
     <EditText
             android:id="@+id/login_password"

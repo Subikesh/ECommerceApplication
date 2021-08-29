@@ -41,7 +41,7 @@ class UserFragment : Fragment() {
 
         // Let user navigate to login_page if not authenticated or profile page if authenticated
         session = SessionManager(requireActivity())
-        if (session.login) {
+        if (session.login && session.user != null) {
             findNavController().navigate(R.id.action_navigation_user_to_profileFragment)
         } else {
             findNavController().navigate(R.id.action_navigation_user_to_loginFragment)

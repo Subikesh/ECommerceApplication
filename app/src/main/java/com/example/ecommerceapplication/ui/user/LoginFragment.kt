@@ -13,6 +13,7 @@ import com.example.data.entities.User
 import com.example.data.usecases.Authentication
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
+import com.example.ecommerceapplication.validators.TextValidators
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
@@ -41,15 +42,19 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener {
             var user: User?
-            lifecycleScope.launch {
-                user =
-                    authentication.userLogin(mailText.text.toString(), passText.text.toString())
-                if (user == null)
-                    Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
-                        .show()
-                else
-                    findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
-                Log.d(TAG, "onViewCreated: Login done $user")
+            val mailValid = TextValidators.checkEmail(mailText)
+            val passValid = TextValidators.checkPassword(passText)
+            if (mailValid && passValid) {
+                lifecycleScope.launch {
+                    user =
+                        authentication.userLogin(mailText.text.toString(), passText.text.toString())
+                    if (user == null)
+                        Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
+                            .show()
+                    else
+                        findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
+                    Log.d(TAG, "onViewCreated: Login done $user")
+                }
             }
         }
 

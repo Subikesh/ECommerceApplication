@@ -34,15 +34,11 @@ class ProfileFragment : Fragment() {
         val authentication = Authentication(requireActivity())
         val session = SessionManager(requireActivity())
         val user = session.user
-        /*logoutBtn.setOnClickListener {
-            session.login = false
-            findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
-        }*/
 
         binding.profileText.text = if (user != null) user.username + " " + user.email else "Null"
 
         logoutBtn.setOnClickListener {
-            val user = authentication.userLogout()
+            authentication.userLogout()
             findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
         }
     }

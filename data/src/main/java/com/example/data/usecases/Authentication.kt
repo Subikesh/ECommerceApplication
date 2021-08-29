@@ -7,6 +7,9 @@ import com.example.data.db.DatabaseContract
 import com.example.data.entities.User
 import com.example.data.session.SessionManager
 
+/**
+ * Class contains helper methods for user authentication
+ */
 class Authentication(context: Context) {
     /** Database object to access database */
     private val db = DatabaseContract.getInstance(context)

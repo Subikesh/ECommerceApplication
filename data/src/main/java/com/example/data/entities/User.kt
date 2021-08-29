@@ -4,13 +4,16 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.example.data.db.DatabaseContract
 import com.example.data.db.DatabaseContract.User.COL_EMAIL
 import com.example.data.db.DatabaseContract.User.COL_PASSWORD
 import com.example.data.db.DatabaseContract.User.COL_USERNAME
-import com.example.data.db.EcommerceContract
 
+/**
+ * User entity/table in room database
+ */
 @Entity(
-    tableName = EcommerceContract.UserEntry.TABLE_NAME,
+    tableName = DatabaseContract.User.TABLE_NAME,
     indices = [Index(value = [COL_EMAIL], unique = true)]
 )
 data class User(

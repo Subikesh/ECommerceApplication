@@ -5,6 +5,9 @@ import android.content.SharedPreferences
 import com.example.data.entities.User
 import com.google.gson.Gson
 
+/**
+ * Class to track session information like user login status
+ */
 class SessionManager(context: Context) {
     var preferences: SharedPreferences =
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

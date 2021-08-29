@@ -3,8 +3,11 @@ package com.example.data.db
 import android.content.Context
 import androidx.room.Room
 
+/**
+ * Database information grouped as object
+ */
 object DatabaseContract {
-    const val DATABASE_VERSION = 2
+    const val DATABASE_VERSION = 3
 
     /**
      * Local file name of the database
@@ -15,8 +18,8 @@ object DatabaseContract {
 
     /**
      * Singleton implementation of retrieving database object
-     * @param context context to create room database
-     * @return created database instance or retrieving existing db instance
+     * @param context Context to create room database
+     * @return Created database instance or retrieving existing db instance
      */
     fun getInstance(context: Context): EcommerceDatabase {
         if (databaseInstance == null) {
@@ -27,12 +30,20 @@ object DatabaseContract {
         return databaseInstance!!
     }
 
+    /**
+     * Creates room database instance
+     * @param context context from which database is called
+     * @return Created database instance
+     */
     private fun buildRoomDb(context: Context) = Room.databaseBuilder(
             context,
             EcommerceDatabase::class.java,
             DATABASE_NAME
         ).fallbackToDestructiveMigration().build()
 
+    /**
+     * User table details
+     */
     object User {
         const val TABLE_NAME = "User"
         const val COL_USERNAME = "username"

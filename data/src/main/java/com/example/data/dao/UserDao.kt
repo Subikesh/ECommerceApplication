@@ -5,6 +5,9 @@ import com.example.data.db.DatabaseContract.User.COL_EMAIL
 import com.example.data.db.DatabaseContract.User.COL_PASSWORD
 import com.example.data.entities.User
 
+/**
+ * User data access object in room database
+ */
 @Dao
 interface UserDao {
     /**

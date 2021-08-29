@@ -34,9 +34,7 @@ class ProfileFragment : Fragment() {
         val authentication = Authentication(requireActivity())
         val session = SessionManager(requireActivity())
         val user = session.user
-
-        binding.profileText.text =
-            if (user != null) user.username + " " + user.email else "No user logged in"
+        binding.profileUsername.text = user?.username
 
         logoutBtn.setOnClickListener {
             authentication.userLogout()

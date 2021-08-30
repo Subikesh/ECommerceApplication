@@ -2,8 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         tools:context=".ui.user.ProfileFragment"
-        android:layout_width="match_parent">
+        android:layout_marginBottom="@android:dimen/notification_large_icon_height">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -36,11 +37,63 @@
                 android:background="#c0c0c0" />
 
         <Button
-                android:id="@+id/setting_button"
+                android:id="@+id/profile_wishlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/list_button"
-                android:text="@string/logout" />
+                android:text="@string/profile_wishlist" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#c0c0c0" />
+
+        <Button
+                android:id="@+id/profile_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/list_button"
+                android:text="@string/profile_account" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#c0c0c0" />
+
+        <Button
+                android:id="@+id/profile_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/list_button"
+                android:text="@string/profile_address" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#c0c0c0" />
+
+        <Button
+                android:id="@+id/profile_payment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/list_button"
+                android:text="@string/profile_payment" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#c0c0c0" />
+
+        <Button
+                android:id="@+id/profile_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/list_button"
+                android:text="@string/profile_orders" />
 
         <View
                 android:layout_width="match_parent"

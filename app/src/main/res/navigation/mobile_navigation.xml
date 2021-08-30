@@ -46,6 +46,9 @@
         <action
                 android:id="@+id/action_loginFragment_to_navigation_user"
                 app:destination="@id/navigation_user" />
+        <action
+                android:id="@+id/action_loginFragment_to_signupFragment"
+                app:destination="@id/signupFragment" />
     </fragment>
     <fragment
             android:id="@+id/profileFragment"
@@ -54,6 +57,14 @@
             tools:layout="@layout/fragment_profile" >
         <action
                 android:id="@+id/action_profileFragment_to_navigation_user"
+                app:destination="@id/navigation_user" />
+    </fragment>
+    <fragment
+            android:id="@+id/signupFragment"
+            android:name="com.example.ecommerceapplication.ui.user.SignupFragment"
+            android:label="SignupFragment" >
+        <action
+                android:id="@+id/action_signupFragment_to_navigation_user2"
                 app:destination="@id/navigation_user" />
     </fragment>
 </navigation>

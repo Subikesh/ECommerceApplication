@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.data.session.SessionManager
+import com.example.data.usecases.Authentication
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
 
@@ -19,7 +20,7 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         session = SessionManager(requireContext())
@@ -30,8 +31,13 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val logoutBtn = binding.logoutButton
+        val authentication = Authentication(requireActivity())
+        val session = SessionManager(requireActivity())
+        val user = session.user
+        binding.profileUsername.text = user?.username
+
         logoutBtn.setOnClickListener {
-            session.login = false
+            authentication.userLogout()
             findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
         }
     }

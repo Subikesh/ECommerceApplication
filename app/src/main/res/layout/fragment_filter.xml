@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/filter_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/filter_layout"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -12,11 +12,11 @@
 
         <TextView
                 android:id="@+id/category_filter"
-                android:text="@string/category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
                 android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@string/category"
+                android:textAppearance="?attr/textAppearanceListItem"
                 android:textStyle="bold" />
 
         <Spinner
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:labelFor="@+id/category_filter"/>
+                android:labelFor="@+id/category_filter" />
     </LinearLayout>
 
     <View
@@ -38,19 +38,19 @@
 
         <TextView
                 android:id="@+id/price_filter"
-                android:text="@string/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
                 android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@string/price"
+                android:textAppearance="?attr/textAppearanceListItem"
                 android:textStyle="bold" />
 
         <EditText
                 android:id="@+id/price_min"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:labelFor="@id/price_filter"
-                android:gravity="center" />
+                android:gravity="center"
+                android:labelFor="@id/price_filter" />
 
         <TextView
                 android:id="@+id/filter_price_to"
@@ -63,24 +63,24 @@
                 android:id="@+id/price_max"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
+                android:gravity="center"
                 android:inputType="number"
-                android:labelFor="@id/price_filter"
-                android:gravity="center" />
+                android:labelFor="@id/price_filter" />
     </LinearLayout>
 
     <View
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginTop="5dp"
             android:background="#c0c0c0" />
 
     <TextView
             android:id="@+id/sort_filter"
-            android:text="@string/sort"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceListItem"
             android:layout_margin="@dimen/activity_horizontal_margin"
+            android:text="@string/sort"
+            android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold" />
 
     <LinearLayout
@@ -88,12 +88,12 @@
             android:layout_height="wrap_content">
 
         <Button
-                android:text="Price: Low to high"
-                style="@style/filter_button" />
+                style="@style/filter_button"
+                android:text="Price: Low to high" />
 
         <Button
-                android:text="Price: High to low"
-                style="@style/filter_button" />
+                style="@style/filter_button"
+                android:text="Price: High to low" />
     </LinearLayout>
 
     <LinearLayout
@@ -101,8 +101,8 @@
             android:layout_height="wrap_content">
 
         <Button
-                android:text="Latest Arrivals"
-                style="@style/filter_button" />
+                style="@style/filter_button"
+                android:text="Latest Arrivals" />
     </LinearLayout>
 
 

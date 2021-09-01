@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        tools:context=".ui.user.ProfileFragment"
-        android:layout_marginBottom="@android:dimen/notification_large_icon_height">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@android:dimen/notification_large_icon_height"
+        tools:context=".ui.user.ProfileFragment">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
         <ImageView
+                style="@style/login_text_view"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_baseline_account_box_24"
                 android:layout_gravity="center"
-                style="@style/login_text_view"
-                android:contentDescription="Profile picture" />
+                android:contentDescription="Profile picture"
+                android:src="@drawable/ic_baseline_account_box_24" />
 
         <TextView
+                android:id="@+id/profile_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_user"
-                android:id="@+id/profile_username"
-                android:gravity="center"
-                android:textSize="26sp"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin" />
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:text="@string/title_user"
+                android:textSize="26sp" />
 
         <View
                 android:layout_width="match_parent"
@@ -38,9 +38,9 @@
 
         <Button
                 android:id="@+id/profile_wishlist"
+                style="@style/list_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/list_button"
                 android:text="@string/profile_wishlist" />
 
         <View
@@ -51,9 +51,9 @@
 
         <Button
                 android:id="@+id/profile_account"
+                style="@style/list_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/list_button"
                 android:text="@string/profile_account" />
 
         <View
@@ -64,9 +64,9 @@
 
         <Button
                 android:id="@+id/profile_address"
+                style="@style/list_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/list_button"
                 android:text="@string/profile_address" />
 
         <View
@@ -77,9 +77,9 @@
 
         <Button
                 android:id="@+id/profile_payment"
+                style="@style/list_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/list_button"
                 android:text="@string/profile_payment" />
 
         <View
@@ -90,9 +90,9 @@
 
         <Button
                 android:id="@+id/profile_orders"
+                style="@style/list_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/list_button"
                 android:text="@string/profile_orders" />
 
         <View
@@ -103,9 +103,9 @@
 
         <Button
                 android:id="@+id/logout_button"
+                style="@style/list_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/list_button"
                 android:text="@string/logout" />
 
         <View

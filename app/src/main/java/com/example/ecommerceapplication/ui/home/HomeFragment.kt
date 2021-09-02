@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.data.entities.categoryList
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
-import com.example.ecommerceapplication.ui.home.products.ProductsRecyclerAdapter
+import com.example.ecommerceapplication.ui.home.products.CategoryRecyclerAdapter
 
 class HomeFragment : Fragment() {
 
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val rvProducts = binding.homeRecyclerView
-        val productAdapter = ProductsRecyclerAdapter(FilterFragment.categoryList.toTypedArray())
+        val productAdapter = CategoryRecyclerAdapter(categoryList, requireContext())
 
         rvProducts.adapter = productAdapter
         rvProducts.layoutManager = LinearLayoutManager(requireContext())

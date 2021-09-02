@@ -3,7 +3,7 @@ package com.example.ecommerceapplication.ui.home.products
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -31,12 +31,13 @@ class ProductsRecyclerAdapter(private val categoryList: Array<String>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.category_row_title)
-        val showAllButton: Button = view.findViewById(R.id.show_all_button)
+        val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
 
         init {
             showAllButton.setOnClickListener {
                 val bundle = bundleOf("title" to textView.text)
-                view.findNavController().navigate(R.id.action_navigation_home_to_categoryFragment, bundle)
+                view.findNavController()
+                    .navigate(R.id.action_navigation_home_to_categoryFragment, bundle)
             }
         }
     }

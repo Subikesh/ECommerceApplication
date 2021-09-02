@@ -18,13 +18,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
             android:id="@+id/show_all_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:text="@string/show_all"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_arrow_forward_30"
             app:layout_constraintBottom_toBottomOf="@+id/category_row_title"
             app:layout_constraintEnd_toEndOf="parent" />
 

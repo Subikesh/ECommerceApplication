@@ -26,7 +26,11 @@
     <string name="profile_orders">Your Orders</string>
     <string name="logout">Logout</string>
 
+    <!-- Home fragment: Product cards -->
+    <string name="show_all">Show all</string>
+    <string name="show_discount">%1$d%%\noff</string>
+
+    <!-- General strings -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sample_string">Sample String</string>
-    <string name="show_all">Show all</string>
 </resources>

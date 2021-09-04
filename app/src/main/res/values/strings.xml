@@ -6,8 +6,13 @@
     <string name="title_filter">Filters</string>
     <string name="category">Category</string>
     <string name="price">Price</string>
-    <string name="sort">Sort By</string>
     <string name="apply">Apply</string>
+
+    <!-- Filter page -->
+    <string name="sort">Sort By</string>
+    <string name="price_lth">Price: Low to high</string>
+    <string name="price_htl">Price: High to low</string>
+    <string name="latest_arrivals">Latest Arrivals</string>
 
     <!-- Sign-in, Sign-up forms -->
     <string name="email_hint">Enter Email</string>
@@ -33,4 +38,6 @@
     <!-- General strings -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sample_string">Sample String</string>
+    <string name="to">to</string>
+
 </resources>

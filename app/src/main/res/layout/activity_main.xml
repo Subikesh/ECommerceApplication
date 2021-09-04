@@ -10,8 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#000"
-            app:itemBackground="@android:color/white"
+            android:background="?android:attr/windowBackground"
             app:menu="@menu/bottom_nav_menu" />
 
     <androidx.core.widget.NestedScrollView

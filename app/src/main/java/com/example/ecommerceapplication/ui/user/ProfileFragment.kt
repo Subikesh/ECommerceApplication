@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.data.session.SessionManager
 import com.example.data.usecases.Authentication
+import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
 
@@ -24,6 +25,11 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         session = SessionManager(requireContext())
+
+        // Toolbar
+        val toolbar = binding.profileToolbar.root
+        toolbar.title = "User Profile"
+        (activity as MainActivity).setSupportActionBar(toolbar)
         return binding.root
     }
 

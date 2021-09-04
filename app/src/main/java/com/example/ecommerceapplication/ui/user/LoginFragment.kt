@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.entities.User
 import com.example.data.usecases.Authentication
+import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
 import com.example.ecommerceapplication.validators.TextValidators
@@ -27,6 +28,12 @@ class LoginFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        // Toolbar
+        val toolbar = binding.loginToolbar.root
+        toolbar.title = "Login"
+        (activity as MainActivity).setSupportActionBar(toolbar)
+
         return binding.root
     }
 

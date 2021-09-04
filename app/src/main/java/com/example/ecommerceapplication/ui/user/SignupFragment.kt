@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.entities.User
 import com.example.data.usecases.Authentication
+import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentSignupBinding
 import com.example.ecommerceapplication.validators.TextValidators
@@ -26,6 +27,12 @@ class SignupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
+
+        // Toolbar
+        val toolbar = binding.signupToolbar.root
+        toolbar.title = "Create new account"
+        (activity as MainActivity).setSupportActionBar(toolbar)
+
         return binding.root
     }
 

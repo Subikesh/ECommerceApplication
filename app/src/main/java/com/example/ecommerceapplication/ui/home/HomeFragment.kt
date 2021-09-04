@@ -46,6 +46,7 @@ class HomeFragment : Fragment() {
 
         rvProducts.adapter = productAdapter
         rvProducts.layoutManager = LinearLayoutManager(requireContext())
+        rvProducts.isNestedScrollingEnabled = true
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

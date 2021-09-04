@@ -1,8 +1,10 @@
 package com.example.ecommerceapplication
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navController = findNavController(R.id.nav_fragment)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -30,5 +32,17 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Hide bottom navigation menu on scroll
+        val nestedScroll = binding.nestedScroll
+        nestedScroll.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            val verticalScroll = scrollY - oldScrollY
+            if (verticalScroll > 10 && navView.isShown) {
+                navView.visibility = View.GONE
+            } else if (verticalScroll < -10) {
+                navView.visibility = View.VISIBLE
+            }
+        })
     }
 }

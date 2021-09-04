@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.data.entities.categoryList
+import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.ui.home.products.CategoryRecyclerAdapter
@@ -30,11 +31,15 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // Toolbar
+        val toolbar = binding.homeToolbar.root
+        (activity as MainActivity).setSupportActionBar(toolbar)
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Products card group
         val rvProducts = binding.homeRecyclerView
         val productAdapter = CategoryRecyclerAdapter(categoryList, requireContext())
 

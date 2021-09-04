@@ -1,9 +1,8 @@
 package com.example.ecommerceapplication.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -32,7 +31,9 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         // Toolbar
-        val toolbar = binding.homeToolbar.root
+        val toolbar = binding.homeToolbar
+        toolbar.title = getString(R.string.app_name)
+        setHasOptionsMenu(true)
         (activity as MainActivity).setSupportActionBar(toolbar)
         return root
     }
@@ -45,10 +46,21 @@ class HomeFragment : Fragment() {
 
         rvProducts.adapter = productAdapter
         rvProducts.layoutManager = LinearLayoutManager(requireContext())
+    }
 
-        binding.filterButton.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_home_to_filterFragment)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_toolbar_menu, menu)
+        val searchView = menu.findItem(R.id.home_search).actionView as SearchView
+        searchView.queryHint = "Type here to search..."
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.home_filter -> findNavController().navigate(R.id.action_navigation_home_to_filterFragment)
         }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

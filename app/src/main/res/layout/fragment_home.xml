@@ -10,9 +10,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <include
+        <androidx.appcompat.widget.Toolbar
                 android:id="@+id/home_toolbar"
-                layout="@layout/default_toolbar" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/design_default_color_primary"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:menu="@menu/home_toolbar_menu"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -21,30 +27,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="?android:actionBarSize"
             android:orientation="vertical">
-
-        <LinearLayout
-                android:id="@+id/search_layout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal">
-
-            <androidx.appcompat.widget.SearchView
-                    android:id="@+id/home_search"
-                    android:layout_width="291dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:iconifiedByDefault="true"
-                    android:layoutDirection="rtl" />
-
-            <ImageButton
-                    android:id="@+id/filter_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_baseline_filter_alt_34" />
-
-        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recycler_view"

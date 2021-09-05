@@ -34,12 +34,7 @@ class UserFragment : Fragment() {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textUser
-        userViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-
-        // Let user navigate to login_page if not authenticated or profile page if authenticated
+        // Let user navigate to profile page if authenticated and login_page if not
         session = SessionManager(requireActivity())
         if (session.login && session.user != null) {
             findNavController().navigate(R.id.action_navigation_user_to_profileFragment)

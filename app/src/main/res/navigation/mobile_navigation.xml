@@ -31,10 +31,14 @@
             tools:layout="@layout/fragment_user">
         <action
                 android:id="@+id/action_navigation_user_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/navigation_user"
+                app:popUpToInclusive="true" />
         <action
                 android:id="@+id/action_navigation_user_to_profileFragment"
-                app:destination="@id/profileFragment" />
+                app:destination="@id/profileFragment"
+                app:popUpTo="@id/navigation_user"
+                app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -49,7 +53,8 @@
             android:label="LoginFragment">
         <action
                 android:id="@+id/action_loginFragment_to_navigation_user"
-                app:destination="@id/navigation_user" />
+                app:destination="@id/navigation_user"
+                app:popUpTo="@id/navigation_home" />
         <action
                 android:id="@+id/action_loginFragment_to_signupFragment"
                 app:destination="@id/signupFragment" />
@@ -62,7 +67,8 @@
             tools:layout="@layout/fragment_profile">
         <action
                 android:id="@+id/action_profileFragment_to_navigation_user"
-                app:destination="@id/navigation_user" />
+                app:destination="@id/navigation_user"
+                app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -71,7 +77,8 @@
             android:label="SignupFragment">
         <action
                 android:id="@+id/action_signupFragment_to_navigation_user2"
-                app:destination="@id/navigation_user" />
+                app:destination="@id/navigation_user"
+                app:popUpTo="@id/navigation_home" />
     </fragment>
 
     <fragment

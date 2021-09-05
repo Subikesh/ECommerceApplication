@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 
 /**
@@ -20,6 +21,13 @@ class CategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+
+        // Toolbar
+        val toolbar = binding.categoryToolbar.root
+        toolbar.title = "User Profile"
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+
         return binding.root
     }
 

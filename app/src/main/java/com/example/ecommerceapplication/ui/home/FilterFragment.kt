@@ -32,6 +32,7 @@ class FilterFragment : Fragment() {
         val toolbar = binding.filtersToolbar.root
         toolbar.title = "Filters"
         (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
 
         // Creating dropdown menu for category selection
         val spinner = binding.filterCategorySpinner

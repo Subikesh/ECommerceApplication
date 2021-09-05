@@ -30,8 +30,9 @@ class SignupFragment : Fragment() {
 
         // Toolbar
         val toolbar = binding.signupToolbar.root
-        toolbar.title = "Create new account"
+        toolbar.title = "Create a new account"
         (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }

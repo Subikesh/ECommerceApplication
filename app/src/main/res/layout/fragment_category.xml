@@ -5,6 +5,10 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.products.CategoryFragment">
 
+    <include
+            android:id="@+id/category_toolbar"
+            layout="@layout/default_toolbar" />
+
     <!-- TODO: Update category products layout -->
     <TextView
             android:id="@+id/category_title"

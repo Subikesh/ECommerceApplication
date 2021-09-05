@@ -33,6 +33,7 @@ class LoginFragment : Fragment() {
         val toolbar = binding.loginToolbar.root
         toolbar.title = "Login"
         (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }

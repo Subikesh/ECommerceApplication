@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+
         // Hide bottom navigation menu on scroll
         val nestedScroll = binding.nestedScroll
         nestedScroll.setOnScrollChangeListener(
@@ -44,5 +47,10 @@ class MainActivity : AppCompatActivity() {
                 navView.visibility = View.VISIBLE
             }
         })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_fragment)
+        return navController.navigateUp()
     }
 }

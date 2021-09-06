@@ -49,6 +49,9 @@ class HomeFragment : Fragment() {
         rvProducts.isNestedScrollingEnabled = true
     }
 
+    /**
+     * Inflating search and filter menu to actionbar
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_toolbar_menu, menu)
         val searchView = menu.findItem(R.id.home_search).actionView as SearchView
@@ -57,6 +60,9 @@ class HomeFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    /**
+     * Handling onclick listeners when toolbar icons are clicked
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home_filter -> findNavController().navigate(R.id.action_navigation_home_to_filterFragment)

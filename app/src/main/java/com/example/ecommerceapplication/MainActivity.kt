@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        // Setup action bar with nav controller to implement up button in action bar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
         // Hide bottom navigation menu on scroll
@@ -49,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * When up button is clicked on a nav_fragment
+     */
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_fragment)
         return navController.navigateUp()

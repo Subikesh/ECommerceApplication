@@ -26,7 +26,7 @@ class CategoryFragment : Fragment() {
         val toolbar = binding.categoryToolbar.root
         toolbar.title = "User Profile"
         (activity as MainActivity).setSupportActionBar(toolbar)
-        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }

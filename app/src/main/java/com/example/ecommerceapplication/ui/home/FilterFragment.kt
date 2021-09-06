@@ -24,7 +24,7 @@ class FilterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentFilterBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -32,7 +32,7 @@ class FilterFragment : Fragment() {
         val toolbar = binding.filtersToolbar.root
         toolbar.title = "Filters"
         (activity as MainActivity).setSupportActionBar(toolbar)
-        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Creating dropdown menu for category selection
         val spinner = binding.filterCategorySpinner
@@ -41,7 +41,7 @@ class FilterFragment : Fragment() {
         spinner.adapter = adapter
 
         val text: String = spinner.selectedItem.toString()
-        Log.i("FilterFragment", "$text is selected");
+        Log.i("FilterFragment", "$text is selected")
         return view
     }
 }

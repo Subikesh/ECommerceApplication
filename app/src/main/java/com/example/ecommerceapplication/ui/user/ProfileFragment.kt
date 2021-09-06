@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
         val toolbar = binding.profileToolbar.root
         toolbar.title = "User Profile"
         (activity as MainActivity).setSupportActionBar(toolbar)
-        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }

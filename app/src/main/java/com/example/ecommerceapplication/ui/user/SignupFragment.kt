@@ -25,14 +25,14 @@ class SignupFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
 
         // Toolbar
         val toolbar = binding.signupToolbar.root
         toolbar.title = "Create a new account"
         (activity as MainActivity).setSupportActionBar(toolbar)
-        (activity as MainActivity).getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }

@@ -2,6 +2,7 @@ package com.example.ecommerceapplication.ui.user
 
 import android.app.Application
 import android.util.Log
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
@@ -17,15 +18,27 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     private val TAG = "UserViewModel"
 
     var user: User? = null
+        private set
 
     /**
      * Login user with mailId and password
      * @param mailId    mail id of user
      * @param password  password of user
-     * @return true if user successfully logged in and false if not
      */
     suspend fun loginUser(mailId: String, password: String) {
         user = authentication.userLogin(mailId, password)
+    }
+
+    suspend fun createUser(
+        mailText: String,
+        passText: String,
+        confirmPassword: String,
+        userText: String
+    ): Boolean {
+        return if (passText == confirmPassword) {
+            user = authentication.userSignup(mailText, passText, userText)
+            true
+        } else false
     }
 
     private val _text = MutableLiveData<String>().apply {

@@ -16,21 +16,16 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     private val authentication = Authentication(application)
     private val TAG = "UserViewModel"
 
+    var user: User? = null
+
     /**
      * Login user with mailId and password
+     * @param mailId    mail id of user
+     * @param password  password of user
      * @return true if user successfully logged in and false if not
      */
-    fun loginUser(mailId: String, password: String): Boolean {
-        var user: User?
-        // User data will be null as coroutine runs synchronously
-        // TODO: Change this to launch and return user inside launch
-        runBlocking {
-            user = authentication.userLogin(mailId, password)
-            Log.d(TAG, "loginUser: Inside launch $user")
-        }
-        Log.d(TAG, "loginUser: Inside User login $user")
-        return user != null
-
+    suspend fun loginUser(mailId: String, password: String) {
+        user = authentication.userLogin(mailId, password)
     }
 
     private val _text = MutableLiveData<String>().apply {

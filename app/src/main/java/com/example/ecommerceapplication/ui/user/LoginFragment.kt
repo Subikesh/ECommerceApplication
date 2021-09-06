@@ -8,11 +8,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
 import com.example.ecommerceapplication.validators.TextValidators
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
@@ -63,12 +65,14 @@ class LoginFragment : Fragment() {
         val mailValid = TextValidators.checkEmail(mailText)
         val passValid = TextValidators.checkPassword(passText)
         if (mailValid && passValid) {
-            val loggedIn = viewModel.loginUser(mailText.text.toString(), passText.text.toString())
-            if (loggedIn)
-                findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
-            else
-                Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
-                    .show()
+            lifecycleScope.launch {
+                viewModel.loginUser(mailText.text.toString(), passText.text.toString())
+                if (viewModel.user != null)
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
+                else
+                    Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
+                        .show()
+            }
         }
     }
 

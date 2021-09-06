@@ -1,26 +1,24 @@
 package com.example.ecommerceapplication.ui.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.data.entities.User
-import com.example.data.usecases.Authentication
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
 import com.example.ecommerceapplication.validators.TextValidators
-import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +26,9 @@ class LoginFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+
+        viewModel =
+            ViewModelProvider(this).get(UserViewModel::class.java)
 
         // Toolbar
         val toolbar = binding.loginToolbar.root
@@ -46,28 +47,28 @@ class LoginFragment : Fragment() {
         val loginButton = binding.loginSubmit
         val signupButton = binding.loginSignUp
 
-        val authentication = Authentication(requireActivity())
-
         loginButton.setOnClickListener {
-            var user: User?
-            val mailValid = TextValidators.checkEmail(mailText)
-            val passValid = TextValidators.checkPassword(passText)
-            if (mailValid && passValid) {
-                lifecycleScope.launch {
-                    user =
-                        authentication.userLogin(mailText.text.toString(), passText.text.toString())
-                    if (user == null)
-                        Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
-                            .show()
-                    else
-                        findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
-                    Log.d(TAG, "onViewCreated: Login done $user")
-                }
-            }
+            loginUser(mailText, passText)
         }
 
         signupButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
+        }
+    }
+
+    private fun loginUser(
+        mailText: EditText,
+        passText: EditText
+    ) {
+        val mailValid = TextValidators.checkEmail(mailText)
+        val passValid = TextValidators.checkPassword(passText)
+        if (mailValid && passValid) {
+            val loggedIn = viewModel.loginUser(mailText.text.toString(), passText.text.toString())
+            if (loggedIn)
+                findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
+            else
+                Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
+                    .show()
         }
     }
 

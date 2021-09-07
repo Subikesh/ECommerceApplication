@@ -11,10 +11,11 @@ object TextValidators {
      * Password validation regex
      */
     private const val PASSWORD_VALIDATOR = "^(?=.*[0-9])(?=.*[A-Za-z])(?=\\S+\$).{8,}\$"
-    private const val PASSWORD_ERROR_TEXT = "Password must have <ul>" +
+    private const val PASSWORD_ERROR_HTML = "Password must have <ul>" +
             "<li> at least 8 characters</li>" +
             "<li> an alphabet</li>" +
-            "<li> a number</li>"
+            "<li> a number</li> </ul>"
+    private const val PASSWORD_ERROR_TEXT = "Password must have at least 8 characters, an alphabet and a number"
     private const val EMAIL_ERROR_TEXT = "Please enter a valid email address!"
 
     /**
@@ -51,11 +52,9 @@ object TextValidators {
             error = false
         } else if (!pattern.matcher(password).matches()) {
             passwordText.error = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) Html.fromHtml(
-                PASSWORD_ERROR_TEXT,
+                PASSWORD_ERROR_HTML,
                 Html.FROM_HTML_MODE_COMPACT
-            ) else Html.fromHtml(
-                PASSWORD_ERROR_TEXT
-            )
+            ) else PASSWORD_ERROR_TEXT
             error = false
         }
         if (error)

@@ -15,7 +15,6 @@ import kotlinx.coroutines.runBlocking
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val authentication = Authentication(application)
-    val TAG = "UserViewModel"
 
     var user: User? = null
         private set

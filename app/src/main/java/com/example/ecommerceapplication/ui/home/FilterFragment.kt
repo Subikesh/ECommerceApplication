@@ -9,23 +9,21 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.databinding.FragmentFilterBinding
+import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 
 /**
  * A fragment representing a list of Filters.
  */
 class FilterFragment : Fragment() {
 
-    companion object {
-        val categoryList =
-            mutableListOf("Mobiles", "Electronics", "Groceries", "Fashion", "Furniture", "Kitchen products")
-        fun newInstance() = FilterFragment()
-    }
+    private var _binding: FragmentFilterBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentFilterBinding.inflate(inflater, container, false)
+        _binding = FragmentFilterBinding.inflate(inflater, container, false)
         val view = binding.root
 
         // Toolbar
@@ -33,6 +31,12 @@ class FilterFragment : Fragment() {
         toolbar.title = "Filters"
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Creating dropdown menu for category selection
         val spinner = binding.filterCategorySpinner
@@ -42,6 +46,24 @@ class FilterFragment : Fragment() {
 
         val text: String = spinner.selectedItem.toString()
         Log.i("FilterFragment", "$text is selected")
-        return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    companion object {
+        val categoryList =
+            mutableListOf(
+                "Mobiles",
+                "Electronics",
+                "Groceries",
+                "Fashion",
+                "Furniture",
+                "Kitchen products"
+            )
+
+        fun newInstance() = FilterFragment()
     }
 }

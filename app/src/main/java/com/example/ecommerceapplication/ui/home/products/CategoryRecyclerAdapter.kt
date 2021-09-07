@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.entities.Category
 import com.example.ecommerceapplication.R
-import kotlin.math.min
+import com.example.ecommerceapplication.extensions.initRecyclerView
 
 /**
  * Adapter for recycler view to display products in home page
@@ -39,11 +39,10 @@ class CategoryRecyclerAdapter(private val categoryList: Array<Category>, val con
         holder.textView.text = currCategory.title
 
         // Setting the RecyclerView of child products list
-        holder.productsView.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        holder.productsView.setHasFixedSize(true)
-        holder.productsView.adapter =
-            ProductRecyclerAdapter(currCategory.productList, holder.productsView.context)
+        holder.productsView.initRecyclerView(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+            ProductRecyclerAdapter(currCategory.productList, holder.productsView.context),
+            true
+        )
     }
 
     override fun getItemCount() = categoryList.size

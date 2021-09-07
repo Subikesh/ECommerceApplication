@@ -11,6 +11,7 @@ import com.example.data.entities.categoryList
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
+import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.products.CategoryRecyclerAdapter
 
 class HomeFragment : Fragment() {
@@ -42,11 +43,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Products card group
         val rvProducts = binding.homeRecyclerView
-        val productAdapter = CategoryRecyclerAdapter(categoryList, requireContext())
+        val categoryAdapter = CategoryRecyclerAdapter(categoryList, requireContext())
 
-        rvProducts.adapter = productAdapter
-        rvProducts.layoutManager = LinearLayoutManager(requireContext())
-        rvProducts.isNestedScrollingEnabled = true
+        rvProducts.initRecyclerView(LinearLayoutManager(requireContext()), categoryAdapter, false)
     }
 
     /**

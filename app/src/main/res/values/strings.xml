@@ -39,5 +39,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sample_string">Sample String</string>
     <string name="to">to</string>
+    <string name="profile_picture">Profile picture</string>
 
 </resources>

@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val authentication = Authentication(application)
-    private val TAG = "UserViewModel"
+    val TAG = "UserViewModel"
 
     var user: User? = null
         private set
@@ -29,16 +29,30 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         user = authentication.userLogin(mailId, password)
     }
 
+    /**
+     * Create a new user with given user details
+     * @param mailId    mail id of user
+     * @param password  password of user
+     * @param username  username
+     * @return true if user registered; false if passwords don't match
+     */
     suspend fun createUser(
-        mailText: String,
-        passText: String,
+        mailId: String,
+        password: String,
         confirmPassword: String,
-        userText: String
+        username: String
     ): Boolean {
-        return if (passText == confirmPassword) {
-            user = authentication.userSignup(mailText, passText, userText)
+        return if (password == confirmPassword) {
+            user = authentication.userSignup(mailId, password, username)
             true
         } else false
+    }
+
+    /**
+     * Logout currently logged in user
+     */
+    fun logoutUser() {
+        authentication.userLogout()
     }
 
     private val _text = MutableLiveData<String>().apply {

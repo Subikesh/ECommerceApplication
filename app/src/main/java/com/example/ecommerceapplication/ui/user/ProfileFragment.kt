@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.data.session.SessionManager
-import com.example.data.usecases.Authentication
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
@@ -18,6 +18,8 @@ class ProfileFragment : Fragment() {
     private lateinit var session: SessionManager
     private val binding get() = _binding!!
 
+    private lateinit var viewModel: UserViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,6 +27,8 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         session = SessionManager(requireContext())
+
+        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         // Toolbar
         val toolbar = binding.profileToolbar.root
@@ -39,13 +43,13 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val logoutBtn = binding.logoutButton
-        val authentication = Authentication(requireActivity())
         val session = SessionManager(requireActivity())
         val user = session.user
         binding.profileUsername.text = user?.username
+        binding.profileEmail.text = user?.email
 
         logoutBtn.setOnClickListener {
-            authentication.userLogout()
+            viewModel.logoutUser()
             findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
         }
     }

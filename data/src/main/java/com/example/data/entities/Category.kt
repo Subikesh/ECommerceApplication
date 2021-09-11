@@ -1,5 +1,7 @@
 package com.example.data.entities
 
+import com.example.data.extensions.fromSlug
+
 val categoryList = arrayOf(
     Category("food_nutrition", "7jv"),
     Category("televisions", "ckf-czl"),
@@ -11,13 +13,16 @@ val categoryList = arrayOf(
 val productMap = getProductMap(categoryList)
 
 data class Category(
-    val title: String,
+    val title_slug: String,
     val deltaUrl: String,
     val version: String = "",
     val productsUrl: String = "",
 ) {
     // TODO: Get the category id from the delta url api call
     val categoryId: String get() = deltaUrl
+
+    val title: String
+        get() = title_slug.fromSlug()
 
     // TODO: modify this based on new database model
     val productList: Array<Product>?

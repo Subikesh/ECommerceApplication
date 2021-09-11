@@ -26,7 +26,7 @@ data class Price(val value: Double, val currency: String = "INR")
 data class Product(
     val productId: String,
     val title: String,
-    // TODO: Default this to drawable image
+    // TODO: Default this to drawable image (if image not found)
     val imageUrl: String,
     val maximumRetailPrice: Price,
     val discountPrice: Price,
@@ -36,8 +36,8 @@ data class Product(
     val codAvailable: Boolean = true,
     val productUrl: String? = null,
     val inStock: Boolean = true,
-    val specifications: Array<String>? = null,
     // TODO: get the specification list(table) in some other class (general and dimensions)
+    val specifications: Array<String>? = null,
     // Remarks is the important note for each product
     val remarks: String? = null
 ) {

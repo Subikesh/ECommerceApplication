@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.home.products.CategoryFragment">
 
     <include
             android:id="@+id/category_toolbar"
             layout="@layout/default_toolbar" />
 
-    <!-- TODO: Update category products layout -->
-    <TextView
-            android:id="@+id/category_title"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_products"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/hello_blank_fragment"
-            android:textSize="24sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@android:dimen/app_icon_size" />
 
-</FrameLayout>
+</LinearLayout>

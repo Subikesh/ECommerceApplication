@@ -12,12 +12,12 @@ import com.example.data.entities.Product
 import com.example.ecommerceapplication.R
 import kotlin.math.min
 
-class ProductRecyclerAdapter(val productList: Array<Product>?, val context: Context) :
+class ProductRecyclerAdapter(
+    private val productList: Array<Product>?,
+    val context: Context,
+    private val MAX_PRODUCTS: Int? = null
+) :
     RecyclerView.Adapter<ProductRecyclerAdapter.ViewHolder>() {
-
-    companion object {
-        private const val MAX_PRODUCT_COUNT = 6
-    }
 
     /**
      * Inflates UI for single product card
@@ -53,9 +53,12 @@ class ProductRecyclerAdapter(val productList: Array<Product>?, val context: Cont
 
     /**
      * Maximum count of product cards to be displayed in each category in homepages
+     * If MAX_PRODUCTS is not specified: returns productsList size, else returns min of products' size and MAX_PRODUCTS
      * @return product count
      */
-    override fun getItemCount() = min(productList?.size ?: 0, MAX_PRODUCT_COUNT)
+    override fun getItemCount() = MAX_PRODUCTS?.let {
+        min(productList?.size ?: 0, MAX_PRODUCTS)
+    } ?: productList?.size ?: 0
 
     /**
      * Class contains all child views of a product card

@@ -22,6 +22,11 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
 class HomeCategoryAdapter(private val categoryList: Array<Category>, val context: Context) :
     RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
+    companion object {
+        /** Maximum products to be shown inside a category RV */
+        const val MAX_PRODUCTS = 6
+    }
+
     /**
      * Inflate the single category UI
      */
@@ -37,10 +42,11 @@ class HomeCategoryAdapter(private val categoryList: Array<Category>, val context
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currCategory = categoryList[position]
         holder.textView.text = currCategory.title
+        holder.categoryId = currCategory.categoryId
 
         // Setting the RecyclerView of child products list
         holder.productsView.initRecyclerView(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-            ProductRecyclerAdapter(currCategory.productList, holder.productsView.context),
+            ProductRecyclerAdapter(currCategory.productList, holder.productsView.context, MAX_PRODUCTS),
             true
         )
     }
@@ -52,14 +58,15 @@ class HomeCategoryAdapter(private val categoryList: Array<Category>, val context
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.category_row_title)
-        val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
+        private val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
         val productsView: RecyclerView = view.findViewById(R.id.child_products_rv)
+        var categoryId: String? = null
 
         init {
             // On click of show all button for each category, It redirects to page showing
             // all products of that category.
             showAllButton.setOnClickListener {
-                val bundle = bundleOf("title" to textView.text)
+                val bundle = bundleOf(CATEGORY_TITLE to textView.text, CATEGORY_ID to categoryId)
                 view.findNavController()
                     .navigate(R.id.action_navigation_home_to_categoryFragment, bundle)
             }

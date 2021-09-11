@@ -39,9 +39,9 @@ class ProductRecyclerAdapter(
                 if (currProduct.title.length > 30) currProduct.title.substring(0, 30) + "..."
                 else currProduct.title
             // Set maximum retail price as strike text
-            holder.productMrp.text = "\u20B9${currProduct.maximumRetailPrice.value}"
             holder.productMrp.paintFlags =
                 holder.productMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            holder.productMrp.text = "\u20B9${currProduct.maximumRetailPrice.value}"
 
             holder.productPrice.text = "\u20B9${currProduct.discountPrice.value}"
             holder.discount.text = context.resources.getString(

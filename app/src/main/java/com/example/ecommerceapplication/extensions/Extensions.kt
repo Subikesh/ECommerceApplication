@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 fun RecyclerView.initRecyclerView(layoutManager: RecyclerView.LayoutManager,
                                   adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
-                                  hasFixedSize: Boolean = true) {
+                                  hasFixedSize: Boolean = false) {
     this.layoutManager = layoutManager
     this.adapter = adapter
     setHasFixedSize(hasFixedSize)

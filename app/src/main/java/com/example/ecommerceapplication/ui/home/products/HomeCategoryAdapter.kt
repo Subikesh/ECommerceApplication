@@ -19,8 +19,8 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
  * This RecyclerView contains another recycler view for horizontal product cards scroller
  * @param categoryList List of strings showing the category title
  */
-class CategoryRecyclerAdapter(private val categoryList: Array<Category>, val context: Context) :
-    RecyclerView.Adapter<CategoryRecyclerAdapter.ViewHolder>() {
+class HomeCategoryAdapter(private val categoryList: Array<Category>, val context: Context) :
+    RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
     /**
      * Inflate the single category UI

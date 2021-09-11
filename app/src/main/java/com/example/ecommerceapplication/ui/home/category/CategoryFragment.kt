@@ -1,4 +1,4 @@
-package com.example.ecommerceapplication.ui.home.products
+package com.example.ecommerceapplication.ui.home.category
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -33,7 +33,7 @@ class CategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.categoryTitle.text = arguments?.getString("title")
+
     }
 
     override fun onDestroyView() {

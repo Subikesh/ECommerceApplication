@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.entities.Product
 import com.example.ecommerceapplication.R
+import com.example.ecommerceapplication.extensions.getGlideImage
 import kotlin.math.min
 
 class ProductRecyclerAdapter(
@@ -34,6 +35,10 @@ class ProductRecyclerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (productList != null) {
             val currProduct = productList[position]
+
+            // Set image from url to glide
+            holder.productImage.getGlideImage(context, currProduct.imageUrl, )
+
             // Set product title text. If length > 30, strip and add '...' at the end
             holder.productTitle.text =
                 if (currProduct.title.length > 30) currProduct.title.substring(0, 30) + "..."

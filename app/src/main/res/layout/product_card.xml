@@ -30,7 +30,7 @@
                     android:layout_gravity="top|center_horizontal"
                     android:layout_margin="10dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/tv_image_200" />
+                    android:src="@drawable/img_not_loaded1_4x" />
 
             <TextView
                     android:id="@+id/product_title"

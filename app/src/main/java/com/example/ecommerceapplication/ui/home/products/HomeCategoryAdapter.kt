@@ -10,7 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.entities.Category
+import com.example.data.roomdb.entities.Category
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
 

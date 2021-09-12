@@ -1,4 +1,4 @@
-package com.example.data.entities
+package com.example.data.roomdb.entities
 
 val modelProduct = Product(
     "TVSEJGYMKVXHBQH8",

@@ -24,6 +24,12 @@ fun RecyclerView.initRecyclerView(
     setHasFixedSize(hasFixedSize)
 }
 
+/**
+ * Set Glide image from imgUrl to imageView with a circular progress gif while loading
+ * @param context   Context of activity
+ * @param imgUrl    Url of image
+ * @param error     Error image to be shown if image not loaded
+ */
 fun ImageView.getGlideImage(context: Context, imgUrl: String, error: Int = R.drawable.img_not_loaded1_4x) {
     val circularProgressDrawable = CircularProgressDrawable(context)
     circularProgressDrawable.strokeWidth = 5f

@@ -3,8 +3,8 @@ package com.example.data.usecases
 import android.content.Context
 import android.database.sqlite.SQLiteException
 import android.util.Log
-import com.example.data.db.DatabaseContract
-import com.example.data.entities.User
+import com.example.data.roomdb.DatabaseContract
+import com.example.data.roomdb.entities.User
 import com.example.data.session.SessionManager
 
 /**
@@ -48,14 +48,14 @@ class Authentication(context: Context) {
      */
     suspend fun userSignup(email: String, password: String, username: String): User? {
         val insertUser = User(username = username, password = password, email = email)
-        var returnCode: Long? = null
-        try {
+        var returnCode: Long?
+        return try {
             returnCode = db.userDao().insert(insertUser)
             Log.d("LoginFragment", "userSignup: user insert return code: $returnCode")
             userLogin(insertUser)
-            return insertUser
+            insertUser
         } catch (e: SQLiteException) {
-            return null
+            null
         }
     }
 

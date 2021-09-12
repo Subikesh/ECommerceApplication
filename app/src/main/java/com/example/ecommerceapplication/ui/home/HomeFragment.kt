@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.entities.categoryList
+import com.example.data.roomdb.entities.categoryList
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding

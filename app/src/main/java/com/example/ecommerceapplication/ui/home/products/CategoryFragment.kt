@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.entities.categoryList
-import com.example.data.entities.getProductMap
+import com.example.data.roomdb.entities.categoryList
+import com.example.data.roomdb.entities.getProductMap
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView

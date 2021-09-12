@@ -1,9 +1,9 @@
-package com.example.data.db
+package com.example.data.roomdb
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.data.dao.UserDao
-import com.example.data.entities.User
+import com.example.data.roomdb.dao.UserDao
+import com.example.data.roomdb.entities.User
 
 /**
  * Abstract class extending the RoomDatabase

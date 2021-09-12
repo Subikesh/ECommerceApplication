@@ -1,4 +1,4 @@
-package com.example.data.entities
+package com.example.data.roomdb.entities
 
 import com.example.data.extensions.fromSlug
 

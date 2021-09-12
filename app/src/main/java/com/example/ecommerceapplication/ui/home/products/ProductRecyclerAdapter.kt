@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.entities.Product
+import com.example.data.roomdb.entities.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.getGlideImage
 import kotlin.math.min

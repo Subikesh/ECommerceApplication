@@ -1,9 +1,9 @@
-package com.example.data.dao
+package com.example.data.roomdb.dao
 
 import androidx.room.*
-import com.example.data.db.DatabaseContract.User.COL_EMAIL
-import com.example.data.db.DatabaseContract.User.COL_PASSWORD
-import com.example.data.entities.User
+import com.example.data.roomdb.DatabaseContract.User.COL_EMAIL
+import com.example.data.roomdb.DatabaseContract.User.COL_PASSWORD
+import com.example.data.roomdb.entities.User
 
 /**
  * User data access object in room database

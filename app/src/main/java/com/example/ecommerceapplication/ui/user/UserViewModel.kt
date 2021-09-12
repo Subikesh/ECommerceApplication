@@ -1,16 +1,9 @@
 package com.example.ecommerceapplication.ui.user
 
 import android.app.Application
-import android.util.Log
-import android.widget.EditText
-import android.widget.Toast
 import androidx.lifecycle.*
-import androidx.navigation.fragment.findNavController
-import com.example.data.entities.User
+import com.example.data.roomdb.entities.User
 import com.example.data.usecases.Authentication
-import com.example.ecommerceapplication.R
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 

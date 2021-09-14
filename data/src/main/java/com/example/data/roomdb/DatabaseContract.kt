@@ -7,7 +7,7 @@ import androidx.room.Room
  * Database information grouped as object
  */
 object DatabaseContract {
-    const val DATABASE_VERSION = 3
+    const val DATABASE_VERSION = 4
 
     /**
      * Local file name of the database
@@ -40,14 +40,4 @@ object DatabaseContract {
             EcommerceDatabase::class.java,
             DATABASE_NAME
         ).fallbackToDestructiveMigration().build()
-
-    /**
-     * User table details
-     */
-    object User {
-        const val TABLE_NAME = "User"
-        const val COL_USERNAME = "username"
-        const val COL_PASSWORD = "password"
-        const val COL_EMAIL = "email"
-    }
 }

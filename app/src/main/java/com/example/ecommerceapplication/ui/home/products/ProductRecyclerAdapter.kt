@@ -21,6 +21,8 @@ class ProductRecyclerAdapter(
 ) :
     RecyclerView.Adapter<ProductRecyclerAdapter.ViewHolder>() {
 
+    private val CARD_TITLE_MAXLEN = 40
+
     /**
      * Inflates UI for single product card
      * @return ViewHolder instance of productsRV
@@ -39,9 +41,9 @@ class ProductRecyclerAdapter(
         // Set image from url to glide
         holder.productImage.getGlideImage(context, currProduct.imageUrl)
 
-        // Set product title text. If length > 30, strip and add '...' at the end
+        // Set product title text. If length > CARD_TITLE_MAXLEN, strip and add '...' at the end
         holder.productTitle.text =
-            if (currProduct.title.length > 30) currProduct.title.substring(0, 30) + "..."
+            if (currProduct.title.length > CARD_TITLE_MAXLEN) currProduct.title.substring(0, CARD_TITLE_MAXLEN) + "..."
             else currProduct.title
         // Set maximum retail price as strike text
         holder.productMrp.paintFlags =
@@ -52,10 +54,7 @@ class ProductRecyclerAdapter(
         if (currProduct.discountPercent < 20)
             holder.discount.visibility = GONE
         else
-            holder.discount.text = context.resources.getString(
-            R.string.show_discount,
-            currProduct.discountPercent.toInt()
-        )
+            holder.discount.text = "${currProduct.discountPercent.toInt()}% Off"
 
     }
 

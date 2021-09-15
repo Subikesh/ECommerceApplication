@@ -3,9 +3,9 @@ package com.example.data.api.models
 import com.google.gson.annotations.SerializedName
 
 data class Product(
-    @SerializedName("CategorySpecificInfoV1") val categorySpecificInfo: CategorySpecificInfo,
-    @SerializedName("ProductBaseInfoV1") val productBaseInfo: ProductBaseInfo,
-    @SerializedName("ProductShippingInfoV1") val productShippingInfo: ProductShippingInfo
+    @SerializedName("categorySpecificInfoV1") val categorySpecificInfo: CategorySpecificInfo,
+    @SerializedName("productBaseInfoV1") val productBaseInfo: ProductBaseInfo,
+    @SerializedName("productShippingInfoV1") val productShippingInfo: ProductShippingInfo
 )
 
 data class CategorySpecificInfo(

@@ -3,28 +3,6 @@ package com.example.data.roomdb.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-val modelProduct = Product(
-    "TVSEJGYMKVXHBQH8",
-    "Lloyd 61 cm (24 inch) HD Ready LED TV(L24BC)",
-    "7jv",
-    "https://rukminim1.flixcart.com/image/200/200/television/q/h/8/lloyd-l24bc-original-imaejhyhfgtbchnk.jpeg?q=90",
-    Price(14990.0), Price(11800.0),
-    "", null
-)
-
-/**
- * Gets list of categories and returns a map for those categories to array of 10 model products
- * @param categoryList Array of ProductsList objects to create the map
- * @return Mutable map of ProductsList Id to Array of model products
- */
-fun getProductMap(categoryList: Array<Category>): MutableMap<String, Array<Product>> {
-    val productMap: MutableMap<String, Array<Product>> = mutableMapOf()
-    for (category in categoryList) {
-        productMap[category.categoryId] = Array(10) { modelProduct }
-    }
-    return productMap
-}
-
 data class Price(val value: Double, val currency: String = "INR")
 
 @Entity

@@ -31,19 +31,26 @@ fun RecyclerView.initRecyclerView(
  * @param error     Error image to be shown if image not loaded
  */
 fun ImageView.getGlideImage(context: Context, imgUrl: String, error: Int = R.drawable.img_not_loaded1_4x) {
-    val circularProgressDrawable = CircularProgressDrawable(context)
-    circularProgressDrawable.strokeWidth = 5f
-    circularProgressDrawable.centerRadius = 30f
-    circularProgressDrawable.start()
+    val circularProgress = getCircularLoader(context)
 
     val requestOptions = RequestOptions().apply {
-        placeholder(circularProgressDrawable)
+        placeholder(circularProgress)
         error(error)
     }
 
     Glide.with(context)
         .setDefaultRequestOptions(requestOptions)
         .load(imgUrl)
-        .centerCrop()
         .into(this)
+}
+
+/**
+ * Return circular loader gif
+ */
+fun getCircularLoader(context: Context): CircularProgressDrawable {
+    val circularProgressDrawable = CircularProgressDrawable(context)
+    circularProgressDrawable.strokeWidth = 5f
+    circularProgressDrawable.centerRadius = 30f
+    circularProgressDrawable.start()
+    return circularProgressDrawable
 }

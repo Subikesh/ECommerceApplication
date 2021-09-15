@@ -1,16 +1,24 @@
 package com.example.ecommerceapplication.ui.home.products
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.roomdb.entities.categoryList
-import com.example.data.roomdb.entities.getProductMap
+import com.example.data.api.GetCategoryDataService
+import com.example.data.api.RetrofitInstance
+import com.example.data.api.models.ProductsList
+import com.example.data.repository.ProductMapper.fromApiModel
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 const val CATEGORY_TITLE = "title"
 const val CATEGORY_ID = "categoryId"
@@ -41,19 +49,44 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val categoryId= arguments?.get(CATEGORY_ID) as String
+        val categoryId = arguments?.get(CATEGORY_ID) as String
+        // TODO: Try to get productsUrl another way
+        // TODO: Try to send category object as argument
+        val productsUrl = arguments?.get("productsUrl") as String
         val rvProducts = binding.categoryProducts
-        val productsAdapter =
-            ProductRecyclerAdapter(getProductMap(categoryList)[categoryId], requireContext())
 
-        rvProducts.initRecyclerView(
-            GridLayoutManager(
-                requireContext(),
-                2,
-                GridLayoutManager.VERTICAL,
-                false
-            ), productsAdapter
-        )
+        val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
+        val call = service?.getProductsList(productsUrl)
+        var productList: List<com.example.data.api.models.Product>
+
+        call?.enqueue(object : Callback<ProductsList?> {
+            override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
+                if(response.code() == 200) {
+                    productList = response.body()?.products!!
+                    Log.d("API response", "Products retrieved")
+                    Log.d("API response", "${response.raw()}")
+                    val productObjects = mutableListOf<com.example.data.models.Product>()
+                    for (product in productList) {
+                        productObjects.add(fromApiModel(product))
+                    }
+                    binding.loaderImage.visibility = GONE
+                    rvProducts.initRecyclerView(
+                        GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
+                        ProductRecyclerAdapter(productObjects.toTypedArray(), requireContext())
+                    )
+                } else {
+                    Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
+                    Log.d("API response", "Product retrieval failed")
+                    Log.d("API response", "${response.raw()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
+                Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
+                Log.d("API response", "Product retrieval failed")
+                Log.d("API response", "$t")
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -64,4 +97,24 @@ class CategoryFragment : Fragment() {
     companion object {
         fun newInstance() = CategoryFragment()
     }
+}
+
+fun getProductsFromApi(productUrl: String): List<com.example.data.api.models.Product>? {
+    val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
+    val call = service?.getProductsList(productUrl)
+    var productList: List<com.example.data.api.models.Product>? = null
+
+    call?.enqueue(object : Callback<ProductsList?> {
+        override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
+            productList = response.body()?.products
+            Log.d("API response", "Products retrieved")
+            Log.d("API response", "${response.raw()}")
+        }
+
+        override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
+            Log.d("API response", "Product retrieval failed")
+            Log.d("API response", "$t")
+        }
+    })
+    return productList
 }

@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.models.getProductMapHome
 import com.example.data.roomdb.entities.Category
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
@@ -19,7 +20,7 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
  * This RecyclerView contains another recycler view for horizontal product cards scroller
  * @param categoryList List of strings showing the category title
  */
-class HomeCategoryAdapter(private val categoryList: Array<Category>, val context: Context) :
+class HomeCategoryAdapter(private val categoryList: List<Category>, val context: Context) :
     RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
     companion object {
@@ -43,12 +44,21 @@ class HomeCategoryAdapter(private val categoryList: Array<Category>, val context
         val currCategory = categoryList[position]
         holder.textView.text = currCategory.title
         holder.categoryId = currCategory.categoryId
+        holder.productsUrl = currCategory.productsUrl
 
-        // Setting the RecyclerView of child products list
-        holder.productsView.initRecyclerView(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-            ProductRecyclerAdapter(currCategory.productList, holder.productsView.context, MAX_PRODUCTS),
-            true
-        )
+        val productsArray =
+            getProductMapHome(com.example.data.roomdb.entities.categoryList)[currCategory.categoryId]
+        if (productsArray != null) {
+            val productsAdapter =
+                ProductRecyclerAdapter(productsArray.toTypedArray(), context)
+
+            // Setting the RecyclerView of child products list
+            holder.productsView.initRecyclerView(
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+                productsAdapter,
+                true
+            )
+        }
     }
 
     override fun getItemCount() = categoryList.size
@@ -60,13 +70,18 @@ class HomeCategoryAdapter(private val categoryList: Array<Category>, val context
         val textView: TextView = view.findViewById(R.id.category_row_title)
         private val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
         val productsView: RecyclerView = view.findViewById(R.id.child_products_rv)
-        var categoryId: String? = null
+        lateinit var categoryId: String
+        lateinit var productsUrl: String
 
         init {
             // On click of show all button for each category, It redirects to page showing
             // all products of that category.
             showAllButton.setOnClickListener {
-                val bundle = bundleOf(CATEGORY_TITLE to textView.text, CATEGORY_ID to categoryId)
+                val bundle = bundleOf(
+                    CATEGORY_TITLE to textView.text,
+                    CATEGORY_ID to categoryId,
+                    "productsUrl" to productsUrl
+                )
                 view.findNavController()
                     .navigate(R.id.action_navigation_home_to_categoryFragment, bundle)
             }

@@ -31,7 +31,7 @@ interface GetCategoryDataService {
 
     @Headers("Fk-Affiliate-Id: $AFFILIATE_ID", "Fk-Affiliate-Token: $AFFILIATE_TOKEN")
     @GET
-    fun getProductsList(@Url apiUrl: String): Call<ProductsList>
+    fun getProductsList(@Url apiUrl: String, @Query("inStock") inStock: Int = 1): Call<ProductsList>
 }
 
 fun makeApiCall() {

@@ -2,7 +2,7 @@ package com.example.data.api.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Product(
+data class ProductResult(
     @SerializedName("categorySpecificInfoV1") val categorySpecificInfo: CategorySpecificInfo,
     @SerializedName("productBaseInfoV1") val productBaseInfo: ProductBaseInfo,
     @SerializedName("productShippingInfoV1") val productShippingInfo: ProductShippingInfo

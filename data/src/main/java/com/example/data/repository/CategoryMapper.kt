@@ -1,13 +1,29 @@
 package com.example.data.repository
 
+import android.util.Log
+import com.example.data.api.models.API_VERSION
+import com.example.data.api.models.CategoryResult
 import com.example.data.models.Category
 
-class CategoryMapper {
-    fun fromEntity(entity: com.example.data.roomdb.entities.Category) = Category(
-        entity.categoryId,
-        entity.title_slug,
-        entity.productsUrl
-    )
-
-    fun toEntity(model: Category) = com.example.data.roomdb.entities.Category(model.categoryId, model.title_slug, model.productsUrl)
+object CategoryMapper {
+    fun fromApiModel(apiModelList: CategoryResult, categoryCount: Int = 10): List<Category> {
+        val categoryObjects = apiModelList.apiGroups.affiliate.categoryObj
+        val categoryList = mutableListOf<Category>()
+        var totalCategories = categoryCount
+        for (categoryTitle in categoryObjects.keys) {
+            if (totalCategories-- > 0) {
+            Log.d("API response", "${categoryObjects[categoryTitle]} Hello")
+                categoryObjects[categoryTitle]?.versions?.get(API_VERSION)?.let {
+                    val cat = Category(
+                        it.categoryId,
+                        it.title,
+                        it.productsUrl
+                    )
+                    Log.d("API response", "Category $totalCategories : $cat")
+                    categoryList.add(cat)
+                }
+            } else break
+        }
+        return categoryList
+    }
 }

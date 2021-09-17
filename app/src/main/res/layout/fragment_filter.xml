@@ -41,10 +41,7 @@
                     android:labelFor="@+id/category_filter" />
         </LinearLayout>
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#c0c0c0" />
+        <include layout="@layout/horizontal_ruler"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -83,11 +80,7 @@
                     android:labelFor="@id/price_filter" />
         </LinearLayout>
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="#c0c0c0" />
+        <include layout="@layout/horizontal_ruler"/>
 
         <TextView
                 android:id="@+id/sort_filter"
@@ -121,11 +114,7 @@
         </LinearLayout>
 
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="#c0c0c0" />
+        <include layout="@layout/horizontal_ruler"/>
 
         <Button
                 android:id="@+id/filter_apply_button"

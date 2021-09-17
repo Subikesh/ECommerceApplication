@@ -15,12 +15,13 @@ import com.example.ecommerceapplication.extensions.getGlideImage
 import kotlin.math.min
 
 class ProductRecyclerAdapter(
-    private val productList: Array<Product>,
+    private val productList: List<Product>,
     val context: Context,
     private val MAX_PRODUCTS: Int? = null
 ) :
     RecyclerView.Adapter<ProductRecyclerAdapter.ViewHolder>() {
 
+    /** Maximum length of product title */
     private val CARD_TITLE_MAXLEN = 40
 
     /**
@@ -45,17 +46,16 @@ class ProductRecyclerAdapter(
         holder.productTitle.text =
             if (currProduct.title.length > CARD_TITLE_MAXLEN) currProduct.title.substring(0, CARD_TITLE_MAXLEN) + "..."
             else currProduct.title
-        // Set maximum retail price as strike text
-        holder.productMrp.paintFlags =
-            holder.productMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        holder.productMrp.text = "\u20B9${currProduct.maximumRetailPrice.value}"
 
+        // Set maximum retail price as strike text
+        holder.productMrp.paintFlags = holder.productMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        holder.productMrp.text = "\u20B9${currProduct.maximumRetailPrice.value}"
         holder.productPrice.text = "\u20B9${currProduct.discountPrice.value}"
+
         if (currProduct.discountPercent < 20)
             holder.discount.visibility = GONE
         else
             holder.discount.text = "${currProduct.discountPercent.toInt()}% Off"
-
     }
 
     /**

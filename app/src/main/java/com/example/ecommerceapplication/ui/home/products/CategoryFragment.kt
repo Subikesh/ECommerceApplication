@@ -31,6 +31,9 @@ class CategoryFragment : Fragment() {
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
 
+    /** Get the maximum product count to load at a time */
+    private val PRODUCTS_COUNT = 50
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +65,7 @@ class CategoryFragment : Fragment() {
         call?.enqueue(object : Callback<ProductsList?> {
             override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
                 if(response.code() == 200) {
-                    productList = response.body()?.products!!
+                    productList = response.body()?.products!!.subList(0, PRODUCTS_COUNT)
                     Log.d("API response", "Products retrieved")
                     Log.d("API response", "${response.raw()}")
                     val productObjects = mutableListOf<com.example.data.models.Product>()
@@ -97,24 +100,4 @@ class CategoryFragment : Fragment() {
     companion object {
         fun newInstance() = CategoryFragment()
     }
-}
-
-fun getProductsFromApi(productUrl: String): List<com.example.data.api.models.Product>? {
-    val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
-    val call = service?.getProductsList(productUrl)
-    var productList: List<com.example.data.api.models.Product>? = null
-
-    call?.enqueue(object : Callback<ProductsList?> {
-        override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
-            productList = response.body()?.products
-            Log.d("API response", "Products retrieved")
-            Log.d("API response", "${response.raw()}")
-        }
-
-        override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
-            Log.d("API response", "Product retrieval failed")
-            Log.d("API response", "$t")
-        }
-    })
-    return productList
 }

@@ -10,7 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.data.api.makeApiCall
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -50,8 +49,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // TODO: Remove this call
-        makeApiCall()
+        //TODO: Remove this call
+//        makeApiCall()
     }
 
     /**

@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 
 object RetrofitInstance {
     private var retrofit: Retrofit? = null
-    private const val BASE_URL = "https://affiliate-api.flipkart.net/affiliate/1.0/feeds/amaratasi/category/"
+    private const val BASE_URL = "https://affiliate-api.flipkart.net/affiliate/"
 
     /**
      * Create an instance of Retrofit object

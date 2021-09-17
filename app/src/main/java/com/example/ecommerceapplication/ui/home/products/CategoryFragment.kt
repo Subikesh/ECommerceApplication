@@ -60,24 +60,23 @@ class CategoryFragment : Fragment() {
 
         val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
         val call = service?.getProductsList(productsUrl)
-        var productList: List<com.example.data.api.models.Product>
+        var productList: ProductsList
 
         call?.enqueue(object : Callback<ProductsList?> {
             override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
                 if(response.code() == 200) {
-                    productList = response.body()?.products!!.subList(0, PRODUCTS_COUNT)
+                    productList = response.body()!!
                     Log.d("API response", "Products retrieved")
                     Log.d("API response", "${response.raw()}")
-                    val productObjects = mutableListOf<com.example.data.models.Product>()
-                    for (product in productList) {
-                        productObjects.add(fromApiModel(product))
-                    }
+                    val productObjects = fromApiModel(productList, PRODUCTS_COUNT)
+
                     binding.loaderImage.visibility = GONE
                     rvProducts.initRecyclerView(
                         GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
-                        ProductRecyclerAdapter(productObjects.toTypedArray(), requireContext())
+                        ProductRecyclerAdapter(productObjects, requireContext())
                     )
                 } else {
+                    // TODO: Show error fragment
                     Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
                     Log.d("API response", "Product retrieval failed")
                     Log.d("API response", "${response.raw()}")
@@ -85,6 +84,7 @@ class CategoryFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
+                // TODO: Show error fragment
                 Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
                 Log.d("API response", "Product retrieval failed")
                 Log.d("API response", "$t")

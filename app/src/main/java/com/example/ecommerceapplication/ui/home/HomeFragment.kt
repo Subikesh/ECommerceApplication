@@ -1,24 +1,34 @@
 package com.example.ecommerceapplication.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.roomdb.entities.categoryList
+import com.example.data.api.GetCategoryDataService
+import com.example.data.api.RetrofitInstance
+import com.example.data.api.models.CategoryResult
+import com.example.data.models.Category
+import com.example.data.repository.CategoryMapper
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
+import retrofit2.Call
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var categoryList: List<Category>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,11 +51,42 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Products card group
-        val rvProducts = binding.homeRecyclerView
-        val categoryAdapter = HomeCategoryAdapter(categoryList, requireContext())
 
-        rvProducts.initRecyclerView(LinearLayoutManager(requireContext()), categoryAdapter)
+        val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
+        val call = service?.getCategories()
+
+        // Products card group
+        val rvCategories = binding.homeRecyclerView
+
+        call?.enqueue(object : retrofit2.Callback<CategoryResult> {
+            override fun onResponse(
+                call: Call<CategoryResult>,
+                response: Response<CategoryResult>
+            ) {
+                if (response.code() == 200) {
+                    val categoryObjects = response.body()!!
+                    Log.d("API response", "Categories retrieved")
+                    Log.d("API response", "Home categories: ${response.raw()}")
+                    categoryList = CategoryMapper.fromApiModel(categoryObjects, 20)
+
+                    Log.d("API response", "Categories: $categoryList")
+
+                    val categoryAdapter = HomeCategoryAdapter(categoryList, requireContext())
+                    rvCategories.initRecyclerView(LinearLayoutManager(requireContext()), categoryAdapter)
+                } else {
+                    // TODO: Show error fragment
+                    Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
+                    Log.d("API response", "Categories retrieval failed")
+                    Log.d("API response", "${response.raw()}")
+                }
+            }
+
+            override fun onFailure(call: Call<CategoryResult>, t: Throwable) {
+                Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
+                Log.d("API response", "Category retrieval failed")
+                Log.d("API response", "$t")
+            }
+        })
     }
 
     /**

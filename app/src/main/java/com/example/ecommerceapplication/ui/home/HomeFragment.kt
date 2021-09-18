@@ -57,31 +57,34 @@ class HomeFragment : Fragment() {
 
         // Products card group
         val rvCategories = binding.homeRecyclerView
+        val categoryShimmer = binding.categoryLoader
+        categoryShimmer.startShimmerAnimation()
 
         call?.enqueue(object : retrofit2.Callback<CategoryResult> {
             override fun onResponse(
                 call: Call<CategoryResult>,
                 response: Response<CategoryResult>
             ) {
-                if (response.code() == 200) {
-                    val categoryObjects = response.body()!!
-                    Log.d("API response", "Categories retrieved")
-                    Log.d("API response", "Home categories: ${response.raw()}")
-                    categoryList = CategoryMapper.fromApiModel(categoryObjects, 20)
+                val categoryObjects = response.body()!!
+                Log.d("API response", "Categories retrieved")
+                Log.d("API response", "Home categories: ${response.raw()}")
+                categoryList = CategoryMapper.fromApiModel(categoryObjects, 20)
 
-                    Log.d("API response", "Categories: $categoryList")
+                Log.d("API response", "Categories: $categoryList")
 
-                    val categoryAdapter = HomeCategoryAdapter(categoryList, requireContext())
-                    rvCategories.initRecyclerView(LinearLayoutManager(requireContext()), categoryAdapter)
-                } else {
-                    // TODO: Show error fragment
-                    Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
-                    Log.d("API response", "Categories retrieval failed")
-                    Log.d("API response", "${response.raw()}")
-                }
+                categoryShimmer.stopShimmerAnimation()
+                categoryShimmer.visibility = View.GONE
+                rvCategories.visibility = View.VISIBLE
+
+                val categoryAdapter = HomeCategoryAdapter(categoryList, requireContext())
+                rvCategories.initRecyclerView(
+                    LinearLayoutManager(requireContext()),
+                    categoryAdapter
+                )
             }
 
             override fun onFailure(call: Call<CategoryResult>, t: Throwable) {
+                categoryShimmer.visibility = View.GONE
                 Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
                 Log.d("API response", "Category retrieval failed")
                 Log.d("API response", "$t")

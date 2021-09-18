@@ -28,11 +28,35 @@
             android:layout_marginTop="?android:actionBarSize"
             android:orientation="vertical">
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/category_loader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    <include layout="@layout/category_row_item_shimmer" />
+
+                    <include layout="@layout/category_row_item_shimmer" />
+
+                    <include layout="@layout/category_row_item_shimmer" />
+                </LinearLayout>
+            </ScrollView>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@android:dimen/app_icon_size"/>
+                android:layout_marginBottom="@android:dimen/app_icon_size"
+                android:visibility="gone" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

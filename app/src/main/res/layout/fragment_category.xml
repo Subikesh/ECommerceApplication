@@ -4,23 +4,54 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginBottom="@android:dimen/app_icon_size"
+        android:orientation="vertical"
         tools:context=".ui.home.products.CategoryFragment">
 
     <include
             android:id="@+id/category_toolbar"
             layout="@layout/default_toolbar" />
 
-    <ProgressBar
-            android:id="@+id/loader_image"
+    <!-- Shimmer product cards in grid layout -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/category_products_loader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_height="wrap_content">
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:orientation="horizontal">
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+
+                <include layout="@layout/product_card_shimmer" />
+            </GridLayout>
+
+        </ScrollView>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_products"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
 </LinearLayout>

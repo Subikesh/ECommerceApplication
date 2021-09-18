@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -57,6 +58,8 @@ class CategoryFragment : Fragment() {
         // TODO: Try to send category object as argument
         val productsUrl = arguments?.get("productsUrl") as String
         val rvProducts = binding.categoryProducts
+        val productsLoader = binding.categoryProductsLoader
+        productsLoader.startShimmerAnimation()
 
         val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
         val call = service?.getProductsList(productsUrl)
@@ -64,27 +67,24 @@ class CategoryFragment : Fragment() {
 
         call?.enqueue(object : Callback<ProductsList?> {
             override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
-                if(response.code() == 200) {
-                    productList = response.body()!!
-                    Log.d("API response", "Products retrieved")
-                    Log.d("API response", "${response.raw()}")
-                    val productObjects = fromApiModel(productList, PRODUCTS_COUNT)
+                productList = response.body()!!
+                Log.d("API response", "Products retrieved")
+                Log.d("API response", "${response.raw()}")
+                val productObjects = fromApiModel(productList, PRODUCTS_COUNT)
 
-                    binding.loaderImage.visibility = GONE
-                    rvProducts.initRecyclerView(
-                        GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
-                        ProductRecyclerAdapter(productObjects, requireContext())
-                    )
-                } else {
-                    // TODO: Show error fragment
-                    Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
-                    Log.d("API response", "Product retrieval failed")
-                    Log.d("API response", "${response.raw()}")
-                }
+                productsLoader.stopShimmerAnimation()
+                productsLoader.visibility = GONE
+                rvProducts.visibility = VISIBLE
+
+                rvProducts.initRecyclerView(
+                    GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
+                    ProductRecyclerAdapter(productObjects, requireContext())
+                )
             }
 
             override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
                 // TODO: Show error fragment
+                productsLoader.visibility = GONE
                 Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
                 Log.d("API response", "Product retrieval failed")
                 Log.d("API response", "$t")

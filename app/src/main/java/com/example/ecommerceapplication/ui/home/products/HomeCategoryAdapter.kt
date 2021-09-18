@@ -19,6 +19,7 @@ import com.example.data.models.Category
 import com.example.data.repository.ProductMapper
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,30 +53,30 @@ class HomeCategoryAdapter(private val categoryList: List<Category>, val context:
         holder.categoryId = currCategory.categoryId
         holder.productsUrl = currCategory.productsUrl
 
+        holder.productsLoader.startShimmerAnimation()
         val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
         val call = service?.getProductsList(currCategory.productsUrl)
         var productList: ProductsList
 
         call?.enqueue(object : Callback<ProductsList?> {
             override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
-                if(response.code() == 200) {
-                    productList = response.body()!!
-                    Log.d("API response", "Products retrieved")
-                    Log.d("API response", "${response.raw()}")
-                    val productObjects = ProductMapper.fromApiModel(productList, MAX_PRODUCTS)
-                    holder.productsView.initRecyclerView(
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                        ProductRecyclerAdapter(productObjects, context)
-                    )
-                } else {
-                    // TODO: Show error fragment
-                    Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
-                    Log.d("API response", "Product retrieval failed")
-                    Log.d("API response", "${response.raw()}")
-                }
+                productList = response.body()!!
+                Log.d("API response", "Products retrieved")
+                Log.d("API response", "${response.raw()}")
+                val productObjects = ProductMapper.fromApiModel(productList, MAX_PRODUCTS)
+
+                holder.productsLoader.stopShimmerAnimation()
+                holder.productsLoader.visibility = View.GONE
+                holder.productsView.visibility = View.VISIBLE
+
+                holder.productsView.initRecyclerView(
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+                    ProductRecyclerAdapter(productObjects, context)
+                )
             }
 
             override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
+                holder.productsLoader.visibility = View.GONE
                 Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
                 Log.d("API response", "Product retrieval failed")
                 Log.d("API response", "$t")
@@ -89,6 +90,7 @@ class HomeCategoryAdapter(private val categoryList: List<Category>, val context:
      * ViewHolder for each categoryRV. Contains nested RecyclerView for product cards
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val productsLoader: ShimmerFrameLayout = view.findViewById(R.id.products_shimmer)
         val textView: TextView = view.findViewById(R.id.category_row_title)
         private val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
         val productsView: RecyclerView = view.findViewById(R.id.child_products_rv)

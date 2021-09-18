@@ -5,4 +5,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="product_card_width">190dp</dimen>
     <dimen name="product_card_height">250dp</dimen>
+    <dimen name="product_card_image">160dp</dimen>
 </resources>

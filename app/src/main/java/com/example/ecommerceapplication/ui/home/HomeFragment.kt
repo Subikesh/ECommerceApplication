@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.data.api.GetCategoryDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.CategoryResult
-import com.example.data.models.Category
 import com.example.data.repository.CategoryMapper
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -28,7 +27,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var categoryList: List<Category>
+    private lateinit var categoryList: List<com.example.domain.models.Category>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +67,7 @@ class HomeFragment : Fragment() {
                 val categoryObjects = response.body()!!
                 Log.d("API response", "Categories retrieved")
                 Log.d("API response", "Home categories: ${response.raw()}")
-                categoryList = CategoryMapper.fromApiModel(categoryObjects, 20)
+                categoryList = CategoryMapper.fromApiModel(categoryObjects)
 
                 Log.d("API response", "Categories: $categoryList")
 

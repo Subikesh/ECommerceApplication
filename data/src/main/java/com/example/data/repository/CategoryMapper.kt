@@ -3,11 +3,11 @@ package com.example.data.repository
 import android.util.Log
 import com.example.data.api.models.API_VERSION
 import com.example.data.api.models.CategoryResult
-import com.example.data.models.Category
+import com.example.domain.models.Category
 
 object CategoryMapper {
-    fun fromApiModel(apiModelList: CategoryResult, categoryCount: Int = 10): List<Category> {
-        val categoryObjects = apiModelList.apiGroups.affiliate.categoryObj
+    fun fromApiModel(apiModel: CategoryResult, categoryCount: Int = 15): List<Category> {
+        val categoryObjects = apiModel.apiGroups.affiliate.categoryObj
         val categoryList = mutableListOf<Category>()
         var totalCategories = categoryCount
         for (categoryTitle in categoryObjects.keys) {

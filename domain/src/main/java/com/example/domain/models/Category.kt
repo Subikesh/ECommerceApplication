@@ -1,6 +1,6 @@
-package com.example.data.models
+package com.example.domain.models
 
-import com.example.data.extensions.fromSlug
+import com.example.domain.extensions.fromSlug
 
 data class Category(
     val categoryId: String,

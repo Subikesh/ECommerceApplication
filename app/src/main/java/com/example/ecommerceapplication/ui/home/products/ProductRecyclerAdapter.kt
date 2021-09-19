@@ -9,13 +9,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.models.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.getGlideImage
 import kotlin.math.min
 
 class ProductRecyclerAdapter(
-    private val productList: List<Product>,
+    private val productList: List<com.example.domain.models.Product>,
     val context: Context,
     private val MAX_PRODUCTS: Int? = null
 ) :

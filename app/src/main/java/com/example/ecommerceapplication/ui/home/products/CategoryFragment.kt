@@ -51,8 +51,6 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val categoryId = arguments?.get(CATEGORY_ID) as String
-        // TODO: Try to get productsUrl another way
-        // TODO: Try to send category object as argument
         val productsUrl = arguments?.get("productsUrl") as String
         val rvProducts = binding.categoryProducts
         val productsLoader = binding.categoryProductsLoader

@@ -1,32 +1,37 @@
 package com.example.data.repository
 
-import com.example.data.api.models.ProductResult
 import com.example.data.api.models.ProductsList
-import com.example.data.models.Product
-import com.example.data.roomdb.entities.Price
+import com.example.domain.models.Product
+import com.example.domain.models.Price
+import com.example.domain.repository.ProductApiMapper
 
-object ProductMapper {
-    fun fromApiModel(apiModel: ProductsList, productsCount: Int = 10): List<Product> {
+object ProductMapper : ProductApiMapper<ProductsList> {
+    override fun fromApiModel(apiModel: ProductsList, itemCount: Int): List<Product> {
         val productObjects = mutableListOf<Product>()
-        var totalProducts = productsCount
+        var totalProducts = itemCount
         for (product in apiModel.products) {
             if (totalProducts-- > 0) {
-                productObjects.add(fromApiModel(product))
+                val newProduct = Product(
+                    product.productBaseInfo.productId,
+                    product.productBaseInfo.title,
+                    product.productBaseInfo.imageUrls.`200x200`,
+                    Price(
+                        product.productBaseInfo.maximumRetailPrice.amount,
+                        product.productBaseInfo.maximumRetailPrice.currency
+                    ),
+                    Price(
+                        product.productBaseInfo.flipkartSpecialPrice.amount,
+                        product.productBaseInfo.flipkartSpecialPrice.currency
+                    ),
+                    product.productBaseInfo.productDescription,
+                    product.productBaseInfo.productBrand,
+                    product.productBaseInfo.codAvailable,
+                    product.productBaseInfo.productUrl,
+                    product.productBaseInfo.inStock
+                )
+                productObjects.add(newProduct)
             } else break
         }
         return productObjects
     }
-
-    fun fromApiModel(apiModel: ProductResult) = Product(
-        apiModel.productBaseInfo.productId,
-        apiModel.productBaseInfo.title,
-        apiModel.productBaseInfo.imageUrls.`200x200`,
-        Price(apiModel.productBaseInfo.maximumRetailPrice.amount, apiModel.productBaseInfo.maximumRetailPrice.currency),
-        Price(apiModel.productBaseInfo.flipkartSpecialPrice.amount, apiModel.productBaseInfo.flipkartSpecialPrice.currency),
-        apiModel.productBaseInfo.productDescription,
-        apiModel.productBaseInfo.productBrand,
-        apiModel.productBaseInfo.codAvailable,
-        apiModel.productBaseInfo.productUrl,
-        apiModel.productBaseInfo.inStock
-    )
 }

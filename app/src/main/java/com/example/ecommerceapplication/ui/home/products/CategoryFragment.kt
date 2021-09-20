@@ -9,17 +9,12 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.api.GetCategoryDataService
-import com.example.data.api.RetrofitInstance
-import com.example.data.api.models.ProductsList
-import com.example.data.repository.ProductMapper.fromApiModel
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.ecommerceapplication.ui.home.HomeViewModel
 
 const val CATEGORY_TITLE = "title"
 const val CATEGORY_ID = "categoryId"
@@ -31,6 +26,7 @@ class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
+    private lateinit var viewModel: HomeViewModel
 
     /** Get the maximum product count to load at a time */
     private val PRODUCTS_COUNT = 50
@@ -40,6 +36,7 @@ class CategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         // Toolbar
         val toolbar = binding.categoryToolbar.root
@@ -54,42 +51,27 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val categoryId = arguments?.get(CATEGORY_ID) as String
-        // TODO: Try to get productsUrl another way
-        // TODO: Try to send category object as argument
         val productsUrl = arguments?.get("productsUrl") as String
         val rvProducts = binding.categoryProducts
         val productsLoader = binding.categoryProductsLoader
         productsLoader.startShimmerAnimation()
 
-        val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
-        val call = service?.getProductsList(productsUrl)
-        var productList: ProductsList
-
-        call?.enqueue(object : Callback<ProductsList?> {
-            override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
-                productList = response.body()!!
-                Log.d("API response", "Products retrieved")
-                Log.d("API response", "${response.raw()}")
-                val productObjects = fromApiModel(productList, PRODUCTS_COUNT)
-
+        viewModel.loadProducts(productsUrl, PRODUCTS_COUNT).observe(viewLifecycleOwner) { products ->
+            if (products != null) {
                 productsLoader.stopShimmerAnimation()
                 productsLoader.visibility = GONE
                 rvProducts.visibility = VISIBLE
 
                 rvProducts.initRecyclerView(
                     GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
-                    ProductRecyclerAdapter(productObjects, requireContext())
+                    ProductRecyclerAdapter(products, requireContext())
                 )
-            }
-
-            override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
-                // TODO: Show error fragment
+            } else {
                 productsLoader.visibility = GONE
                 Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
                 Log.d("API response", "Product retrieval failed")
-                Log.d("API response", "$t")
             }
-        })
+        }
     }
 
     override fun onDestroyView() {

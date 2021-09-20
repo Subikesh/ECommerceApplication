@@ -2,6 +2,9 @@ package com.example.ecommerceapplication.extensions
 
 import android.content.Context
 import android.widget.ImageView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -53,4 +56,16 @@ fun getCircularLoader(context: Context): CircularProgressDrawable {
     circularProgressDrawable.centerRadius = 30f
     circularProgressDrawable.start()
     return circularProgressDrawable
+}
+
+/**
+ * Observe livedata and do operations only once
+ */
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
 }

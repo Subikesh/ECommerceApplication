@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.data.api.GetCategoryDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
-import com.example.data.models.Category
 import com.example.data.repository.ProductMapper
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
@@ -29,11 +28,8 @@ import retrofit2.Response
  * This RecyclerView contains another recycler view for horizontal product cards scroller
  * @param categoryList List of strings showing the category title
  */
-class HomeCategoryAdapter(private val categoryList: List<Category>, val context: Context) :
+class HomeCategoryAdapter(private val categoryList: List<com.example.domain.models.Category>, val context: Context) :
     RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
-
-    /** Number of products to be shown in a single category in homepage */
-    private val MAX_PRODUCTS = 10
 
     /**
      * Inflate the single category UI
@@ -63,7 +59,7 @@ class HomeCategoryAdapter(private val categoryList: List<Category>, val context:
                 productList = response.body()!!
                 Log.d("API response", "Products retrieved")
                 Log.d("API response", "${response.raw()}")
-                val productObjects = ProductMapper.fromApiModel(productList, MAX_PRODUCTS)
+                val productObjects = ProductMapper.fromApiModel(productList)
 
                 holder.productsLoader.stopShimmerAnimation()
                 holder.productsLoader.visibility = View.GONE

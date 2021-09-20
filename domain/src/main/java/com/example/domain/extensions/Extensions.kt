@@ -1,4 +1,4 @@
-package com.example.data.extensions
+package com.example.domain.extensions
 
 /**
  * Converts string from slug to string

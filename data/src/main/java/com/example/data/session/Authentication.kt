@@ -1,11 +1,10 @@
-package com.example.data.usecases
+package com.example.data.session
 
 import android.content.Context
 import android.database.sqlite.SQLiteException
 import android.util.Log
 import com.example.data.roomdb.DatabaseContract
 import com.example.data.roomdb.entities.User
-import com.example.data.session.SessionManager
 
 /**
  * Class contains helper methods for user authentication
@@ -48,7 +47,7 @@ class Authentication(context: Context) {
      */
     suspend fun userSignup(email: String, password: String, username: String): User? {
         val insertUser = User(username = username, password = password, email = email)
-        var returnCode: Long?
+        val returnCode: Long?
         return try {
             returnCode = db.userDao().insert(insertUser)
             Log.d("LoginFragment", "userSignup: user insert return code: $returnCode")

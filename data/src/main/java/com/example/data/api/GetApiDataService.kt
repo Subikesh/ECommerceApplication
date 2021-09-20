@@ -9,7 +9,7 @@ import retrofit2.http.*
 const val AFFILIATE_ID = "amaratasi"
 const val AFFILIATE_TOKEN = "34c929c04f054f20ad7143ac7dad8b26"
 
-interface GetCategoryDataService {
+interface GetApiDataService {
 
     /**
      * Get complete category list

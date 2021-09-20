@@ -9,18 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.api.GetCategoryDataService
-import com.example.data.api.RetrofitInstance
-import com.example.data.api.models.CategoryResult
-import com.example.data.models.Category
-import com.example.data.repository.CategoryMapper
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
-import retrofit2.Call
-import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
@@ -28,15 +21,12 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var categoryList: List<Category>
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -52,44 +42,28 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
-        val call = service?.getCategories()
-
-        // Products card group
         val rvCategories = binding.homeRecyclerView
         val categoryShimmer = binding.categoryLoader
         categoryShimmer.startShimmerAnimation()
 
-        call?.enqueue(object : retrofit2.Callback<CategoryResult> {
-            override fun onResponse(
-                call: Call<CategoryResult>,
-                response: Response<CategoryResult>
-            ) {
-                val categoryObjects = response.body()!!
-                Log.d("API response", "Categories retrieved")
-                Log.d("API response", "Home categories: ${response.raw()}")
-                categoryList = CategoryMapper.fromApiModel(categoryObjects, 20)
-
-                Log.d("API response", "Categories: $categoryList")
-
+        /** Loading all categories to be shown in homepage */
+        viewModel.loadCategories().observe(requireActivity()) { categories ->
+            if (categories != null) {
                 categoryShimmer.stopShimmerAnimation()
                 categoryShimmer.visibility = View.GONE
                 rvCategories.visibility = View.VISIBLE
 
-                val categoryAdapter = HomeCategoryAdapter(categoryList, requireContext())
+                val categoryAdapter = HomeCategoryAdapter(categories, requireContext())
                 rvCategories.initRecyclerView(
                     LinearLayoutManager(requireContext()),
                     categoryAdapter
                 )
-            }
-
-            override fun onFailure(call: Call<CategoryResult>, t: Throwable) {
+            } else {
                 categoryShimmer.visibility = View.GONE
                 Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
                 Log.d("API response", "Category retrieval failed")
-                Log.d("API response", "$t")
             }
-        })
+        }
     }
 
     /**

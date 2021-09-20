@@ -3,13 +3,14 @@ package com.example.data.repository
 import android.util.Log
 import com.example.data.api.models.API_VERSION
 import com.example.data.api.models.CategoryResult
-import com.example.data.models.Category
+import com.example.domain.models.Category
+import com.example.domain.repository.CategoryApiMapper
 
-object CategoryMapper {
-    fun fromApiModel(apiModelList: CategoryResult, categoryCount: Int = 10): List<Category> {
-        val categoryObjects = apiModelList.apiGroups.affiliate.categoryObj
+object CategoryMapper : CategoryApiMapper<CategoryResult> {
+    override fun fromApiModel(apiModel: CategoryResult, itemCount: Int): List<Category> {
+        val categoryObjects = apiModel.apiGroups.affiliate.categoryObj
         val categoryList = mutableListOf<Category>()
-        var totalCategories = categoryCount
+        var totalCategories = itemCount
         for (categoryTitle in categoryObjects.keys) {
             if (totalCategories-- > 0) {
             Log.d("API response", "${categoryObjects[categoryTitle]} Hello")

@@ -1,13 +1,15 @@
 package com.example.ecommerceapplication.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.data.repository.GetCategories
+import com.example.data.usecases.GetProducts
+
 
 class HomeViewModel : ViewModel() {
+    private var categoryApi = GetCategories()
+    private val productsApi = GetProducts()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
+    fun loadCategories() = categoryApi.callApi()
+
+    fun loadProducts(productsUrl: String, itemCount: Int = 10) = productsApi.callApi(productsUrl, itemCount)
 }

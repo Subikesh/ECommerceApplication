@@ -6,16 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.getGlideImage
 import kotlin.math.min
 
 class ProductRecyclerAdapter(
-    private val productList: List<com.example.domain.models.Product>,
+    private val productList: List<Product>,
     val context: Context,
+    private val onItemClicked: (Product) -> Unit,
     private val MAX_PRODUCTS: Int? = null
 ) :
     RecyclerView.Adapter<ProductRecyclerAdapter.ViewHolder>() {
@@ -29,7 +32,9 @@ class ProductRecyclerAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.product_card, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view) {
+            onItemClicked(productList[it])
+        }
     }
 
     /**
@@ -67,11 +72,17 @@ class ProductRecyclerAdapter(
     /**
      * Class contains all child views of a product card
      */
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, onItemClick: (Int) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val productImage: ImageView = itemView.findViewById(R.id.product_image)
         val productTitle: TextView = itemView.findViewById(R.id.product_title)
         val productMrp: TextView = itemView.findViewById(R.id.product_strike_price)
         val productPrice: TextView = itemView.findViewById(R.id.product_price)
         val discount: TextView = itemView.findViewById(R.id.discount_text)
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick(absoluteAdapterPosition)
+            }
+        }
     }
 }

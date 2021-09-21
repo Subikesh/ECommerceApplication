@@ -1,5 +1,7 @@
 package com.example.domain.models
 
+import java.io.Serializable
+
 data class Product(
     val productId: String,
     val title: String,
@@ -15,7 +17,7 @@ data class Product(
     // TODO: get the specification list(table) in some other class (general and dimensions)
     val specifications: Array<String>? = null,
     val remarks: String? = null
-) {
+) : Serializable {
     val discountPercent: Double
         get() =
             (maximumRetailPrice.value - discountPrice.value) * 100 / maximumRetailPrice.value

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -12,10 +13,12 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.api.GetCategoryDataService
+import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
 import com.example.data.repository.ProductMapper
+import com.example.domain.models.Category
+import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -28,8 +31,11 @@ import retrofit2.Response
  * This RecyclerView contains another recycler view for horizontal product cards scroller
  * @param categoryList List of strings showing the category title
  */
-class HomeCategoryAdapter(private val categoryList: List<com.example.domain.models.Category>, val context: Context) :
-    RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
+class HomeCategoryAdapter(
+    private val categoryList: List<Category>,
+    val context: Context,
+    val onItemClicked: (Product) -> Unit
+) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
     /**
      * Inflate the single category UI
@@ -46,11 +52,11 @@ class HomeCategoryAdapter(private val categoryList: List<com.example.domain.mode
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currCategory = categoryList[position]
         holder.textView.text = currCategory.categoryTitle
-        holder.categoryId = currCategory.categoryId
+        holder.category = currCategory
         holder.productsUrl = currCategory.productsUrl
 
         holder.productsLoader.startShimmerAnimation()
-        val service = RetrofitInstance.retrofitInstance?.create(GetCategoryDataService::class.java)
+        val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
         val call = service?.getProductsList(currCategory.productsUrl)
         var productList: ProductsList
 
@@ -67,7 +73,7 @@ class HomeCategoryAdapter(private val categoryList: List<com.example.domain.mode
 
                 holder.productsView.initRecyclerView(
                     LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                    ProductRecyclerAdapter(productObjects, context)
+                    ProductRecyclerAdapter(productObjects, context, onItemClicked)
                 )
             }
 
@@ -90,18 +96,14 @@ class HomeCategoryAdapter(private val categoryList: List<com.example.domain.mode
         val textView: TextView = view.findViewById(R.id.category_row_title)
         private val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
         val productsView: RecyclerView = view.findViewById(R.id.child_products_rv)
-        lateinit var categoryId: String
+        lateinit var category: Category
         lateinit var productsUrl: String
 
         init {
             // On click of show all button for each category, It redirects to page showing
             // all products of that category.
             showAllButton.setOnClickListener {
-                val bundle = bundleOf(
-                    CATEGORY_TITLE to textView.text,
-                    CATEGORY_ID to categoryId,
-                    "productsUrl" to productsUrl
-                )
+                val bundle = bundleOf(CATEGORY_OBJECT to category)
                 view.findNavController()
                     .navigate(R.id.action_navigation_home_to_categoryFragment, bundle)
             }

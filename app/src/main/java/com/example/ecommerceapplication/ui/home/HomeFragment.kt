@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerceapplication.MainActivity
+import com.example.ecommerceapplication.PRODUCT_OBJECT
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
@@ -53,7 +55,10 @@ class HomeFragment : Fragment() {
                 categoryShimmer.visibility = View.GONE
                 rvCategories.visibility = View.VISIBLE
 
-                val categoryAdapter = HomeCategoryAdapter(categories, requireContext())
+                val categoryAdapter = HomeCategoryAdapter(categories, requireContext()) { product ->
+                    val bundle = bundleOf(PRODUCT_OBJECT to product)
+                    findNavController().navigate(R.id.action_navigation_home_to_productFragment, bundle)
+                }
                 rvCategories.initRecyclerView(
                     LinearLayoutManager(requireContext()),
                     categoryAdapter

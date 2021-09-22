@@ -1,10 +1,11 @@
-package com.example.data.repository
+package com.example.data.usecases
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.CategoryResult
+import com.example.data.repository.CategoryMapper
 import com.example.domain.models.Category
 import retrofit2.Call
 import retrofit2.Response

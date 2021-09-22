@@ -1,4 +1,4 @@
-package com.example.ecommerceapplication
+package com.example.ecommerceapplication.ui.product
 
 import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
@@ -7,7 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.Toast
 import com.example.domain.models.Product
+import com.example.ecommerceapplication.MainActivity
+import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProductBinding
 import com.example.ecommerceapplication.extensions.getGlideImage
 
@@ -34,6 +38,7 @@ class ProductFragment : Fragment() {
         _binding = FragmentProductBinding.inflate(inflater, container, false)
 
         productObj = arguments?.get(PRODUCT_OBJECT) as Product
+        viewModel.setProduct(productObj)
 
         // Toolbar
         val toolbar = binding.productToolbar.root
@@ -73,6 +78,18 @@ class ProductFragment : Fragment() {
         // Show Out of stock text or not
         if (!productObj.inStock) {
             binding.outOfStock.visibility = View.GONE
+        }
+
+        /** Implementing on click functionalities */
+        binding.wishlistProduct.setOnClickListener {
+            if (viewModel.wishlistProduct()) {
+                Toast.makeText(context, "Product added to your wishlist", Toast.LENGTH_SHORT)
+                    .show()
+                (it as ImageButton).setImageResource(R.drawable.heart_filled_24)
+            } else {
+                Toast.makeText(context, "Product removed from your wishlist", Toast.LENGTH_SHORT).show()
+                (it as ImageButton).setImageResource(R.drawable.heart_blank_24)
+            }
         }
     }
 

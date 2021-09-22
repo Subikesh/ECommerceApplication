@@ -1,7 +1,7 @@
 package com.example.ecommerceapplication.ui.home
 
 import androidx.lifecycle.ViewModel
-import com.example.data.repository.GetCategories
+import com.example.data.usecases.GetCategories
 import com.example.data.usecases.GetProducts
 
 

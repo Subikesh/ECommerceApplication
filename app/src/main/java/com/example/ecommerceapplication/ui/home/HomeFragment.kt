@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerceapplication.MainActivity
-import com.example.ecommerceapplication.PRODUCT_OBJECT
+import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         categoryShimmer.startShimmerAnimation()
 
         /** Loading all categories to be shown in homepage */
-        viewModel.loadCategories().observe(requireActivity()) { categories ->
+        viewModel.loadCategories().observe(viewLifecycleOwner) { categories ->
             if (categories != null) {
                 categoryShimmer.stopShimmerAnimation()
                 categoryShimmer.visibility = View.GONE

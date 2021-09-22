@@ -26,7 +26,6 @@ class GetProducts {
             ) {
                 val categoryObjects = response.body()!!
                 Log.d("API response", "Products retrieved")
-                Log.d("API response", "Products are: ${response.raw()}")
                 productsList = ProductMapper.fromApiModel(categoryObjects, itemCount)
                 allProducts.value = productsList
             }

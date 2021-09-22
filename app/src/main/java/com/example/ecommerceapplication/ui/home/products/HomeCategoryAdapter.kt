@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
-import com.example.data.repository.ProductMapper
+import com.example.data.repository.ProductApiMapper
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
@@ -67,7 +66,7 @@ class HomeCategoryAdapter(
                     productList.setCategory(currCategory.categoryId)
                     Log.d("API response", "Products retrieved")
                     Log.d("API response", "${response.raw()}")
-                    val productObjects = ProductMapper.fromApiModel(productList)
+                    val productObjects = ProductApiMapper.fromApiModel(productList)
 
                     holder.productsLoader.stopShimmerAnimation()
                     holder.productsLoader.visibility = View.GONE

@@ -1,12 +1,12 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.api.models.ProductsList
 import com.example.domain.models.Product
 import com.example.domain.models.Price
 import com.example.domain.repository.ProductApiMapper
 
-object ProductMapper : ProductApiMapper<ProductsList> {
+object ProductApiMapper :
+    ProductApiMapper<ProductsList> {
     /**
      * Retrieves itemCount number of products from api model
      * @param apiModel Model returned from api call

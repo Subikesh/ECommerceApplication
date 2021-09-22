@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.CategoryResult
-import com.example.data.repository.CategoryMapper
+import com.example.data.repository.CategoryApiMapper
 import com.example.domain.models.Category
 import retrofit2.Call
 import retrofit2.Response
@@ -26,7 +26,7 @@ class GetCategories {
                 val categoryObjects = response.body()!!
                 Log.d("API response", "Categories retrieved")
                 Log.d("API response", "Home categories: ${response.raw()}")
-                categoryList = CategoryMapper.fromApiModel(categoryObjects)
+                categoryList = CategoryApiMapper.fromApiModel(categoryObjects)
                 allCategories.value = categoryList
             }
 

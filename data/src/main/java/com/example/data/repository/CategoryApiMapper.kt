@@ -1,12 +1,12 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.api.models.API_VERSION
 import com.example.data.api.models.CategoryResult
 import com.example.domain.models.Category
 import com.example.domain.repository.CategoryApiMapper
 
-object CategoryMapper : CategoryApiMapper<CategoryResult> {
+object CategoryApiMapper :
+    CategoryApiMapper<CategoryResult> {
     override fun fromApiModel(apiModel: CategoryResult, itemCount: Int): List<Category> {
         val categoryObjects = apiModel.apiGroups.affiliate.categoryObj
         val categoryList = mutableListOf<Category>()

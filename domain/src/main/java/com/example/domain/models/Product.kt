@@ -12,11 +12,10 @@ data class Product(
     val discountPrice: Price,
     val description: String,
     val brand: String?,
-    // Set this as false if product not in stock
     val codAvailable: Boolean = true,
     val productUrl: String? = null,
+    // Set this as false if product not in stock
     val inStock: Boolean = true,
-    // TODO: get the specification list(table) in some other class (general and dimensions)
     val specifications: Array<String>? = null,
     val remarks: String? = null
 ) : Serializable {

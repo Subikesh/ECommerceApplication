@@ -12,8 +12,8 @@
             android:title="@string/title_user" />
 
     <item
-            android:id="@+id/navigation_settings"
-            android:icon="@drawable/ic_baseline_view_headline_black_24"
-            android:title="@string/title_settings" />
+            android:id="@+id/navigation_cart"
+            android:icon="@drawable/ic_baseline_shopping_cart_24"
+            android:title="@string/title_cart" />
 
 </menu>

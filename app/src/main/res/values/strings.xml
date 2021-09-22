@@ -2,7 +2,7 @@
     <string name="app_name">ECommerce Application</string>
     <string name="title_home">Home</string>
     <string name="title_user">User</string>
-    <string name="title_settings">Settings</string>
+    <string name="title_cart">Your Cart</string>
     <string name="title_filter">Filters</string>
     <string name="category">Category</string>
     <string name="price">Price</string>

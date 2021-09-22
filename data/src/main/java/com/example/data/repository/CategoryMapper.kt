@@ -13,14 +13,8 @@ object CategoryMapper : CategoryApiMapper<CategoryResult> {
         var totalCategories = itemCount
         for (categoryTitle in categoryObjects.keys) {
             if (totalCategories-- > 0) {
-            Log.d("API response", "${categoryObjects[categoryTitle]} Hello")
                 categoryObjects[categoryTitle]?.versions?.get(API_VERSION)?.let {
-                    val cat = Category(
-                        it.categoryId,
-                        it.title,
-                        it.productsUrl
-                    )
-                    Log.d("API response", "Category $totalCategories : $cat")
+                    val cat = Category(it.categoryId, it.title, it.productsUrl)
                     categoryList.add(cat)
                 }
             } else break

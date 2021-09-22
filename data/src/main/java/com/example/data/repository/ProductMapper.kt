@@ -15,6 +15,7 @@ object ProductMapper : ProductApiMapper<ProductsList> {
                     product.productBaseInfo.productId,
                     product.productBaseInfo.title,
                     product.productBaseInfo.imageUrls.`200x200`,
+                    product.productBaseInfo.imageUrls.`400x400`,
                     Price(
                         product.productBaseInfo.maximumRetailPrice.amount,
                         product.productBaseInfo.maximumRetailPrice.currency

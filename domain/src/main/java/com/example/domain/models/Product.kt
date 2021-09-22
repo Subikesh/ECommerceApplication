@@ -5,6 +5,7 @@ import java.io.Serializable
 data class Product(
     val productId: String,
     val title: String,
+    val categoryId: String,
     val imageUrl: String,
     val bigImageUrl: String,
     val maximumRetailPrice: Price,

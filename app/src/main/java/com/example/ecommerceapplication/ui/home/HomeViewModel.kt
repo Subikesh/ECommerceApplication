@@ -11,5 +11,5 @@ class HomeViewModel : ViewModel() {
 
     fun loadCategories() = categoryApi.callApi()
 
-    fun loadProducts(productsUrl: String, itemCount: Int = 10) = productsApi.callApi(productsUrl, itemCount)
+    fun loadProducts(productsUrl: String, categoryId: String, itemCount: Int = 10) = productsApi.callApi(productsUrl, categoryId, itemCount)
 }

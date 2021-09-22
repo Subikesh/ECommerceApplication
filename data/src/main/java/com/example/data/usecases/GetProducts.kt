@@ -15,7 +15,7 @@ class GetProducts {
     private val allProducts: MutableLiveData<List<Product>> = MutableLiveData()
     private var productsList: List<Product> = listOf()
 
-    fun callApi(productUrl: String, itemCount: Int): MutableLiveData<List<Product>> {
+    fun callApi(productUrl: String, categoryId: String, itemCount: Int): MutableLiveData<List<Product>> {
         val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
         val call = service?.getProductsList(productUrl)
 
@@ -24,9 +24,10 @@ class GetProducts {
                 call: Call<ProductsList>,
                 response: Response<ProductsList>
             ) {
-                val categoryObjects = response.body()!!
+                val productLists = response.body()!!
+                productLists.setCategory(categoryId)
                 Log.d("API response", "Products retrieved")
-                productsList = ProductMapper.fromApiModel(categoryObjects, itemCount)
+                productsList = ProductMapper.fromApiModel(productLists, itemCount)
                 allProducts.value = productsList
             }
 

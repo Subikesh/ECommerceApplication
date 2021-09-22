@@ -62,7 +62,7 @@ class CategoryFragment : Fragment() {
         val productsLoader = binding.categoryProductsLoader
         productsLoader.startShimmerAnimation()
 
-        viewModel.loadProducts(productsUrl, PRODUCTS_COUNT)
+        viewModel.loadProducts(productsUrl,categoryObj.categoryId, PRODUCTS_COUNT)
             .observe(viewLifecycleOwner) { products ->
                 if (products != null) {
                     productsLoader.stopShimmerAnimation()

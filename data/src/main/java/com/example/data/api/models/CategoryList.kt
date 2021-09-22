@@ -27,12 +27,14 @@ data class CategoryDetails(
     @SerializedName("resourceName") @Expose val title: String,
     @SerializedName("get") @Expose val productsUrl: String
 ) {
-    val categoryId: String get() = getIdFromProductUrl(productsUrl)
+    val categoryId: String get() = getIdFromProductUrl()
 
-    companion object {
-        fun getIdFromProductUrl(productsUrl: String): String {
-            val regex = """.*/category/([A-Za-z\-])\.json.*""".toRegex()
-            return regex.find(productsUrl).toString()
-        }
+    /**
+     * Finds the category id from productsUrl which will be of form ../category-id.json/ using regex
+     * @return category id retrieved from product url
+     */
+    private fun getIdFromProductUrl(): String {
+        val regex = """/category/([A-Za-z0-9\-]+)\.json""".toRegex()
+        return regex.find(productsUrl)?.groupValues?.get(1).toString()
     }
 }

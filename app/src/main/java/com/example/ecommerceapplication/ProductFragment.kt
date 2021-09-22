@@ -1,5 +1,6 @@
 package com.example.ecommerceapplication
 
+import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.databinding.FragmentProductBinding
+import com.example.ecommerceapplication.extensions.getGlideImage
 
 const val PRODUCT_OBJECT = "productObject"
 
@@ -35,10 +37,8 @@ class ProductFragment : Fragment() {
 
         // Toolbar
         val toolbar = binding.productToolbar.root
-        toolbar.title = productObj.title
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
 
         return binding.root
     }
@@ -46,6 +46,33 @@ class ProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /** Binding all views to corresponding product detail */
+        binding.singleProductImage.getGlideImage(requireActivity(), productObj.imageUrl)
+        binding.singleProductTitle.text = productObj.title
+        binding.productBrand.text = productObj.brand
+        binding.discountText.text = getString(R.string.discount, productObj.discountPercent.toInt())
+        binding.singleProductMrp.paintFlags = binding.singleProductMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        binding.singleProductMrp.text = getString(R.string.price_holder, productObj.maximumRetailPrice.value)
+        binding.productOfferPrice.text = getString(R.string.price_holder, productObj.discountPrice.value)
+
+        // Only show discount red icon if there is > 20% discount
+        if (productObj.discountPercent < 20)
+            binding.discountText.visibility = View.GONE
+        else
+            binding.discountText.text = getString(R.string.discount, productObj.discountPercent.toInt())
+
+        // Show product description or not
+        if (productObj.description.isNotEmpty()) {
+            binding.descriptionText.text = productObj.description
+        } else {
+            binding.description.visibility = View.GONE
+            binding.descriptionText.visibility = View.GONE
+        }
+
+        // Show Out of stock text or not
+        if (!productObj.inStock) {
+            binding.outOfStock.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

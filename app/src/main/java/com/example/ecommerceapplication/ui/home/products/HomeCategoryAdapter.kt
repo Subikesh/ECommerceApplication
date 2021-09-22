@@ -62,26 +62,29 @@ class HomeCategoryAdapter(
 
         call?.enqueue(object : Callback<ProductsList?> {
             override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
-                productList = response.body()!!
-                Log.d("API response", "Products retrieved")
-                Log.d("API response", "${response.raw()}")
-                val productObjects = ProductMapper.fromApiModel(productList)
+                if (response.body() != null) {
+                    productList = response.body()!!
+                    Log.d("API response", "Products retrieved")
+                    Log.d("API response", "${response.raw()}")
+                    val productObjects = ProductMapper.fromApiModel(productList)
 
-                holder.productsLoader.stopShimmerAnimation()
-                holder.productsLoader.visibility = View.GONE
-                holder.productsView.visibility = View.VISIBLE
+                    holder.productsLoader.stopShimmerAnimation()
+                    holder.productsLoader.visibility = View.GONE
+                    holder.productsView.visibility = View.VISIBLE
 
-                holder.productsView.initRecyclerView(
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                    ProductRecyclerAdapter(productObjects, context, onItemClicked)
-                )
+                    holder.productsView.initRecyclerView(
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+                        ProductRecyclerAdapter(productObjects, context, onItemClicked)
+                    )
+                } else {
+                    Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
                 holder.productsLoader.visibility = View.GONE
-                Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
-                Log.d("API response", "Product retrieval failed")
-                Log.d("API response", "$t")
+                Toast.makeText(context, "Product retrieval failed", Toast.LENGTH_SHORT).show()
+                Log.d("API response", "Failed products retrieval: $t")
             }
         })
     }

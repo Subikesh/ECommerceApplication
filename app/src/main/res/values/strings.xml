@@ -31,10 +31,18 @@
     <string name="profile_orders">Your Orders</string>
     <string name="logout">Logout</string>
 
+    <!-- Single Product page-->
+    <string name="description">Description</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="buy_now">Buy now</string>
+    <string name="add_to_cart">Add to Cart</string>
+
     <!-- Home fragment: Product cards -->
     <string name="show_all">Show all</string>
 
     <!-- General strings -->
+    <string name="discount">%1$d%% Off</string>
+    <string name="price_holder">₹%1$.2f</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sample_string">Sample String</string>
     <string name="to">to</string>

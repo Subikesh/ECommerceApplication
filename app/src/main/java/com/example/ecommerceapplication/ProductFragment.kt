@@ -37,6 +37,7 @@ class ProductFragment : Fragment() {
 
         // Toolbar
         val toolbar = binding.productToolbar.root
+        toolbar.title = ""
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -47,7 +48,7 @@ class ProductFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         /** Binding all views to corresponding product detail */
-        binding.singleProductImage.getGlideImage(requireActivity(), productObj.imageUrl)
+        binding.singleProductImage.getGlideImage(requireActivity(), productObj.bigImageUrl)
         binding.singleProductTitle.text = productObj.title
         binding.productBrand.text = productObj.brand
         binding.discountText.text = getString(R.string.discount, productObj.discountPercent.toInt())

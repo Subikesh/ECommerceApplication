@@ -1,5 +1,6 @@
 package com.example.data.api.models
 
+import com.example.domain.models.Price
 import com.google.gson.annotations.SerializedName
 
 data class ProductResult(
@@ -41,11 +42,6 @@ data class ProductShippingInfo(
     val sellerNoOfRatings: Int,
     val sellerNoOfReviews: Int,
     val shippingCharges: Price
-)
-
-data class Price(
-    val amount: Double,
-    val currency: String
 )
 
 data class ImageUrls(

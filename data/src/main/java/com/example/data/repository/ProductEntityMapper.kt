@@ -1,9 +1,7 @@
 package com.example.data.repository
 
-import com.example.data.roomdb.entities.Category
 import com.example.data.roomdb.entities.Product
 import com.example.domain.models.Price
-import com.example.domain.repository.CategoryEntityMapper
 import com.example.domain.repository.ProductEntityMapper
 
 object ProductEntityMapperImpl : ProductEntityMapper<Product> {
@@ -13,47 +11,29 @@ object ProductEntityMapperImpl : ProductEntityMapper<Product> {
         entity.categoryId,
         entity.imageUrl,
         entity.bigImageUrl,
-        entity.maximumRetailPrice,
-        entity.discountPrice,
+        Price(entity.maximumRetailPrice, entity.currency),
+        Price(entity.discountPrice, entity.currency),
         entity.description,
         entity.brand,
         entity.codAvailable,
         entity.productUrl,
-        entity.inStock,
-        entity.specifications,
-        entity.remarks
+        entity.inStock
     )
 
-    override fun toEntity(product: com.example.domain.models.Product) = Product(
-        product.productId,
-        product.title,
-        product.categoryId,
-        product.imageUrl,
-        product.bigImageUrl,
-        product.maximumRetailPrice,
-        product.discountPrice,
-        product.description,
-        product.brand,
-        product.codAvailable,
-        product.productUrl,
-        product.inStock,
-        product.discountPercent,
-        product.specifications,
-        product.remarks
-    )
-}
-
-object CategoryEntityMapperImpl : CategoryEntityMapper<Category> {
-    override fun fromEntity(entity: Category) = com.example.domain.models.Category(
-        entity.categoryId,
-        entity.title_slug,
-        entity.productsUrl
-    )
-
-    override fun toEntity(category: com.example.domain.models.Category) = Category(
-        category.categoryId,
-        category.title_slug,
-        category.categoryTitle,
-        category.productsUrl,
+    override fun toEntity(model: com.example.domain.models.Product) = Product(
+        model.productId,
+        model.title,
+        model.categoryId,
+        model.imageUrl,
+        model.bigImageUrl,
+        model.maximumRetailPrice.amount,
+        model.discountPrice.amount,
+        model.maximumRetailPrice.currency,
+        model.description,
+        model.brand,
+        model.codAvailable,
+        model.productUrl,
+        model.inStock,
+        model.discountPercent
     )
 }

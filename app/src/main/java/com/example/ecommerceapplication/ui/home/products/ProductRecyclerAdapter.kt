@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -52,13 +53,16 @@ class ProductRecyclerAdapter(
 
         // Set maximum retail price as strike text
         holder.productMrp.paintFlags = holder.productMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        holder.productMrp.text = context.getString(R.string.price_holder, currProduct.maximumRetailPrice.value)
-        holder.productPrice.text = context.getString(R.string.price_holder, currProduct.discountPrice.value)
+        holder.productMrp.text = context.getString(R.string.price_holder, currProduct.maximumRetailPrice.amount)
+        holder.productPrice.text = context.getString(R.string.price_holder, currProduct.discountPrice.amount)
 
-        if (currProduct.discountPercent < 20)
+        if (currProduct.discountPercent < 20) {
             holder.discount.visibility = GONE
-        else
-            holder.discount.text = context.getString(R.string.discount, currProduct.discountPercent.toInt())
+        } else {
+            holder.discount.visibility = VISIBLE
+            holder.discount.text =
+                context.getString(R.string.discount, currProduct.discountPercent.toInt())
+        }
     }
 
     /**

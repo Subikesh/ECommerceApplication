@@ -21,7 +21,7 @@ data class Product(
 ) : Serializable {
     val discountPercent: Double
         get() =
-            (maximumRetailPrice.value - discountPrice.value) * 100 / maximumRetailPrice.value
+            (maximumRetailPrice.amount - discountPrice.amount) * 100 / maximumRetailPrice.amount
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

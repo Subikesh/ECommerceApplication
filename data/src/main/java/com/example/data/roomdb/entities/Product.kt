@@ -2,7 +2,6 @@ package com.example.data.roomdb.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.domain.models.Price
 
 @Entity
 data class Product(
@@ -11,8 +10,9 @@ data class Product(
     val categoryId: String,
     val imageUrl: String,
     val bigImageUrl: String,
-    val maximumRetailPrice: Price,
-    val discountPrice: Price,
+    val maximumRetailPrice: Double,
+    val discountPrice: Double,
+    val currency: String,
     val description: String,
     val brand: String?,
     val codAvailable: Boolean = true,
@@ -20,8 +20,6 @@ data class Product(
     val inStock: Boolean = true,
     val discountPercent: Double,
     // TODO: get the specification list(table) in some other entity (general and dimensions)
-    val specifications: Array<String>? = null,
-    val remarks: String? = null
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

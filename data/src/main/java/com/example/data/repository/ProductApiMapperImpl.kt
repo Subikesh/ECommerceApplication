@@ -25,14 +25,8 @@ object ProductApiMapper :
                     categoryId,
                     product.productBaseInfo.imageUrls.`200x200`,
                     product.productBaseInfo.imageUrls.`400x400`,
-                    Price(
-                        product.productBaseInfo.maximumRetailPrice.amount,
-                        product.productBaseInfo.maximumRetailPrice.currency
-                    ),
-                    Price(
-                        product.productBaseInfo.flipkartSpecialPrice.amount,
-                        product.productBaseInfo.flipkartSpecialPrice.currency
-                    ),
+                    product.productBaseInfo.maximumRetailPrice,
+                    product.productBaseInfo.flipkartSpecialPrice,
                     product.productBaseInfo.productDescription,
                     product.productBaseInfo.productBrand,
                     product.productBaseInfo.codAvailable,

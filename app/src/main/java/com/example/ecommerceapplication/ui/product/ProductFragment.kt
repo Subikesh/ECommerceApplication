@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProductBinding
 import com.example.ecommerceapplication.extensions.getGlideImage
+import kotlinx.coroutines.launch
 
 const val PRODUCT_OBJECT = "productObject"
 
@@ -80,15 +82,23 @@ class ProductFragment : Fragment() {
             binding.outOfStock.visibility = View.GONE
         }
 
+        // Set wishlist as selected if it is already selected
+        lifecycleScope.launch {
+            if (viewModel.inWishlist()) {
+                binding.wishlistProduct.setImageResource(R.drawable.heart_filled_24)
+            }
+        }
+
         /** Implementing on click functionalities */
         binding.wishlistProduct.setOnClickListener {
-            if (viewModel.wishlistProduct()) {
-                Toast.makeText(context, "Product added to your wishlist", Toast.LENGTH_SHORT)
-                    .show()
-                (it as ImageButton).setImageResource(R.drawable.heart_filled_24)
-            } else {
-                Toast.makeText(context, "Product removed from your wishlist", Toast.LENGTH_SHORT).show()
-                (it as ImageButton).setImageResource(R.drawable.heart_blank_24)
+            lifecycleScope.launch {
+                if (viewModel.wishlistProduct()) {
+                    Toast.makeText(context, "Product added to your wishlist", Toast.LENGTH_SHORT)
+                        .show()
+                    (it as ImageButton).setImageResource(R.drawable.heart_filled_24)
+                } else {
+                    (it as ImageButton).setImageResource(R.drawable.heart_blank_24)
+                }
             }
         }
     }

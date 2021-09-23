@@ -54,13 +54,13 @@
             android:id="@+id/loginFragment"
             android:name="com.example.ecommerceapplication.ui.user.LoginFragment"
             android:label="LoginFragment">
-        <action
-                android:id="@+id/action_loginFragment_to_navigation_user"
-                app:destination="@id/navigation_user"
-                app:popUpTo="@id/navigation_home" />
+
         <action
                 android:id="@+id/action_loginFragment_to_signupFragment"
                 app:destination="@id/signupFragment" />
+        <action
+                android:id="@+id/action_loginFragment_to_navigation_home"
+                app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment
@@ -79,9 +79,8 @@
             android:name="com.example.ecommerceapplication.ui.user.SignupFragment"
             android:label="SignupFragment">
         <action
-                android:id="@+id/action_signupFragment_to_navigation_user2"
-                app:destination="@id/navigation_user"
-                app:popUpTo="@id/navigation_home" />
+                android:id="@+id/action_signupFragment_to_navigation_home"
+                app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment

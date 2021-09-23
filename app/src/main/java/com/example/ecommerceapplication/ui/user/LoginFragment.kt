@@ -57,6 +57,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        binding.loginPassword.text.clear()
+    }
+
     private fun loginUser(
         mailText: EditText,
         passText: EditText

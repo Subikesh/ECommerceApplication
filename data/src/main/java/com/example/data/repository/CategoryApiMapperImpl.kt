@@ -5,7 +5,7 @@ import com.example.data.api.models.CategoryResult
 import com.example.domain.models.Category
 import com.example.domain.repository.CategoryApiMapper
 
-object CategoryApiMapper :
+object CategoryApiMapperImpl :
     CategoryApiMapper<CategoryResult> {
     override fun fromApiModel(apiModel: CategoryResult, itemCount: Int): List<Category> {
         val categoryObjects = apiModel.apiGroups.affiliate.categoryObj

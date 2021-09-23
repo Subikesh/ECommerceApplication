@@ -5,8 +5,7 @@ import com.example.domain.models.Product
 import com.example.domain.models.Price
 import com.example.domain.repository.ProductApiMapper
 
-object ProductApiMapper :
-    ProductApiMapper<ProductsList> {
+object ProductApiMapperImpl : ProductApiMapper<ProductsList> {
     /**
      * Retrieves itemCount number of products from api model
      * @param apiModel Model returned from api call

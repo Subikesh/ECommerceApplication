@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
-import com.example.data.repository.ProductApiMapper
+import com.example.data.repository.ProductApiMapperImpl
 import com.example.domain.models.Product
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +27,7 @@ class GetProducts {
                 val productLists = response.body()!!
                 productLists.setCategory(categoryId)
                 Log.d("API response", "Products retrieved")
-                productsList = ProductApiMapper.fromApiModel(productLists, itemCount)
+                productsList = ProductApiMapperImpl.fromApiModel(productLists, itemCount)
                 allProducts.value = productsList
             }
 

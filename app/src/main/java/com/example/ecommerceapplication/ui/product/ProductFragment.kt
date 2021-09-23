@@ -58,8 +58,8 @@ class ProductFragment : Fragment() {
         binding.productBrand.text = productObj.brand
         binding.discountText.text = getString(R.string.discount, productObj.discountPercent.toInt())
         binding.singleProductMrp.paintFlags = binding.singleProductMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        binding.singleProductMrp.text = getString(R.string.price_holder, productObj.maximumRetailPrice.value)
-        binding.productOfferPrice.text = getString(R.string.price_holder, productObj.discountPrice.value)
+        binding.singleProductMrp.text = getString(R.string.price_holder, productObj.maximumRetailPrice.amount)
+        binding.productOfferPrice.text = getString(R.string.price_holder, productObj.discountPrice.amount)
 
         // Only show discount red icon if there is > 20% discount
         if (productObj.discountPercent < 20)

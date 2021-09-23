@@ -8,6 +8,7 @@ interface BaseDao<T> {
     /**
      * Insert single object to table
      * @param obj Object to be inserted
+     * @return success or error code if some conflict occurs
      */
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(obj: T): Long
@@ -15,7 +16,6 @@ interface BaseDao<T> {
     /**
      * Insert list of objects entries
      * @param objects list of objects to be inserted
-     * @return success or error code if some conflict occurs
      */
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAll(vararg objects: T): List<Long>

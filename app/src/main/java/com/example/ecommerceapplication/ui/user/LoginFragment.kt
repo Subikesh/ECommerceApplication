@@ -66,9 +66,9 @@ class LoginFragment : Fragment() {
         if (mailValid && passValid) {
             lifecycleScope.launch {
                 viewModel.loginUser(mailText.text.toString(), passText.text.toString())
-                if (viewModel.user != null)
-                    findNavController().navigate(R.id.action_loginFragment_to_navigation_user)
-                else
+                if (viewModel.user != null) {
+                    findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+                } else
                     Toast.makeText(context, "User credentials incorrect!", Toast.LENGTH_SHORT)
                         .show()
             }

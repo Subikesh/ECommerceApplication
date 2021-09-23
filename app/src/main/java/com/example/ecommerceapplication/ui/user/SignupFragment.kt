@@ -71,7 +71,8 @@ class SignupFragment : Fragment() {
                 )
                 if (created) {
                     if (viewModel.user != null) {
-                        findNavController().navigate(R.id.action_signupFragment_to_navigation_user2)
+                        Toast.makeText(context, "User logged in", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_signupFragment_to_navigation_home)
                     } else {
                         Toast.makeText(context, "User email already exists", Toast.LENGTH_SHORT)
                             .show()

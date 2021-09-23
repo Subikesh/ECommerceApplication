@@ -2,7 +2,7 @@ package com.example.data.session
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.data.roomdb.entities.User
+import com.example.domain.models.User
 import com.google.gson.Gson
 
 /**

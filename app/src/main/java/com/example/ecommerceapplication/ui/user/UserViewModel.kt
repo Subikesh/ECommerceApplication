@@ -2,8 +2,8 @@ package com.example.ecommerceapplication.ui.user
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.data.roomdb.entities.User
-import com.example.data.session.Authentication
+import com.example.domain.models.User
+import com.example.data.usecases.Authentication
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 

@@ -1,10 +1,12 @@
-package com.example.data.session
+package com.example.data.usecases
 
 import android.content.Context
 import android.database.sqlite.SQLiteException
 import android.util.Log
+import com.example.data.repository.UserEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
 import com.example.data.roomdb.entities.User
+import com.example.data.session.SessionManager
 
 /**
  * Class contains helper methods for user authentication
@@ -22,11 +24,14 @@ class Authentication(context: Context) {
      * @param password  User password
      * @return the user entity who is logged in
      */
-    suspend fun userLogin(email: String, password: String): User {
+    suspend fun userLogin(email: String, password: String): com.example.domain.models.User? {
         val user = db.userDao().findLogin(email, password)
-        userLogin(user)
-        Log.i("LoginFragment", "userLogin: $user logged in")
-        return user
+        return if (user != null) {
+            userLogin(user)
+            Log.i("LoginFragment", "userLogin: $user logged in")
+            session.user!!
+        } else
+            null
     }
 
     /**
@@ -35,7 +40,7 @@ class Authentication(context: Context) {
      */
     private fun userLogin(user: User) {
         session.login = true
-        session.user = user
+        session.user = UserEntityMapperImpl.fromEntity(user)
     }
 
     /**
@@ -45,14 +50,14 @@ class Authentication(context: Context) {
      * @param username  user's username
      * @return newly created user if successful, else null
      */
-    suspend fun userSignup(email: String, password: String, username: String): User? {
+    suspend fun userSignup(email: String, password: String, username: String): com.example.domain.models.User? {
         val insertUser = User(username = username, password = password, email = email)
         val returnCode: Long?
         return try {
             returnCode = db.userDao().insert(insertUser)
             Log.d("LoginFragment", "userSignup: user insert return code: $returnCode")
             userLogin(insertUser)
-            insertUser
+            UserEntityMapperImpl.fromEntity(insertUser)
         } catch (e: SQLiteException) {
             null
         }
@@ -62,7 +67,7 @@ class Authentication(context: Context) {
      * Logout current user if user logged in
      * @return logged out user entity. Null if user was not logged in
      */
-    fun userLogout(): User? {
+    fun userLogout(): com.example.domain.models.User? {
         val user = session.user
         session.login = false
         session.user = null

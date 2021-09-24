@@ -42,16 +42,24 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val logoutBtn = binding.logoutButton
         val session = SessionManager(requireActivity())
         val user = session.user
         binding.profileUsername.text = user?.username
         binding.profileEmail.text = user?.email
 
-        logoutBtn.setOnClickListener {
+        binding.profileWishlist.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_wishlistFragment)
+        }
+
+        binding.logoutButton.setOnClickListener {
             viewModel.logoutUser()
             findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

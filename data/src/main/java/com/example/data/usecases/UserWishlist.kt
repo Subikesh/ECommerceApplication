@@ -1,7 +1,6 @@
 package com.example.data.usecases
 
 import android.content.Context
-import android.util.Log
 import com.example.data.repository.ProductEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
 import com.example.data.roomdb.entities.UserProductCrossRef
@@ -14,6 +13,7 @@ class UserWishlist(context: Context) {
 
     /** Add product as wishlist for the user */
     suspend fun addWishlist(user: User, product: Product) {
+        db.productDao().insert(ProductEntityMapperImpl.toEntity(product))
         db.wishlistDao().addWishlist(UserProductCrossRef(user.userId, product.productId))
     }
 
@@ -25,16 +25,14 @@ class UserWishlist(context: Context) {
     suspend fun getWishlist(user: User): List<Product> {
         val products = db.wishlistDao().getWishlist(user.userId).products
 
-        Log.d("Wishlist", "Wishlisted products: ${products})")
         val productModels = mutableListOf<Product>()
         for (product in products) productModels.add(ProductEntityMapperImpl.fromEntity(product))
-        Log.d("Wishlist", productModels.toString())
         return productModels
     }
 
     /** Check if this product is already in user's wishlist */
     suspend fun isInWishlist(user: User, product: Product): Boolean {
         val userProductRef = db.wishlistDao().findWishlist(user.userId, product.productId)
-         return userProductRef != null
+        return userProductRef != null
     }
 }

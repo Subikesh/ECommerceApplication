@@ -2,12 +2,17 @@ package com.example.ecommerceapplication.ui.user
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.data.session.SessionManager
 import com.example.domain.models.User
 import com.example.data.usecases.Authentication
+import com.example.data.usecases.UserWishlist
+import com.example.domain.models.Product
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     private val authentication = Authentication(application)
+    private val session = SessionManager(application)
+    private val userWishlist = UserWishlist(application)
 
     var user: User? = null
         private set
@@ -47,8 +52,13 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         authentication.userLogout()
     }
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is user Fragment"
+    /**
+     * Get the product list saved in wishlist
+     */
+    suspend fun getWishlist(): List<Product>? {
+        var products: List<Product>? = null
+        if (session.user != null)
+            products = userWishlist.getWishlist(session.user!!)
+        return products
     }
-    val text: LiveData<String> = _text
 }

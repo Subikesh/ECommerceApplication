@@ -2,7 +2,7 @@ package com.example.data.roomdb.dao
 
 import androidx.room.*
 import com.example.data.roomdb.entities.UserProductCrossRef
-import com.example.data.roomdb.entities.UserWithProducts
+import com.example.data.roomdb.relations.UserWithProducts
 
 @Dao
 interface WishlistDao {

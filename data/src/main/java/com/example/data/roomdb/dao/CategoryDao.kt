@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.data.roomdb.entities.Category
-import com.example.data.roomdb.entities.CategoryWithProducts
+import com.example.data.roomdb.relations.CategoryWithProducts
 
 @Dao
 interface CategoryDao : BaseDao<Category> {

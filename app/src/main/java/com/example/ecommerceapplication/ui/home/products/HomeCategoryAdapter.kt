@@ -64,8 +64,6 @@ class HomeCategoryAdapter(
                 if (response.body() != null) {
                     productList = response.body()!!
                     productList.setCategory(currCategory.categoryId)
-                    Log.d("API response", "Products retrieved")
-                    Log.d("API response", "${response.raw()}")
                     val productObjects = ProductApiMapperImpl.fromApiModel(productList)
 
                     holder.productsLoader.stopShimmerAnimation()

@@ -55,7 +55,7 @@ class Authentication(context: Context) {
         val returnCode: Long?
         return try {
             returnCode = db.userDao().insert(insertUser)
-            Log.d("LoginFragment", "userSignup: user insert return code: $returnCode")
+            Log.d("LoginFragment", "userSignup: userId: $returnCode created")
             userLogin(insertUser)
             UserEntityMapperImpl.fromEntity(insertUser)
         } catch (e: SQLiteException) {

@@ -40,6 +40,11 @@
     <!-- Home fragment: Product cards -->
     <string name="show_all">Show all</string>
 
+    <!-- Shopping cart -->
+    <string name="save_changes">Save Changes</string>
+    <string name="delete">Delete</string>
+    <string name="total_cost">Total cost</string>
+
     <!-- General strings -->
     <string name="discount">%1$d%% Off</string>
     <string name="price_holder">₹%1$.2f</string>
@@ -47,5 +52,6 @@
     <string name="sample_string">Sample String</string>
     <string name="to">to</string>
     <string name="profile_picture">Profile picture</string>
+    <string name="checkout">Checkout</string>
 
 </resources>

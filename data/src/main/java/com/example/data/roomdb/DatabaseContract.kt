@@ -7,7 +7,7 @@ import androidx.room.Room
  * Database information grouped as object
  */
 object DatabaseContract {
-    const val DATABASE_VERSION = 5
+    const val DATABASE_VERSION = 6
 
     /**
      * Local file name of the database

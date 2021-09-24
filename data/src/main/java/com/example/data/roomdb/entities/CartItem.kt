@@ -1,5 +1,6 @@
 package com.example.data.roomdb.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 
 
@@ -7,5 +8,5 @@ import androidx.room.Entity
 data class CartItem(
     val cartId: Int,
     val productId: String,
-    val quantity: Int = 1
+    @ColumnInfo(defaultValue = "1") var quantity: Int = 1
 )

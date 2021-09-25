@@ -14,22 +14,26 @@ class CartViewModel(context: Application) : AndroidViewModel(context) {
     private val userShoppingCart = UserShoppingCart(context)
 
     suspend fun getCartList(): List<CartItem>? {
-        if (session.login) {
+        return if (session.login) {
             val user = session.user!!
-            return userShoppingCart.getCartItem(user)
+            userShoppingCart.getCartItem(user)
         } else
-            return null
+            null
     }
 
     suspend fun getCartAndProductList(): List<CartItemAndProduct>? {
         val cartList = getCartList()
-        if (cartList != null)
-            return userShoppingCart.getProductsFromCartList(cartList)
-        else return null
+        return if (cartList != null)
+            userShoppingCart.getProductsFromCartList(cartList)
+        else null
     }
 
     fun increaseProductQuantity(cartItem: CartItem, quantity: Int) {
         viewModelScope.launch { userShoppingCart.increaseProductQuantity(cartItem, quantity) }
+    }
+
+    fun updateTotal(cartId: Int, price: Double) {
+        viewModelScope.launch { userShoppingCart.updateCartTotal(cartId, price) }
     }
 
     fun deleteCartItem(cartItem: CartItem) {

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -86,6 +87,26 @@ class ProductFragment : Fragment() {
         lifecycleScope.launch {
             if (viewModel.inWishlist()) {
                 binding.wishlistProduct.setImageResource(R.drawable.heart_filled_24)
+            }
+
+            // Helper function to set UI if item already in cart
+            fun itemInCart() {
+                binding.cartButton.text = getString(R.string.go_to_cart)
+                binding.cartButton.setOnClickListener {
+                    findNavController().navigate(R.id.action_productFragment_to_navigation_cart)
+                }
+            }
+
+            if (viewModel.isInCart()) {
+                itemInCart()
+            } else {
+                binding.cartButton.setOnClickListener {
+                    if (viewModel.addProductToCart()) {
+                        Toast.makeText(context, "Product added to cart", Toast.LENGTH_SHORT).show()
+                        itemInCart()
+                    } else
+                        Toast.makeText(context, "Login to add product to cart", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

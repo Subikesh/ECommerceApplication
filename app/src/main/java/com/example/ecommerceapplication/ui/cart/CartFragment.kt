@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.roomdb.entities.Product
+import com.example.data.repository.ProductEntityMapperImpl
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCartBinding
@@ -30,8 +30,7 @@ class CartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this).get(CartViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
 
         _binding = FragmentCartBinding.inflate(inflater, container, false)
 
@@ -50,14 +49,18 @@ class CartFragment : Fragment() {
         lifecycleScope.launch {
             val rvCart = binding.cartRv
             val cartList = viewModel.getCartAndProductList()
-            if (cartList == null) {
+            if (cartList == null || cartList.isEmpty()) {
                 binding.totalCost.text = getString(R.string.price_holder, 0.0)
-                Toast.makeText(context, "There are no items in your shopping cart", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    context,
+                    "There are no items in your shopping cart",
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             } else {
                 var totalPrice = 0.0
                 for (cart in cartList)
-                    totalPrice += cart.product.discountPrice
+                    totalPrice += cart.product.discountPrice * cart.cartItem.quantity
 
                 binding.totalCost.text = getString(R.string.price_holder, totalPrice)
 
@@ -65,9 +68,9 @@ class CartFragment : Fragment() {
                     cartList.toMutableList(),
                     requireActivity(),
                     onItemClicked = {
-                        val bundle = bundleOf(PRODUCT_OBJECT to it)
+                        val bundle = bundleOf(PRODUCT_OBJECT to ProductEntityMapperImpl.fromEntity(it))
                         findNavController().navigate(
-                            R.id.action_wishlistFragment_to_productFragment,
+                            R.id.action_navigation_cart_to_productFragment,
                             bundle
                         )
                     },
@@ -76,6 +79,13 @@ class CartFragment : Fragment() {
                     },
                     deleteCartItem = {
                         viewModel.deleteCartItem(it)
+                    },
+                    updateTotal = { cartItemList ->
+                        var price = 0.0
+                        for (cartItem in cartItemList)
+                            price += cartItem.product.discountPrice * cartItem.cartItem.quantity
+                        binding.totalCost.text = getString(R.string.price_holder, price)
+                        viewModel.updateTotal(cartItemList[0].cartItem.cartId, price)
                     })
 
                 rvCart.initRecyclerView(LinearLayoutManager(requireActivity()), cartRvAdapter)

@@ -1,17 +1,22 @@
 package com.example.ecommerceapplication.ui.product
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.data.session.SessionManager
+import com.example.data.usecases.UserShoppingCart
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
+import kotlinx.coroutines.launch
 
 class ProductViewModel(val context: Application) : AndroidViewModel(context) {
 
     private lateinit var product: Product
     private val session = SessionManager(context)
     private val userWishlist = UserWishlist(context)
+    private val userShoppingCart = UserShoppingCart(context)
 
     internal fun setProduct(_product: Product) {
         product = _product
@@ -38,5 +43,21 @@ class ProductViewModel(val context: Application) : AndroidViewModel(context) {
                 userWishlist.addWishlist(session.user!!, product)
             session.login
         }
+    }
+
+    suspend fun isInCart(): Boolean {
+        return if (session.login) {
+            userShoppingCart.isInCartItem(session.user!!, product)
+        } else
+            false
+    }
+
+    fun addProductToCart(): Boolean {
+        return if (session.login) {
+            viewModelScope.launch {
+                userShoppingCart.addCartItem(session.user!!, product)
+            }
+            true
+        } else false
     }
 }

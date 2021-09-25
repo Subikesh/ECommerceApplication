@@ -1,6 +1,7 @@
 package com.example.data.usecases
 
 import android.content.Context
+import android.util.Log
 import com.example.data.repository.ProductEntityMapperImpl
 import com.example.data.repository.UserEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
@@ -22,10 +23,14 @@ class UserShoppingCart(context: Context) {
     }
 
     /** Get the list of products saved in user's shopping cart */
-    suspend fun getCartItem(_user: User): List<CartItem>? {
+    suspend fun getCartItem(_user: User): List<CartItem> {
         val user = UserEntityMapperImpl.toEntity(_user)
 
-        return db.cartDao().getCartItemsForUser(user.userId)?.cartItems ?: null
+        return db.cartDao().getCartItemsForUser(user.userId).cartItems
+    }
+
+    suspend fun updateCartTotal(cartId: Int, price: Double) {
+        db.cartDao().updateCartPrice(cartId, price)
     }
 
     suspend fun getProductsFromCartList(cartList: List<CartItem>): MutableList<CartItemAndProduct> {

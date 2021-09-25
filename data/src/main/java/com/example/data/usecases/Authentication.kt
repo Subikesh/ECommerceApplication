@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteException
 import android.util.Log
 import com.example.data.repository.UserEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
+import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.roomdb.entities.User
 import com.example.data.session.SessionManager
 
@@ -27,7 +28,7 @@ class Authentication(context: Context) {
     suspend fun userLogin(email: String, password: String): com.example.domain.models.User? {
         val user = db.userDao().findLogin(email, password)
         return if (user != null) {
-            userLogin(user)
+            userLogin(UserEntityMapperImpl.fromEntity(user))
             Log.i("LoginFragment", "userLogin: $user logged in")
             session.user!!
         } else
@@ -38,9 +39,9 @@ class Authentication(context: Context) {
      * Utility function to login with user entity
      * @param user  User entity object to login
      */
-    private fun userLogin(user: User) {
+    private fun userLogin(user: com.example.domain.models.User) {
         session.login = true
-        session.user = UserEntityMapperImpl.fromEntity(user)
+        session.user = user
     }
 
     /**
@@ -52,12 +53,14 @@ class Authentication(context: Context) {
      */
     suspend fun userSignup(email: String, password: String, username: String): com.example.domain.models.User? {
         val insertUser = User(username = username, password = password, email = email)
-        val returnCode: Long?
         return try {
-            returnCode = db.userDao().insert(insertUser)
-            Log.d("LoginFragment", "userSignup: userId: $returnCode created")
-            userLogin(insertUser)
-            UserEntityMapperImpl.fromEntity(insertUser)
+            insertUser.userId = db.userDao().insert(insertUser).toInt()
+            // Creating shopping cart for user
+            db.cartDao().addShoppingCart(ShoppingCart(userId = insertUser.userId))
+            Log.d("LoginFragment", "userSignup: userId: ${insertUser.userId} created")
+            val userObj = UserEntityMapperImpl.fromEntity(insertUser)
+            userLogin(userObj)
+            userObj
         } catch (e: SQLiteException) {
             null
         }

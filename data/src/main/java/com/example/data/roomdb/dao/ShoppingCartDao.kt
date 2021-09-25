@@ -1,5 +1,6 @@
 package com.example.data.roomdb.dao
 
+import android.util.Log
 import androidx.room.*
 import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.Product
@@ -11,7 +12,7 @@ import com.example.data.roomdb.relations.UserAndShoppingCart
 
 @Dao
 abstract class ShoppingCartDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun addCartItem(cart: CartItem): Long
 
     @Insert
@@ -19,8 +20,8 @@ abstract class ShoppingCartDao {
 
     @Insert
     suspend fun addCartItemToUser(user: User, product: Product): Long {
-        val cartId = addShoppingCart(ShoppingCart(userId = user.userId))
-        return addCartItem(CartItem(cartId.toInt(), product.productId))
+        val cartId = getShoppingCart(user.userId)
+        return addCartItem(CartItem(cartId.cart.cartId, product.productId))
     }
 
     @Delete
@@ -55,9 +56,14 @@ abstract class ShoppingCartDao {
     abstract suspend fun getProductFromCartItem(productId: String): CartItemAndProduct
 
     @Transaction
+    @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM shoppingcart, cartitem WHERE shoppingcart.cartId = cartitem.cartId AND shoppingcart.userId = :userId AND cartitem.productId = :productId")
     abstract suspend fun findCartItem(userId: Int, productId: String): ShoppingCartWithCartItems
 
     @Update
     abstract suspend fun increaseProductQuantity(cartItem: CartItem)
+
+    @Query("UPDATE shoppingcart SET total = :price WHERE cartId = :cartId")
+    abstract suspend fun updateCartPrice(cartId: Int, price: Double)
+
 }

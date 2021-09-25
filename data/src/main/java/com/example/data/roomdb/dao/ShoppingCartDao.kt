@@ -18,18 +18,11 @@ abstract class ShoppingCartDao {
     @Insert
     abstract suspend fun addShoppingCart(cart: ShoppingCart): Long
 
+    @Transaction
     @Insert
     suspend fun addCartItemToUser(user: User, product: Product): Long {
         val cartId = getShoppingCart(user.userId)
         return addCartItem(CartItem(cartId.cart.cartId, product.productId))
-    }
-
-    @Delete
-    abstract suspend fun removeCartItem(cart: CartItem)
-
-    @Delete
-    suspend fun removeCartItemForUser(user: User, product: Product) {
-        removeCartItem(CartItem(cartId = getShoppingCart(user.userId).cart.cartId, product.productId))
     }
 
     @Transaction
@@ -40,16 +33,9 @@ abstract class ShoppingCartDao {
     @Query("SELECT * FROM shoppingcart WHERE cartId = :cartId")
     abstract suspend fun getCartItems(cartId: Int): ShoppingCartWithCartItems
 
-    //TODO: If this doesn't work delete this
     @Transaction
     @Query("SELECT * FROM shoppingcart WHERE userId = :userId")
     abstract suspend fun getCartItemsForUser(userId: Int): ShoppingCartWithCartItems
-
-//    @Transaction
-//    suspend fun getCartItemsForUser(userId: Int): List<CartItem> {
-//        val shoppingCart = getShoppingCart(userId)
-//        return getCartItems(shoppingCart.cart.cartId).cartItems
-//    }
 
     @Transaction
     @Query("SELECT * FROM product WHERE productId = :productId")
@@ -60,10 +46,16 @@ abstract class ShoppingCartDao {
     @Query("SELECT * FROM shoppingcart, cartitem WHERE shoppingcart.cartId = cartitem.cartId AND shoppingcart.userId = :userId AND cartitem.productId = :productId")
     abstract suspend fun findCartItem(userId: Int, productId: String): ShoppingCartWithCartItems
 
-    @Update
-    abstract suspend fun increaseProductQuantity(cartItem: CartItem)
-
     @Query("UPDATE shoppingcart SET total = :price WHERE cartId = :cartId")
     abstract suspend fun updateCartPrice(cartId: Int, price: Double)
+
+    @Update
+    abstract suspend fun updateCartItem(cartItem: CartItem)
+
+    @Delete
+    abstract suspend fun deleteCartItem(cart: CartItem)
+
+    @Delete
+    abstract suspend fun deleteShoppingCart(cart: ShoppingCart)
 
 }

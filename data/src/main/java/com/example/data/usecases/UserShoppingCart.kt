@@ -1,7 +1,6 @@
 package com.example.data.usecases
 
 import android.content.Context
-import android.util.Log
 import com.example.data.repository.ProductEntityMapperImpl
 import com.example.data.repository.UserEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
@@ -49,16 +48,10 @@ class UserShoppingCart(context: Context) {
 
     suspend fun increaseProductQuantity(cartItem: CartItem, quantity: Int) {
         cartItem.quantity = quantity
-        db.cartDao().increaseProductQuantity(cartItem)
+        db.cartDao().updateCartItem(cartItem)
     }
 
     suspend fun removeCartItem(cartItem: CartItem) {
-        db.cartDao().removeCartItem(cartItem)
-    }
-
-    suspend fun removeCartItem(_user: User, _product: Product) {
-        val product = ProductEntityMapperImpl.toEntity(_product)
-        val user = UserEntityMapperImpl.toEntity(_user)
-        db.cartDao().removeCartItemForUser(user, product)
+        db.cartDao().deleteCartItem(cartItem)
     }
 }

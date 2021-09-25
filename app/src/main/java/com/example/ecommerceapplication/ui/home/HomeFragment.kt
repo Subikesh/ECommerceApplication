@@ -43,10 +43,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.categoryLoader.startShimmerAnimation()
 
+        loadHomepage()
+    }
+
+    private fun loadHomepage() {
         val rvCategories = binding.homeRecyclerView
         val categoryShimmer = binding.categoryLoader
-        categoryShimmer.startShimmerAnimation()
 
         /** Loading all categories to be shown in homepage */
         viewModel.loadCategories().observe(viewLifecycleOwner) { categories ->
@@ -87,7 +91,7 @@ class HomeFragment : Fragment() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.home_filter -> findNavController().navigate(R.id.action_navigation_home_to_filterFragment)
+            R.id.home_reload -> findNavController().navigate(R.id.action_navigation_home_self)
         }
         return super.onOptionsItemSelected(item)
     }

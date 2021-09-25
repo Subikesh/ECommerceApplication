@@ -10,8 +10,8 @@
             app:showAsAction="ifRoom|collapseActionView" />
 
     <item
-            android:id="@+id/home_filter"
-            android:icon="@drawable/ic_baseline_filter_alt_34"
-            android:title="@string/title_filter"
+            android:id="@+id/home_reload"
+            android:icon="@drawable/ic_baseline_replay_24"
+            android:title="Reload"
             app:showAsAction="ifRoom" />
 </menu>

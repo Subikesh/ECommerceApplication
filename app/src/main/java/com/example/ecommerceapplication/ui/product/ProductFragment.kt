@@ -83,18 +83,18 @@ class ProductFragment : Fragment() {
             binding.outOfStock.visibility = View.GONE
         }
 
+        // Helper function to set UI if item already in cart
+        fun itemInCart() {
+            binding.cartButton.text = getString(R.string.go_to_cart)
+            binding.cartButton.setOnClickListener {
+                findNavController().navigate(R.id.action_productFragment_to_navigation_cart)
+            }
+        }
+
         // Set wishlist as selected if it is already selected
         lifecycleScope.launch {
             if (viewModel.inWishlist()) {
                 binding.wishlistProduct.setImageResource(R.drawable.heart_filled_24)
-            }
-
-            // Helper function to set UI if item already in cart
-            fun itemInCart() {
-                binding.cartButton.text = getString(R.string.go_to_cart)
-                binding.cartButton.setOnClickListener {
-                    findNavController().navigate(R.id.action_productFragment_to_navigation_cart)
-                }
             }
 
             if (viewModel.isInCart()) {
@@ -106,6 +106,13 @@ class ProductFragment : Fragment() {
                         itemInCart()
                     } else
                         Toast.makeText(context, "Login to add product to cart", Toast.LENGTH_SHORT).show()
+                }
+
+                binding.buyNowButton.setOnClickListener {
+                    if (viewModel.buyProduct()) {
+                        Toast.makeText(context, "Buy order successfully executed", Toast.LENGTH_SHORT).show()
+                    } else
+                        Toast.makeText(context, "Login to buy this product", Toast.LENGTH_SHORT).show()
                 }
             }
         }

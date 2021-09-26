@@ -51,6 +51,14 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_wishlistFragment)
         }
 
+        binding.profileCart.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_navigation_cart)
+        }
+
+        binding.profileOrders.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_orderFragment)
+        }
+
         binding.logoutButton.setOnClickListener {
             viewModel.logoutUser()
             findNavController().navigate(R.id.action_profileFragment_to_navigation_user)

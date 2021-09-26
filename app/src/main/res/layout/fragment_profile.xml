@@ -36,6 +36,7 @@
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:gravity="center"
                     android:text="@string/title_user"
+                    android:textColor="@color/black"
                     android:textSize="26sp" />
 
             <TextView
@@ -45,63 +46,50 @@
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:gravity="center"
                     android:text="@string/title_user"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
-            <include layout="@layout/horizontal_ruler"/>
+            <include layout="@layout/horizontal_ruler" />
 
             <Button
                     android:id="@+id/profile_wishlist"
                     style="@style/list_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_wishlist" />
+                    android:text="@string/profile_wishlist"
+                    android:textColor="@color/black" />
 
-            <include layout="@layout/horizontal_ruler"/>
+            <include layout="@layout/horizontal_ruler" />
 
             <Button
-                    android:id="@+id/profile_account"
+                    android:id="@+id/profile_cart"
                     style="@style/list_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_account" />
+                    android:text="@string/title_cart"
+                    android:textColor="@color/black" />
 
-            <include layout="@layout/horizontal_ruler"/>
-
-            <Button
-                    android:id="@+id/profile_address"
-                    style="@style/list_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_address" />
-
-            <include layout="@layout/horizontal_ruler"/>
-
-            <Button
-                    android:id="@+id/profile_payment"
-                    style="@style/list_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_payment" />
-
-            <include layout="@layout/horizontal_ruler"/>
+            <include layout="@layout/horizontal_ruler" />
 
             <Button
                     android:id="@+id/profile_orders"
                     style="@style/list_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/profile_orders" />
+                    android:text="@string/profile_orders"
+                    android:textColor="@color/black" />
 
-            <include layout="@layout/horizontal_ruler"/>
+            <include layout="@layout/horizontal_ruler" />
 
             <Button
                     android:id="@+id/logout_button"
                     style="@style/list_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/logout" />
+                    android:text="@string/logout"
+                    android:textColor="@color/black" />
 
-            <include layout="@layout/horizontal_ruler"/>
+            <include layout="@layout/horizontal_ruler" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

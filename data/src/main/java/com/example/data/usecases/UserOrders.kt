@@ -15,16 +15,23 @@ class UserOrders(context: Context) {
     /** Database object to access database */
     private val db = DatabaseContract.getInstance(context)
 
-    /** Add a new product to user's shopping cart */
-    suspend fun moveCartToOrder(_user: User, _product: Product) {
-        val product = ProductEntityMapperImpl.toEntity(_product)
+    /** Remove user's shopping cart and transferred it to order history */
+    suspend fun moveCartToOrder(_user: User) {
         val user = UserEntityMapperImpl.toEntity(_user)
-        db.productDao().insert(product)
         val cart = db.cartDao().getShoppingCart(user.userId)
         db.cartDao().deleteShoppingCart(cart.cart)
         db.orderDao().addOrder(Order(cart.cart.cartId, user.userId, cart.cart.total))
         // Creating new shopping cart for user
-        db.cartDao().addShoppingCart(ShoppingCart(cart.cart.cartId, user.userId))
+        db.cartDao().addShoppingCart(ShoppingCart(userId = user.userId))
+    }
+
+    /** Add a single product to orders */
+    suspend fun buyProduct(_user: User, _product: Product) {
+        val user = UserEntityMapperImpl.toEntity(_user)
+        val product = ProductEntityMapperImpl.toEntity(_product)
+        db.productDao().insert(product)
+        db.cartDao().addCartItemToUser(user, product)
+        moveCartToOrder(_user)
     }
 
     /** Get the list of products saved in user's shopping cart */
@@ -32,4 +39,6 @@ class UserOrders(context: Context) {
         val user = UserEntityMapperImpl.toEntity(_user)
         return db.orderDao().getOrderCartsForUser(user.userId)
     }
+
+    suspend fun getProduct(productId: String) = db.productDao().getProduct(productId)
 }

@@ -30,18 +30,11 @@ class CartRecyclerAdapter(
     /** Maximum length of product title */
     private val CARD_TITLE_MAXLEN = 70
 
-    /**
-     * Inflates UI for single product card
-     * @return ViewHolder instance of productsRV
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.cart_item, parent, false)
         return ViewHolder(view)
     }
 
-    /**
-     * Sets the text for each products including MRP, offer price, product image, etc.
-     */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currItem = cartProductList[position].cartItem
         val currProduct = cartProductList[position].product
@@ -105,11 +98,6 @@ class CartRecyclerAdapter(
         }
     }
 
-    /**
-     * Maximum count of product cards to be displayed in each category in homepages
-     * If MAX_PRODUCTS is not specified: returns productsList size, else returns min of products' size and MAX_PRODUCTS
-     * @return product count
-     */
     override fun getItemCount() = cartProductList.size
 
     /**

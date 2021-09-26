@@ -37,8 +37,8 @@ class CartFragment : Fragment() {
         // Toolbar
         val toolbar = binding.cartToolbar.root
         toolbar.title = getString(R.string.title_cart)
-        setHasOptionsMenu(true)
         (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
     }
@@ -46,16 +46,24 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val rvCart = binding.cartRv
+
         lifecycleScope.launch {
-            val rvCart = binding.cartRv
             val cartList = viewModel.getCartAndProductList()
+
+            binding.checkoutButton.setOnClickListener {
+                if (cartList != null && cartList.isNotEmpty()) {
+                    viewModel.moveCartToOrder()
+                    findNavController().navigate(R.id.action_navigation_cart_to_orderFragment)
+                } else {
+                    Toast.makeText(context, "Add some items in cart before checking out", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
             if (cartList == null || cartList.isEmpty()) {
                 binding.totalCost.text = getString(R.string.price_holder, 0.0)
-                Toast.makeText(
-                    context,
-                    "There are no items in your shopping cart",
-                    Toast.LENGTH_SHORT
-                )
+                Toast.makeText(context,"There are no items in your shopping cart",Toast.LENGTH_SHORT)
                     .show()
             } else {
                 var totalPrice = 0.0
@@ -68,7 +76,8 @@ class CartFragment : Fragment() {
                     cartList.toMutableList(),
                     requireActivity(),
                     onItemClicked = {
-                        val bundle = bundleOf(PRODUCT_OBJECT to ProductEntityMapperImpl.fromEntity(it))
+                        val bundle =
+                            bundleOf(PRODUCT_OBJECT to ProductEntityMapperImpl.fromEntity(it))
                         findNavController().navigate(
                             R.id.action_navigation_cart_to_productFragment,
                             bundle

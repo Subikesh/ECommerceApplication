@@ -24,6 +24,6 @@ abstract class OrderDao : BaseDao<Order> {
 
     @Transaction
     @RewriteQueriesToDropUnusedColumns
-    @Query("SELECT * FROM `order` AS o, cartitem AS c WHERE o.orderId = c.cartId AND o.userId = :userId")
+    @Query("SELECT * FROM `order` AS o, cartitem AS c WHERE o.orderId = c.cartId AND o.userId = :userId ORDER BY created_at DESC")
     abstract suspend fun getOrderCartsForUser(userId: Int): List<OrderWithCartItems>
 }

@@ -5,7 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -95,7 +95,7 @@ class HomeCategoryAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val productsLoader: ShimmerFrameLayout = view.findViewById(R.id.products_shimmer)
         val textView: TextView = view.findViewById(R.id.category_row_title)
-        private val showAllButton: ImageButton = view.findViewById(R.id.show_all_button)
+        private val categoryTopBar: LinearLayout = view.findViewById(R.id.category_row_topbar)
         val productsView: RecyclerView = view.findViewById(R.id.child_products_rv)
         lateinit var category: Category
         lateinit var productsUrl: String
@@ -103,7 +103,7 @@ class HomeCategoryAdapter(
         init {
             // On click of show all button for each category, It redirects to page showing
             // all products of that category.
-            showAllButton.setOnClickListener {
+            categoryTopBar.setOnClickListener {
                 val bundle = bundleOf(CATEGORY_OBJECT to category)
                 view.findNavController()
                     .navigate(R.id.action_navigation_home_to_categoryFragment, bundle)

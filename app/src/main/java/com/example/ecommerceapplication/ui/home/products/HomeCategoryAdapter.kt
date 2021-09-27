@@ -20,6 +20,7 @@ import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
+import com.example.ecommerceapplication.ui.home.HomeViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,8 +32,9 @@ import retrofit2.Response
  * @param categoryList List of strings showing the category title
  */
 class HomeCategoryAdapter(
-    private val categoryList: List<Category>,
+    private val categoryList: MutableList<Category>,
     val context: Context,
+    private val viewModel: HomeViewModel,
     val onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
@@ -49,7 +51,7 @@ class HomeCategoryAdapter(
      * Sets the text for category title and sets adapter for child product list
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currCategory = categoryList[position]
+        val currCategory = categoryList[holder.absoluteAdapterPosition]
         holder.textView.text = currCategory.categoryTitle
         holder.category = currCategory
         holder.productsUrl = currCategory.productsUrl
@@ -59,35 +61,62 @@ class HomeCategoryAdapter(
         val call = service?.getProductsList(currCategory.productsUrl)
         var productList: ProductsList
 
-        call?.enqueue(object : Callback<ProductsList?> {
-            override fun onResponse(call: Call<ProductsList?>?, response: Response<ProductsList?>) {
-                if (response.body() != null) {
-                    productList = response.body()!!
-                    productList.setCategory(currCategory.categoryId)
-                    val productObjects = ProductApiMapperImpl.fromApiModel(productList)
+        if (viewModel.categoryList?.get(currCategory) != null) {
+            Log.d("APId", "Product from viewModel")
+            initializeProducts(holder, currCategory, holder.absoluteAdapterPosition)
+        } else {
+            Log.d("Calling products", "Products from api")
+            call?.enqueue(object : Callback<ProductsList?> {
+                override fun onResponse(
+                    call: Call<ProductsList?>?,
+                    response: Response<ProductsList?>
+                ) {
+                    if (response.body() != null) {
+                        productList = response.body()!!
+                        productList.setCategory(currCategory.categoryId)
+                        val productObjects = ProductApiMapperImpl.fromApiModel(productList)
 
-                    holder.productsLoader.stopShimmerAnimation()
-                    holder.productsLoader.visibility = View.GONE
-                    holder.productsView.visibility = View.VISIBLE
+                        viewModel.categoryList?.set(currCategory, productObjects)
 
-                    holder.productsView.initRecyclerView(
-                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                        ProductRecyclerAdapter(productObjects, context, onItemClicked)
-                    )
-                } else {
-                    Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT).show()
+                        initializeProducts(holder, currCategory, holder.absoluteAdapterPosition)
+                    } else {
+                        Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
-                holder.productsLoader.visibility = View.GONE
-                Toast.makeText(context, "Product retrieval failed", Toast.LENGTH_SHORT).show()
-                Log.d("API response", "Failed products retrieval: $t")
-            }
-        })
+                override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
+                    holder.productsLoader.visibility = View.GONE
+                    Toast.makeText(context, "Product retrieval failed", Toast.LENGTH_SHORT).show()
+                    Log.d("API response", "Failed products retrieval: $t")
+                }
+            })
+        }
     }
 
-    override fun getItemCount() = categoryList.size
+    fun initializeProducts(holder: ViewHolder, currCategory: Category, position: Int) {
+
+        if (viewModel.categoryList?.get(currCategory).isNullOrEmpty()) {
+            viewModel.categoryList?.remove(currCategory)
+            categoryList.removeAt(position)
+            notifyItemRemoved(position)
+        } else {
+            holder.productsLoader.stopShimmerAnimation()
+            holder.productsLoader.visibility = View.GONE
+            holder.productsView.visibility = View.VISIBLE
+
+            holder.productsView.initRecyclerView(
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
+                ProductRecyclerAdapter(
+                    viewModel.categoryList?.get(currCategory)!!,
+                    context,
+                    onItemClicked
+                )
+            )
+        }
+    }
+
+    override fun getItemCount() = viewModel.categoryList?.size ?: 0
 
     /**
      * ViewHolder for each categoryRV. Contains nested RecyclerView for product cards

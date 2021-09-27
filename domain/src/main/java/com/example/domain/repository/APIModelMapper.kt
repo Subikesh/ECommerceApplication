@@ -9,7 +9,7 @@ import com.example.domain.models.Product
  * @param <U> product model class
  */
 interface APIModelMapper<T, U> {
-    fun fromApiModel(apiModel: T, itemCount: Int = 12): List<U>
+    fun fromApiModel(apiModel: T, itemCount: Int = 15): List<U>
 }
 
 /**

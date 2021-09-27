@@ -49,30 +49,50 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadHomepage() {
-        val rvCategories = binding.homeRecyclerView
         val categoryShimmer = binding.categoryLoader
 
         /** Loading all categories to be shown in homepage */
-        viewModel.loadCategories().observe(viewLifecycleOwner) { categories ->
-            if (categories != null) {
-                categoryShimmer.stopShimmerAnimation()
-                categoryShimmer.visibility = View.GONE
-                rvCategories.visibility = View.VISIBLE
-
-                val categoryAdapter = HomeCategoryAdapter(categories, requireContext()) { product ->
-                    val bundle = bundleOf(PRODUCT_OBJECT to product)
-                    findNavController().navigate(R.id.action_navigation_home_to_productFragment, bundle)
+        if (viewModel.categoryList != null) {
+            initializeCategories()
+        } else {
+            viewModel.loadCategories().observe(viewLifecycleOwner) { categories ->
+                if (categories != null) {
+                    for (category in categories) {
+                        if (viewModel.categoryList != null)
+                            viewModel.categoryList!![category] = null
+                        else
+                            viewModel.categoryList = hashMapOf(category to null)
+                    }
+                    initializeCategories()
+                } else {
+                    categoryShimmer.visibility = View.GONE
+                    Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
+                    Log.d("API response", "Category retrieval failed")
                 }
-                rvCategories.initRecyclerView(
-                    LinearLayoutManager(requireContext()),
-                    categoryAdapter
-                )
-            } else {
-                categoryShimmer.visibility = View.GONE
-                Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
-                Log.d("API response", "Category retrieval failed")
             }
         }
+    }
+
+    private fun initializeCategories() {
+        val rvCategories = binding.homeRecyclerView
+        val categoryShimmer = binding.categoryLoader
+
+        categoryShimmer.stopShimmerAnimation()
+        categoryShimmer.visibility = View.GONE
+        rvCategories.visibility = View.VISIBLE
+
+        val categoryAdapter =
+            HomeCategoryAdapter(viewModel.categoryList!!.keys.toMutableList(), requireContext(), viewModel) { product ->
+                val bundle = bundleOf(PRODUCT_OBJECT to product)
+                findNavController().navigate(
+                    R.id.action_navigation_home_to_productFragment,
+                    bundle
+                )
+            }
+        rvCategories.initRecyclerView(
+            LinearLayoutManager(requireContext()),
+            categoryAdapter
+        )
     }
 
     /**
@@ -91,7 +111,10 @@ class HomeFragment : Fragment() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.home_reload -> findNavController().navigate(R.id.action_navigation_home_self)
+            R.id.home_reload -> {
+                viewModel.categoryList = null
+                findNavController().navigate(R.id.action_navigation_home_self)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

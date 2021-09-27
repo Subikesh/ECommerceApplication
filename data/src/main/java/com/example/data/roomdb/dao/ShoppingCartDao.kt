@@ -25,6 +25,20 @@ abstract class ShoppingCartDao {
         return addCartItem(CartItem(cartId.cart.cartId, product.productId))
     }
 
+    /**
+     * Create new shopping cart with that single product to be added to Order table
+     */
+    @Transaction
+    @Insert
+    suspend fun addNewCartToUser(user:User, product: Product): ShoppingCart {
+        val cart = ShoppingCart(userId = user.userId, total = product.discountPrice)
+        val cartId = addShoppingCart(cart)
+        cart.cartId = cartId.toInt()
+        addCartItem(CartItem(cartId.toInt(), product.productId))
+        deleteShoppingCart(cart)
+        return cart
+    }
+
     @Transaction
     @Query("SELECT * FROM user WHERE userId = :userId")
     abstract suspend fun getShoppingCart(userId: Int): UserAndShoppingCart

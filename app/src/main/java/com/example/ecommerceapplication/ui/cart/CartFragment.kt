@@ -54,6 +54,7 @@ class CartFragment : Fragment() {
             binding.checkoutButton.setOnClickListener {
                 if (cartList != null && cartList.isNotEmpty()) {
                     viewModel.moveCartToOrder()
+                    // TODO: Redirect to payment page before orders (current order doesnt display in order frag)
                     findNavController().navigate(R.id.action_navigation_cart_to_orderFragment)
                 } else {
                     Toast.makeText(context, "Add some items in cart before checking out", Toast.LENGTH_SHORT)

@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.data.repository.ProductEntityMapperImpl
 import com.example.data.repository.UserEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
-import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.Order
 import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.roomdb.relations.OrderWithCartItems
@@ -30,13 +29,12 @@ class UserOrders(context: Context) {
         val user = UserEntityMapperImpl.toEntity(_user)
         val product = ProductEntityMapperImpl.toEntity(_product)
         db.productDao().insert(product)
-        db.cartDao().addCartItemToUser(user, product)
-        moveCartToOrder(_user)
+        val cart = db.cartDao().addNewCartToUser(user, product)
+        db.orderDao().addOrder(Order(cart.cartId, user.userId, cart.total))
     }
 
     /** Get the list of products saved in user's shopping cart */
-    suspend fun getCartItem(_user: User): List<OrderWithCartItems> {
-        val user = UserEntityMapperImpl.toEntity(_user)
+    suspend fun getCartItem(user: User): List<OrderWithCartItems> {
         return db.orderDao().getOrderCartsForUser(user.userId)
     }
 

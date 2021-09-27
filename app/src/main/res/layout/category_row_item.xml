@@ -3,71 +3,95 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="5dp">
+        android:layout_height="wrap_content">
 
-    <TextView
-            android:id="@+id/category_row_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/sample_string"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-            android:id="@+id/show_all_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="Show all products"
-            android:src="@drawable/ic_baseline_arrow_forward_30"
-            app:layout_constraintBottom_toBottomOf="@+id/category_row_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="HardcodedText" />
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/products_shimmer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_row_title">
-
-        <!-- Displaying 3 product card loader-->
-        <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                <include layout="@layout/product_card_shimmer" />
-
-                <include layout="@layout/product_card_shimmer" />
-
-                <include layout="@layout/product_card_shimmer" />
-            </LinearLayout>
-        </HorizontalScrollView>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/child_products_rv"
+    <LinearLayout
+            android:id="@+id/category_row_topbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+                android:id="@+id/category_row_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/sample_string"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        <ImageView
+                android:id="@+id/show_all_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:background="@android:color/transparent"
+                android:contentDescription="Show all products"
+                android:src="@drawable/ic_baseline_arrow_forward_30"
+                tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/category_products_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_row_title"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/category_row_topbar">
 
-    <include layout="@layout/horizontal_ruler" />
+        <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/products_shimmer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Displaying 3 product card loader-->
+            <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                    <include layout="@layout/product_card_shimmer" />
+
+                    <include layout="@layout/product_card_shimmer" />
+
+                    <include layout="@layout/product_card_shimmer" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/child_products_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/roman_silver"
+            app:layout_constraintTop_toBottomOf="@id/category_products_container"
+            tools:layout_editor_absoluteX="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

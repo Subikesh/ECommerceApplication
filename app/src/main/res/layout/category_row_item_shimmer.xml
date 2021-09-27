@@ -4,14 +4,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="5dp">
 
     <TextView
             android:id="@+id/shimmer_cat_title"
             android:layout_width="180dp"
             android:layout_height="30dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@color/grey"
             android:textColor="@color/black"
@@ -22,8 +21,9 @@
             android:id="@+id/show_all_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Wishlist"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:background="@android:color/transparent"
+            android:contentDescription="Wishlist"
             android:src="@drawable/ic_baseline_arrow_forward_30"
             app:layout_constraintBottom_toBottomOf="@+id/shimmer_cat_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +33,8 @@
             android:id="@+id/products_shimmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,5 +52,11 @@
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <include layout="@layout/horizontal_ruler" />
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/roman_silver"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/products_shimmer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

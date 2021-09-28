@@ -53,7 +53,8 @@ class OrderRecyclerAdapter(private val orderList: List<OrderCartItem>, private v
         calendar.timeInMillis = secs
         return "${calendar.get(Calendar.DAY_OF_MONTH)}/" +
                 "${calendar.get(Calendar.MONTH)}/" +
-                "${calendar.get(Calendar.YEAR)}"
+                "${calendar.get(Calendar.YEAR)} " +
+                "${calendar.get(Calendar.HOUR_OF_DAY)}: ${calendar.get(Calendar.MINUTE)}"
     }
 
     override fun getItemCount() = orderList.size

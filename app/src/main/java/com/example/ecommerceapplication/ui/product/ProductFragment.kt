@@ -45,7 +45,7 @@ class ProductFragment : Fragment() {
 
         // Toolbar
         val toolbar = binding.productToolbar.root
-        toolbar.title = ""
+        toolbar.title = productObj.title
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -75,6 +75,7 @@ class ProductFragment : Fragment() {
             binding.descriptionText.text = productObj.description
         } else {
             binding.description.visibility = View.GONE
+            binding.productSeparator.visibility = View.GONE
             binding.descriptionText.visibility = View.GONE
         }
 

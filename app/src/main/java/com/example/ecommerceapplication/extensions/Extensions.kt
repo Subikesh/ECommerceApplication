@@ -33,7 +33,7 @@ fun RecyclerView.initRecyclerView(
  * @param imgUrl    Url of image
  * @param error     Error image to be shown if image not loaded
  */
-fun ImageView.getGlideImage(context: Context, imgUrl: String, error: Int = R.drawable.img_not_loaded1_4x) {
+fun ImageView.getGlideImage(context: Context, imgUrl: String?, error: Int = R.drawable.img_not_loaded1_4x) {
     val circularProgress = getCircularLoader(context)
 
     val requestOptions = RequestOptions().apply {

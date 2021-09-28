@@ -33,7 +33,7 @@ class CategoryFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
 
     /** Get the maximum product count to load at a time */
-    private val PRODUCTS_COUNT = 50
+    private val PRODUCTS_COUNT = 100
     private lateinit var categoryObj: Category
 
     override fun onCreateView(

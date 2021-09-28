@@ -16,7 +16,9 @@ interface APIModelMapper<T, U> {
  * Maps category api model to POJO class
  * @param <T> API model class
  */
-interface CategoryApiMapper<T> : APIModelMapper<T, Category>
+interface CategoryApiMapper<T> : APIModelMapper<T, Category> {
+    fun fromApiModel(apiModel: T, fromItem: Int, toItem: Int): List<Category>
+}
 
 /**
  * Maps product api model to POJO class

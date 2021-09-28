@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         // Setup action bar with nav controller to implement up button in action bar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
 
-        // Hide bottom navigation menu on scroll
+        /*// Hide bottom navigation menu on scroll
         val nestedScroll = binding.nestedScroll
         nestedScroll.setOnScrollChangeListener(
             NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             } else if (verticalScroll < -10) {
                 navView.visibility = View.VISIBLE
             }
-        })
+        })*/
     }
 
     /**

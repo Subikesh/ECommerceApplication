@@ -3,6 +3,7 @@ package com.example.ecommerceapplication.ui.home
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
@@ -10,11 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
+import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
 
 class HomeFragment : Fragment() {
@@ -22,6 +25,13 @@ class HomeFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    var isScrolling = false
+    var scrolledOutItems: Int = 0
+    var currentItemCount: Int = 0
+    var totalItems: Int = 0
+
+    private val COUNT_ON_LOAD_MORE = 10
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,13 +65,13 @@ class HomeFragment : Fragment() {
         if (viewModel.categoryList != null) {
             initializeCategories()
         } else {
-            viewModel.loadCategories().observe(viewLifecycleOwner) { categories ->
+            viewModel.loadCategories().observeOnce(viewLifecycleOwner) { categories ->
                 if (categories != null) {
                     for (category in categories) {
                         if (viewModel.categoryList != null)
-                            viewModel.categoryList!![category] = null
+                            viewModel.categoryList?.add(Pair(category, null))
                         else
-                            viewModel.categoryList = hashMapOf(category to null)
+                            viewModel.categoryList = mutableListOf(Pair(category, null))
                     }
                     initializeCategories()
                 } else {
@@ -82,17 +92,52 @@ class HomeFragment : Fragment() {
         rvCategories.visibility = View.VISIBLE
 
         val categoryAdapter =
-            HomeCategoryAdapter(viewModel.categoryList!!.keys.toMutableList(), requireContext(), viewModel) { product ->
+            HomeCategoryAdapter(requireContext(), viewModel) { product ->
                 val bundle = bundleOf(PRODUCT_OBJECT to product)
                 findNavController().navigate(
                     R.id.action_navigation_home_to_productFragment,
                     bundle
                 )
             }
-        rvCategories.initRecyclerView(
-            LinearLayoutManager(requireContext()),
-            categoryAdapter
-        )
+        val manager = LinearLayoutManager(requireContext())
+        rvCategories.initRecyclerView(manager, categoryAdapter)
+
+        /** Adding load more on scrolling to the bottom of the page */
+        rvCategories.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                    isScrolling = true
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                // Items scrolled away from screen on top
+                scrolledOutItems = manager.findFirstCompletelyVisibleItemPosition()
+                // Items currently shown in screen
+                currentItemCount = manager.childCount
+                // Items loaded by recycler view
+                totalItems = manager.itemCount
+                if (isScrolling && ((currentItemCount + scrolledOutItems) == totalItems) && viewModel.categoryList!!.size <= 57) {
+                    isScrolling = false
+                    binding.rvLoaderProgress.visibility = View.VISIBLE
+
+                    // Fetching api data
+                    viewModel.loadMoreCategories(COUNT_ON_LOAD_MORE).observe(viewLifecycleOwner) { categoryList ->
+                        if (categoryList != null && categoryList.size > totalItems) {
+                            for (category in categoryList.subList(totalItems, categoryList.size)) {
+                                viewModel.categoryList?.add(Pair(category, null))
+                                categoryAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
+                                binding.rvLoaderProgress.visibility = View.INVISIBLE
+                            }
+                        }
+                    }
+                } else if (isScrolling && totalItems == 58)
+                    Toast.makeText(context, "End of category list", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     /**

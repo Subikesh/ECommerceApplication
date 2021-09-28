@@ -54,5 +54,7 @@
     <string name="to">to</string>
     <string name="profile_picture">Profile picture</string>
     <string name="checkout">Checkout</string>
+    <string name="mrp">MRP</string>
+    <string name="today_s_deal">Today\'s Deal</string>
 
 </resources>

@@ -17,6 +17,7 @@ import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.roomdb.entities.ShoppingCart
+import com.example.ecommerceapplication.extensions.initAlertDialog
 import com.example.ecommerceapplication.validators.TextValidators
 import kotlinx.coroutines.launch
 
@@ -73,43 +74,43 @@ class CheckoutFragment : Fragment() {
         })
 
         binding.makePaymentBtn.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(requireActivity())
-            alertDialog.setTitle("Order confirmation")
-            alertDialog.setMessage("Are you sure you want to place the order?")
-            alertDialog.setPositiveButton("YES") { _, _ ->
-                if (validateInputs())
-                    lifecycleScope.launch {
-                        if (buyFromProduct)
-                            viewModel.makeOrder(cart!!)
-                        else
-                            viewModel.moveCartToOrder()
-                        findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
-                    }
+            if (validateInputs()) {
+                val alertDialog = AlertDialog.Builder(requireActivity())
+                alertDialog.initAlertDialog(
+                    "Order confirmation",
+                    "Are you sure you want to place the order?",
+                    { _, _ ->
+                        lifecycleScope.launch {
+                            if (buyFromProduct)
+                                viewModel.makeOrder(cart!!)
+                            else
+                                viewModel.moveCartToOrder()
+                            findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
+                        }
+                    },
+                    { dialog, _ -> dialog.cancel() })
+                alertDialog.show()
             }
-            alertDialog.setNegativeButton("NO") { dialog, which ->
-                dialog.cancel()
-            }
-            alertDialog.show()
         }
 
         binding.failPaymentBtn.setOnClickListener {
-            val alertDialog = AlertDialog.Builder(requireActivity())
-            alertDialog.setTitle("Order confirmation")
-            alertDialog.setMessage("Are you sure you want to place the order?")
-            alertDialog.setPositiveButton("YES") { _, _ ->
-                if (validateInputs())
-                    lifecycleScope.launch {
-                        if (buyFromProduct)
-                            viewModel.makeOrder(cart!!, false)
-                        else
-                            viewModel.moveCartToOrder(false)
-                        findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
-                    }
+            if (validateInputs()) {
+                val alertDialog = AlertDialog.Builder(requireActivity())
+                alertDialog.initAlertDialog(
+                    "Order confirmation",
+                    "Are you sure you want to place the order?",
+                    { _, _ ->
+                        lifecycleScope.launch {
+                            if (buyFromProduct)
+                                viewModel.makeOrder(cart!!, false)
+                            else
+                                viewModel.moveCartToOrder(false)
+                            findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
+                        }
+                    },
+                    { dialog, _ -> dialog.cancel() })
+                alertDialog.show()
             }
-            alertDialog.setNegativeButton("NO") { dialog, _ ->
-                dialog.cancel()
-            }
-            alertDialog.show()
         }
 
         binding.cancelPaymentBtn.setOnClickListener {
@@ -117,7 +118,7 @@ class CheckoutFragment : Fragment() {
         }
     }
 
-    private fun validateInputs() = TextValidators.checkCard(binding.cardInputCheckout) &&
+   private fun validateInputs() = TextValidators.checkCard(binding.cardInputCheckout) &&
             TextValidators.checkEmpty(binding.nameInputCheckout, "Enter card owner name") &&
             TextValidators.checkMonth(binding.expiryMonth) &&
             TextValidators.checkYear(binding.expiryYearCheckout) &&

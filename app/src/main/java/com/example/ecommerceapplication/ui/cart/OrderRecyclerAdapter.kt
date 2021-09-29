@@ -1,12 +1,12 @@
 package com.example.ecommerceapplication.ui.cart
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.roomdb.entities.OrderCartItem
 import com.example.ecommerceapplication.R
@@ -40,10 +40,10 @@ class OrderRecyclerAdapter(private val orderList: List<OrderCartItem>, private v
         holder.orderDate.text = "Ordered: ${getDateFromMillis(currOrder.createdAt)}"
 
         holder.status.text = if (currOrder.isSuccessful) {
-            holder.status.setTextColor(Color.GREEN)
+            holder.status.setTextColor(ContextCompat.getColor(context, R.color.dark_green))
             "Success"
         } else {
-            holder.status.setTextColor(Color.RED)
+            holder.status.setTextColor(ContextCompat.getColor(context, R.color.dark_red))
             "Failed"
         }
     }

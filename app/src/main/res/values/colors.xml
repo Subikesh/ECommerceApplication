@@ -6,6 +6,8 @@
     <color name="gold_crayota">#EEC584</color>
     <color name="maximum_blue_purple">#BCB6FF</color>
     <color name="space_cadet">#2D3047</color>
+    <color name="dark_red">#851414</color>
+    <color name="dark_green">#385203</color>
     <color name="roman_silver">#808A9F</color>
     <color name="design_default_color_primary">@color/space_cadet</color>
     <color name="purple_200">#FFBB86FC</color>

@@ -1,6 +1,8 @@
 package com.example.ecommerceapplication.extensions
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.widget.ImageView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -33,7 +35,11 @@ fun RecyclerView.initRecyclerView(
  * @param imgUrl    Url of image
  * @param error     Error image to be shown if image not loaded
  */
-fun ImageView.getGlideImage(context: Context, imgUrl: String, error: Int = R.drawable.img_not_loaded1_4x) {
+fun ImageView.getGlideImage(
+    context: Context,
+    imgUrl: String,
+    error: Int = R.drawable.img_not_loaded1_4x
+) {
     val circularProgress = getCircularLoader(context)
 
     val requestOptions = RequestOptions().apply {
@@ -45,6 +51,29 @@ fun ImageView.getGlideImage(context: Context, imgUrl: String, error: Int = R.dra
         .setDefaultRequestOptions(requestOptions)
         .load(imgUrl)
         .into(this)
+}
+
+/**
+ * Utility for initializing alert dialog
+ * @param positiveFn function to invoke when positive button is clicked
+ * @param negativeFn function to invoke when negative button is clicked
+ */
+fun AlertDialog.Builder.initAlertDialog(
+    title: String,
+    message: String,
+    positiveFn: (DialogInterface, Int) -> Unit,
+    negativeFn: (dialog: DialogInterface, Int) -> Unit
+) {
+    this.apply {
+        setTitle(title)
+        setMessage(message)
+        setPositiveButton("YES") { dialog, which ->
+            positiveFn(dialog, which)
+        }
+        setNegativeButton("NO") { dialog, which ->
+            negativeFn(dialog, which)
+        }
+    }
 }
 
 /**

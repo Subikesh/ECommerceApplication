@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.cart.CheckoutFragment">
+
+    <Button
+            android:id="@+id/cancel_payment_btn"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/cancel_payment"
+            app:layout_constraintStart_toStartOf="@+id/fail_payment_btn"
+            app:layout_constraintTop_toBottomOf="@+id/fail_payment_btn" />
+
+    <Button
+            android:id="@+id/fail_payment_btn"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/fail_payment"
+            app:layout_constraintStart_toStartOf="@+id/make_payment_btn"
+            app:layout_constraintTop_toBottomOf="@+id/make_payment_btn" />
+
+    <Button
+            android:id="@+id/make_payment_btn"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/make_payment"
+            app:layout_constraintStart_toStartOf="@+id/expiry_month"
+            app:layout_constraintTop_toBottomOf="@+id/expiry_month" />
+
+    <EditText
+            android:id="@+id/cvv_input_checkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/cvv"
+            android:inputType="numberPassword"
+            android:minWidth="70dp"
+            android:maxLength="3"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/expiry_month"
+            app:layout_constraintEnd_toEndOf="@+id/name_input_checkout" />
+
+    <EditText
+            android:id="@+id/expiry_year_checkout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:maxLength="4"
+            android:hint="@string/year"
+            android:inputType="number"
+            android:minWidth="70dp"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/expiry_month"
+            app:layout_constraintStart_toEndOf="@+id/expiry_month" />
+
+    <EditText
+            android:id="@+id/name_input_checkout"
+            style="@style/login_text_view"
+            android:layout_marginTop="20dp"
+            android:hint="@string/name_on_card"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/card_input_checkout"
+            app:layout_constraintTop_toBottomOf="@+id/card_input_checkout"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    <include
+            android:id="@+id/checkout_toolbar"
+            layout="@layout/default_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+            android:id="@+id/card_input_checkout"
+            style="@style/login_text_view"
+            android:ems="10"
+            android:hint="@string/card_number"
+            android:inputType="text"
+            android:maxLength="19"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+            android:id="@+id/textView2"
+            style="@style/login_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_details"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkout_toolbar" />
+
+
+    <TextView
+            android:id="@+id/expiry_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expiry_date"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/name_input_checkout"
+            app:layout_constraintTop_toBottomOf="@+id/name_input_checkout" />
+
+    <EditText
+            android:id="@+id/expiry_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="2"
+            android:layout_marginTop="20dp"
+            android:hint="@string/month"
+            android:inputType="number"
+            android:minHeight="48dp"
+            app:layout_constraintStart_toStartOf="@+id/expiry_text"
+            app:layout_constraintTop_toBottomOf="@+id/expiry_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

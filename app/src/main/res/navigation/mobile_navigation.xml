@@ -51,6 +51,9 @@
         <action
                 android:id="@+id/action_navigation_cart_to_orderFragment"
                 app:destination="@id/orderFragment" />
+        <action
+                android:id="@+id/action_navigation_cart_to_checkoutFragment"
+                app:destination="@id/checkoutFragment" />
     </fragment>
 
     <fragment
@@ -121,6 +124,9 @@
         <action
                 android:id="@+id/action_productFragment_to_orderFragment"
                 app:destination="@id/orderFragment" />
+        <action
+                android:id="@+id/action_productFragment_to_checkoutFragment"
+                app:destination="@id/checkoutFragment" />
     </fragment>
     <fragment
             android:id="@+id/wishlistFragment"
@@ -136,4 +142,15 @@
             android:name="com.example.ecommerceapplication.ui.cart.OrderFragment"
             android:label="fragment_order"
             tools:layout="@layout/fragment_order" />
+    <fragment
+            android:id="@+id/checkoutFragment"
+            android:name="com.example.ecommerceapplication.ui.cart.CheckoutFragment"
+            android:label="fragment_checkout"
+            tools:layout="@layout/fragment_checkout" >
+        <action
+                android:id="@+id/action_checkoutFragment_to_orderFragment"
+                app:destination="@id/orderFragment"
+                app:popUpTo="@id/checkoutFragment"
+                app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

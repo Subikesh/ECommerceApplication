@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.data.repository.OrderEntityMapper
 import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.OrderCartItem
+import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.roomdb.relations.CartItemAndProduct
 import com.example.data.session.SessionManager
 import com.example.data.usecases.UserOrders
@@ -41,6 +42,15 @@ class CartViewModel(context: Application) : AndroidViewModel(context) {
         return orders
     }
 
+    suspend fun makeOrder(cart: ShoppingCart, isSuccessful: Boolean = true) {
+        userOrder.buyCart(cart, isSuccessful)
+        userShoppingCart.removeShoppingCart(cart)
+    }
+
+    suspend fun moveCartToOrder(successful: Boolean = true) {
+        userOrder.moveCartToOrder(session.user!!, successful)
+    }
+
     fun increaseProductQuantity(cartItem: CartItem, quantity: Int) {
         viewModelScope.launch { userShoppingCart.increaseProductQuantity(cartItem, quantity) }
     }
@@ -51,9 +61,5 @@ class CartViewModel(context: Application) : AndroidViewModel(context) {
 
     fun deleteCartItem(cartItem: CartItem) {
         viewModelScope.launch { userShoppingCart.removeCartItem(cartItem) }
-    }
-
-    fun moveCartToOrder() {
-        viewModelScope.launch { userOrder.moveCartToOrder(session.user!!) }
     }
 }

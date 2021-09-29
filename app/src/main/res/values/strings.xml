@@ -46,6 +46,19 @@
     <string name="delete">Delete</string>
     <string name="total_cost">Total cost</string>
 
+    <!-- Checkout page -->
+    <string name="checkout_title">Checkout page</string>
+    <string name="fail_payment">Fail Payment</string>
+    <string name="cvv">CVV</string>
+    <string name="month">Month</string>
+    <string name="card_number">Card number</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="card_details">Card Details</string>
+    <string name="expiry_date">Expiry date</string>
+    <string name="name_on_card">Name on Card</string>
+    <string name="year">Year</string>
+    <string name="cancel_payment">Cancel Payment</string>
+
     <!-- General strings -->
     <string name="discount">%1$d%% Off</string>
     <string name="price_holder">₹%1$.2f</string>
@@ -54,5 +67,7 @@
     <string name="to">to</string>
     <string name="profile_picture">Profile picture</string>
     <string name="checkout">Checkout</string>
+    <string name="mrp">MRP</string>
+    <string name="today_s_deal">Today\'s Deal</string>
 
 </resources>

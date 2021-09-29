@@ -84,9 +84,4 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    companion object {
-        private const val TAG = "LoginFragment"
-        fun getInstance() = LoginFragment()
-    }
 }

@@ -28,7 +28,7 @@ class CartRecyclerAdapter(
     RecyclerView.Adapter<CartRecyclerAdapter.ViewHolder>() {
 
     /** Maximum length of product title */
-    private val CARD_TITLE_MAXLEN = 70
+    private val CARD_TITLE_MAXLEN = 60
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.cart_item, parent, false)
@@ -48,7 +48,7 @@ class CartRecyclerAdapter(
             context.getString(R.string.price_holder, currProduct.discountPrice * currItem.quantity)
         holder.quantity.text = currItem.quantity.toString()
         if (currItem.quantity == 1)
-        holder.reduceProductButton.isEnabled = false
+            holder.reduceProductButton.isEnabled = false
         else if (currItem.quantity == 10)
             holder.addProductButton.isEnabled = false
 

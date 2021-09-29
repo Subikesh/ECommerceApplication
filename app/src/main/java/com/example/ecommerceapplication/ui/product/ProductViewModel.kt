@@ -63,12 +63,7 @@ class ProductViewModel(val context: Application) : AndroidViewModel(context) {
         } else false
     }
 
-    fun buyProduct(): Boolean {
-        return if (session.login) {
-            viewModelScope.launch {
-                userOrders.buyProduct(session.user!!, product)
-            }
-            true
-        } else false
-    }
+    suspend fun buyProduct() = userOrders.buyProduct(session.user!!, product)
+
+    fun isLoggedIn() = session.login
 }

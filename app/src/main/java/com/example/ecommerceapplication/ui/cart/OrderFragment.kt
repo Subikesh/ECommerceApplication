@@ -47,7 +47,6 @@ class OrderFragment : Fragment() {
         lifecycleScope.launch {
             val orders = viewModel.getOrderList()
             if (orders.isNotEmpty()) {
-                Log.d("Order", orders.toString())
                 rvOrders.initRecyclerView(
                     LinearLayoutManager(requireActivity()),
                     OrderRecyclerAdapter(orders, requireActivity())

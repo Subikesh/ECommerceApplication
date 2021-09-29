@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="scarlet_red">#FF2400</color>
+    <color name="royal_blue">#246EE9</color>
     <color name="cinnabar">#DB4C40</color>
     <color name="gold_crayota">#EEC584</color>
     <color name="maximum_blue_purple">#BCB6FF</color>
     <color name="space_cadet">#2D3047</color>
+    <color name="dark_red">#851414</color>
+    <color name="dark_green">#385203</color>
     <color name="roman_silver">#808A9F</color>
     <color name="design_default_color_primary">@color/space_cadet</color>
     <color name="purple_200">#FFBB86FC</color>
@@ -13,5 +17,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="grey">#A4A4A4</color>
+    <color name="light_grey">#E1E1E1</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

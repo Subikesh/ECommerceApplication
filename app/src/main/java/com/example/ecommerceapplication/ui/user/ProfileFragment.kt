@@ -1,5 +1,6 @@
 package com.example.ecommerceapplication.ui.user
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
+import com.example.ecommerceapplication.extensions.initAlertDialog
 
 class ProfileFragment : Fragment() {
 
@@ -60,7 +62,17 @@ class ProfileFragment : Fragment() {
         }
 
         binding.logoutButton.setOnClickListener {
-            viewModel.logoutUser()
+            val alertDialog = AlertDialog.Builder(requireActivity())
+            alertDialog.initAlertDialog(
+                "Logout",
+                "Are you sure you want to logout?",
+                { _, _ ->
+                    viewModel.logoutUser()
+                },
+                { dialog, _ ->
+                    dialog.cancel()
+                })
+            alertDialog.show()
             findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
         }
     }
@@ -68,9 +80,5 @@ class ProfileFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance() = ProfileFragment()
     }
 }

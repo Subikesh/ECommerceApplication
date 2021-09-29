@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.domain.models.Product
@@ -16,6 +17,7 @@ import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProductBinding
 import com.example.ecommerceapplication.extensions.getGlideImage
+import com.example.ecommerceapplication.ui.cart.SHOPPING_CART
 import kotlinx.coroutines.launch
 
 const val PRODUCT_OBJECT = "productObject"
@@ -26,11 +28,6 @@ class ProductFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var productObj: Product
-
-    companion object {
-        fun newInstance() = ProductFragment()
-    }
-
     private lateinit var viewModel: ProductViewModel
 
     override fun onCreateView(
@@ -60,15 +57,19 @@ class ProductFragment : Fragment() {
         binding.singleProductTitle.text = productObj.title
         binding.productBrand.text = productObj.brand
         binding.discountText.text = getString(R.string.discount, productObj.discountPercent.toInt())
-        binding.singleProductMrp.paintFlags = binding.singleProductMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        binding.singleProductMrp.text = getString(R.string.price_holder, productObj.maximumRetailPrice.amount)
-        binding.productOfferPrice.text = getString(R.string.price_holder, productObj.discountPrice.amount)
+        binding.singleProductMrp.paintFlags =
+            binding.singleProductMrp.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        binding.singleProductMrp.text =
+            getString(R.string.price_holder, productObj.maximumRetailPrice.amount)
+        binding.productOfferPrice.text =
+            getString(R.string.price_holder, productObj.discountPrice.amount)
 
         // Only show discount red icon if there is > 20% discount
         if (productObj.discountPercent < 20)
             binding.discountText.visibility = View.GONE
         else
-            binding.discountText.text = getString(R.string.discount, productObj.discountPercent.toInt())
+            binding.discountText.text =
+                getString(R.string.discount, productObj.discountPercent.toInt())
 
         // Show product description or not
         if (productObj.description.isNotEmpty()) {
@@ -106,14 +107,23 @@ class ProductFragment : Fragment() {
                         Toast.makeText(context, "Product added to cart", Toast.LENGTH_SHORT).show()
                         itemInCart()
                     } else
-                        Toast.makeText(context, "Login to add product to cart", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Login to add product to cart", Toast.LENGTH_SHORT)
+                            .show()
                 }
 
                 binding.buyNowButton.setOnClickListener {
-                    if (viewModel.buyProduct()) {
-                        Toast.makeText(context, "Buy order successfully executed", Toast.LENGTH_SHORT).show()
-                    } else
-                        Toast.makeText(context, "Login to buy this product", Toast.LENGTH_SHORT).show()
+                    lifecycleScope.launch {
+                        val cart = viewModel.buyProduct()
+                        if (viewModel.isLoggedIn()) {
+                            val bundle = bundleOf(SHOPPING_CART to cart)
+                            findNavController().navigate(
+                                R.id.action_productFragment_to_checkoutFragment,
+                                bundle
+                            )
+                        } else
+                            Toast.makeText(context, "Login to buy this product", Toast.LENGTH_SHORT)
+                                .show()
+                    }
                 }
             }
         }

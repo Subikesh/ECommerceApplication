@@ -52,14 +52,11 @@ class CartFragment : Fragment() {
             val cartList = viewModel.getCartAndProductList()
 
             binding.checkoutButton.setOnClickListener {
-                if (cartList != null && cartList.isNotEmpty()) {
-                    viewModel.moveCartToOrder()
-                    // TODO: Redirect to payment page before orders (current order doesnt display in order frag)
-                    findNavController().navigate(R.id.action_navigation_cart_to_orderFragment)
-                } else {
+                if (cartList != null && cartList.isNotEmpty())
+                    findNavController().navigate(R.id.action_navigation_cart_to_checkoutFragment)
+                else
                     Toast.makeText(context, "Add some items in cart before checking out", Toast.LENGTH_SHORT)
                         .show()
-                }
             }
 
             if (cartList == null || cartList.isEmpty()) {
@@ -94,6 +91,7 @@ class CartFragment : Fragment() {
                         var price = 0.0
                         for (cartItem in cartItemList)
                             price += cartItem.product.discountPrice * cartItem.cartItem.quantity
+                        // TODO: Index out of bounds on wishlist
                         binding.totalCost.text = getString(R.string.price_holder, price)
                         viewModel.updateTotal(cartItemList[0].cartItem.cartId, price)
                     })

@@ -26,11 +26,11 @@ abstract class ShoppingCartDao {
     }
 
     /**
-     * Create new shopping cart with that single product to be added to Order table
+     * Create new shopping cart with only one product
      */
     @Transaction
     @Insert
-    suspend fun addNewCartToUser(user:User, product: Product): ShoppingCart {
+    suspend fun buyProductForUser(user:User, product: Product): ShoppingCart {
         val cart = ShoppingCart(userId = user.userId, total = product.discountPrice)
         val cartId = addShoppingCart(cart)
         cart.cartId = cartId.toInt()

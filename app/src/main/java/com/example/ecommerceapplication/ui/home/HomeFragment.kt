@@ -153,12 +153,9 @@ class HomeFragment : Fragment() {
         searchView.queryHint = "Type here to search..."
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(s: String?): Boolean {
-                Log.d("Search", "Submit clicked $s")
                 return if (s != null) {
-                    lifecycleScope.launch {
-                        val categoryPairList = viewModel.searchQuery(s)
-                        homeAdapter.updateCategoryList(categoryPairList)
-                    }
+                    val bundle = bundleOf(SEARCH_QUERY to s)
+                    findNavController().navigate(R.id.action_navigation_home_to_searchFragment, bundle)
                     true
                 } else false
             }

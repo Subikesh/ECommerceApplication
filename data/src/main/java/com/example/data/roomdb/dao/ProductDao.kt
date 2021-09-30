@@ -8,7 +8,7 @@ import com.example.data.roomdb.entities.Product
 
 @Dao
 interface ProductDao : BaseDao<Product> {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     override suspend fun insert(obj: Product): Long
 
     @Query("SELECT * FROM product WHERE productId = :productId")

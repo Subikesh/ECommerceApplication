@@ -19,6 +19,7 @@ import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
+import com.example.data.roomdb.entities.MutablePair
 
 class HomeFragment : Fragment() {
 
@@ -69,9 +70,9 @@ class HomeFragment : Fragment() {
                 if (categories != null) {
                     for (category in categories) {
                         if (viewModel.categoryList != null)
-                            viewModel.categoryList?.add(Pair(category, null))
+                            viewModel.categoryList?.add(MutablePair(category, null))
                         else
-                            viewModel.categoryList = mutableListOf(Pair(category, null))
+                            viewModel.categoryList = mutableListOf(MutablePair(category, null))
                     }
                     initializeCategories()
                 } else {
@@ -91,14 +92,13 @@ class HomeFragment : Fragment() {
         categoryShimmer.visibility = View.GONE
         rvCategories.visibility = View.VISIBLE
 
-        val categoryAdapter =
-            HomeCategoryAdapter(requireContext(), viewModel) { product ->
-                val bundle = bundleOf(PRODUCT_OBJECT to product)
-                findNavController().navigate(
-                    R.id.action_navigation_home_to_productFragment,
-                    bundle
-                )
-            }
+        val categoryAdapter = HomeCategoryAdapter(requireContext(), viewModel) { product ->
+            val bundle = bundleOf(PRODUCT_OBJECT to product)
+            findNavController().navigate(
+                R.id.action_navigation_home_to_productFragment,
+                bundle
+            )
+        }
         val manager = LinearLayoutManager(requireContext())
         rvCategories.initRecyclerView(manager, categoryAdapter)
 
@@ -128,7 +128,7 @@ class HomeFragment : Fragment() {
                     viewModel.loadMoreCategories(COUNT_ON_LOAD_MORE).observe(viewLifecycleOwner) { categoryList ->
                         if (categoryList != null && categoryList.size > totalItems) {
                             for (category in categoryList.subList(totalItems, categoryList.size)) {
-                                viewModel.categoryList?.add(Pair(category, null))
+                                viewModel.categoryList?.add(MutablePair(category, null))
                                 categoryAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
                                 binding.rvLoaderProgress.visibility = View.INVISIBLE
                             }

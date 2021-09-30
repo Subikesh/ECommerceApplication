@@ -74,9 +74,10 @@ class HomeCategoryAdapter(
                             productList = response.body()!!
                             productList.setCategory(currCategory.categoryId)
                             val productObjects = ProductApiMapperImpl.fromApiModel(productList)
-
                             viewModel.categoryList!![absPosition].second = productObjects
 
+                            // Adding current category and corresponding products to the database
+                            viewModel.loadCategoryDatabase(viewModel.categoryList!![absPosition])
                             initializeProducts(holder, absPosition)
                         } else {
                             Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT)
@@ -97,6 +98,7 @@ class HomeCategoryAdapter(
 
     private fun initializeProducts(holder: ViewHolder, position: Int) {
         if (viewModel.categoryList!![position].second.isNullOrEmpty()) {
+            // if no products are returned for that category
             viewModel.categoryList?.removeAt(position)
             notifyItemRemoved(position)
         } else {

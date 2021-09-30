@@ -25,9 +25,12 @@ class CategoryDatabase(context: Context) {
         db.categoryDao().insert(categoryEntity)
     }
 
-    suspend fun searchCategory(search: String) = db.categoryDao().searchCategories(search.lowercase())
+//    suspend fun searchCategory(search: String) = db.categoryDao().searchCategories(search.lowercase())
 
-    suspend fun searchProducts(search: String) = db.productDao().searchProducts(search.lowercase())
+    suspend fun searchProducts(search: String) =
+        db.productDao().searchProducts(search.lowercase()).map {
+            ProductEntityMapperImpl.fromEntity(it)
+        }
 
     suspend fun insertCategoryPair(categoryPair: MutablePair<Category, List<Product>?>) {
         val category = CategoryEntityMapperImpl.toEntity(categoryPair.first)

@@ -129,15 +129,23 @@ class HomeFragment : Fragment() {
                     binding.rvLoaderProgress.visibility = View.VISIBLE
 
                     // Fetching api data
-                    viewModel.loadMoreCategories(COUNT_ON_LOAD_MORE).observe(viewLifecycleOwner) { categoryList ->
-                        if (categoryList != null && categoryList.size > totalItems) {
-                            for (category in categoryList.subList(totalItems, categoryList.size)) {
-                                viewModel.categoryList?.add(MutablePair(category, null))
-                                homeAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
-                                binding.rvLoaderProgress.visibility = View.INVISIBLE
+                    viewModel.loadMoreCategories(COUNT_ON_LOAD_MORE)
+                        .observe(viewLifecycleOwner) { categoryList ->
+                            if (categoryList != null && categoryList.size > totalItems) {
+                                Log.d(
+                                    "LastViewModel",
+                                    "${viewModel.categoryList!!.size} and ${homeAdapter.emptyCategoryCount} ${viewModel.categoryList!!.last().first}"
+                                )
+                                for (category in categoryList.subList(
+                                    viewModel.categoryList!!.size + homeAdapter.emptyCategoryCount,
+                                    categoryList.size
+                                )) {
+                                    viewModel.categoryList?.add(MutablePair(category, null))
+                                    homeAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
+                                    binding.rvLoaderProgress.visibility = View.INVISIBLE
+                                }
                             }
                         }
-                    }
                 } else if (isScrolling && totalItems == 58)
                     Toast.makeText(context, "End of category list", Toast.LENGTH_SHORT).show()
             }
@@ -155,7 +163,10 @@ class HomeFragment : Fragment() {
             override fun onQueryTextSubmit(s: String?): Boolean {
                 return if (s != null) {
                     val bundle = bundleOf(SEARCH_QUERY to s)
-                    findNavController().navigate(R.id.action_navigation_home_to_searchFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_navigation_home_to_searchFragment,
+                        bundle
+                    )
                     true
                 } else false
             }

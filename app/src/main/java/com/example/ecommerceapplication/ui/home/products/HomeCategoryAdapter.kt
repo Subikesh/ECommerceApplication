@@ -38,7 +38,7 @@ class HomeCategoryAdapter(
     private val onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
-    private var currCategoryList = viewModel.categoryList!!
+    var emptyCategoryCount = 0
 
     /**
      * Inflate the single category UI
@@ -54,7 +54,7 @@ class HomeCategoryAdapter(
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val absPosition = holder.absoluteAdapterPosition
-        val currCategory = currCategoryList[holder.absoluteAdapterPosition].first
+        val currCategory = viewModel.categoryList!![holder.absoluteAdapterPosition].first
         holder.textView.text = currCategory.categoryTitle
         holder.category = currCategory
         holder.productsUrl = currCategory.productsUrl
@@ -65,7 +65,7 @@ class HomeCategoryAdapter(
             val call = service?.getProductsList(currCategory.productsUrl)
             var productList: ProductsList
 
-            if (currCategoryList[absPosition].second != null) {
+            if (viewModel.categoryList!![absPosition].second != null) {
                 initializeProducts(holder, absPosition)
             } else {
                 call?.enqueue(object : Callback<ProductsList?> {
@@ -77,10 +77,10 @@ class HomeCategoryAdapter(
                             productList = response.body()!!
                             productList.setCategory(currCategory.categoryId)
                             val productObjects = ProductApiMapperImpl.fromApiModel(productList)
-                            currCategoryList[absPosition].second = productObjects
+                            viewModel.categoryList!![absPosition].second = productObjects
 
                             // Adding current category and corresponding products to the database
-                            viewModel.loadCategoryDatabase(currCategoryList[absPosition])
+                            viewModel.loadCategoryDatabase(viewModel.categoryList!![absPosition])
                             initializeProducts(holder, absPosition)
                         } else {
                             Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT)
@@ -100,9 +100,11 @@ class HomeCategoryAdapter(
     }
 
     private fun initializeProducts(holder: ViewHolder, position: Int) {
-        if (currCategoryList[position].second.isNullOrEmpty()) {
+        if (viewModel.categoryList!![position].second.isNullOrEmpty()) {
             // if no products are returned for that category
-            currCategoryList.removeAt(position)
+            viewModel.categoryList!!.removeAt(position)
+            emptyCategoryCount++
+            Log.d("Repetition", "Curr category: ${viewModel.categoryList!!.size} Viewmodel: ${viewModel.categoryList}")
             notifyItemRemoved(position)
         } else {
             holder.productsLoader.stopShimmerAnimation()
@@ -112,7 +114,7 @@ class HomeCategoryAdapter(
             holder.productsView.initRecyclerView(
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
                 ProductRecyclerAdapter(
-                    currCategoryList[position].second!!,
+                    viewModel.categoryList!![position].second!!,
                     context,
                     onItemClicked
                 )
@@ -120,17 +122,7 @@ class HomeCategoryAdapter(
         }
     }
 
-    fun updateCategoryList(categories: List<MutablePair<Category, List<Product>?>>) {
-        currCategoryList = categories.toMutableList()
-        notifyDataSetChanged()
-    }
-
-    fun resetCategoryList() {
-        currCategoryList = viewModel.categoryList!!
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount() = currCategoryList.size
+    override fun getItemCount() = viewModel.categoryList!!.size
 
     /**
      * ViewHolder for each categoryRV. Contains nested RecyclerView for product cards

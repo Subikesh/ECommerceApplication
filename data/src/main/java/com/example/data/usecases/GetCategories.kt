@@ -46,14 +46,12 @@ class GetCategories {
                 response: Response<CategoryResult>
             ) {
                 val categoryObjects = response.body()!!
-                Log.d("API response", "Categories retrieved")
                 categoryList.addAll(CategoryApiMapperImpl.fromApiModel(
                     categoryObjects,
                     categoryList.size,
                     categoryList.size + categoryCount
                 ))
                 allCategories.value = categoryList
-                Log.d("MoreCategory", "more cats: ${categoryList.size}")
             }
 
             override fun onFailure(call: Call<CategoryResult>, t: Throwable) {

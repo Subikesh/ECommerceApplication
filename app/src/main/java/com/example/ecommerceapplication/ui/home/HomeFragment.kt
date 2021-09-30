@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
 import com.example.data.roomdb.entities.MutablePair
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -33,6 +35,8 @@ class HomeFragment : Fragment() {
     var totalItems: Int = 0
 
     private val COUNT_ON_LOAD_MORE = 10
+
+    private lateinit var homeAdapter: HomeCategoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,7 +96,7 @@ class HomeFragment : Fragment() {
         categoryShimmer.visibility = View.GONE
         rvCategories.visibility = View.VISIBLE
 
-        val categoryAdapter = HomeCategoryAdapter(requireContext(), viewModel) { product ->
+        homeAdapter = HomeCategoryAdapter(requireContext(), viewModel) { product ->
             val bundle = bundleOf(PRODUCT_OBJECT to product)
             findNavController().navigate(
                 R.id.action_navigation_home_to_productFragment,
@@ -100,7 +104,7 @@ class HomeFragment : Fragment() {
             )
         }
         val manager = LinearLayoutManager(requireContext())
-        rvCategories.initRecyclerView(manager, categoryAdapter)
+        rvCategories.initRecyclerView(manager, homeAdapter)
 
         /** Adding load more on scrolling to the bottom of the page */
         rvCategories.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -129,7 +133,7 @@ class HomeFragment : Fragment() {
                         if (categoryList != null && categoryList.size > totalItems) {
                             for (category in categoryList.subList(totalItems, categoryList.size)) {
                                 viewModel.categoryList?.add(MutablePair(category, null))
-                                categoryAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
+                                homeAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
                                 binding.rvLoaderProgress.visibility = View.INVISIBLE
                             }
                         }
@@ -147,6 +151,22 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.home_toolbar_menu, menu)
         val searchView = menu.findItem(R.id.home_search).actionView as SearchView
         searchView.queryHint = "Type here to search..."
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(s: String?): Boolean {
+                Log.d("Search", "Submit clicked $s")
+                return if (s != null) {
+                    lifecycleScope.launch {
+                        val categoryPairList = viewModel.searchQuery(s)
+                        homeAdapter.updateCategoryList(categoryPairList)
+                    }
+                    true
+                } else false
+            }
+
+            override fun onQueryTextChange(s: String?): Boolean {
+                return true
+            }
+        })
 
         super.onCreateOptionsMenu(menu, inflater)
     }

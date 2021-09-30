@@ -16,6 +16,7 @@ import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
 import com.example.data.repository.ProductApiMapperImpl
+import com.example.data.roomdb.entities.MutablePair
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
@@ -37,6 +38,8 @@ class HomeCategoryAdapter(
     private val onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
+    private var currCategoryList = viewModel.categoryList!!
+
     /**
      * Inflate the single category UI
      */
@@ -51,7 +54,7 @@ class HomeCategoryAdapter(
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val absPosition = holder.absoluteAdapterPosition
-        val currCategory = viewModel.categoryList!![holder.absoluteAdapterPosition].first
+        val currCategory = currCategoryList[holder.absoluteAdapterPosition].first
         holder.textView.text = currCategory.categoryTitle
         holder.category = currCategory
         holder.productsUrl = currCategory.productsUrl
@@ -62,7 +65,7 @@ class HomeCategoryAdapter(
             val call = service?.getProductsList(currCategory.productsUrl)
             var productList: ProductsList
 
-            if (viewModel.categoryList!![absPosition].second != null) {
+            if (currCategoryList[absPosition].second != null) {
                 initializeProducts(holder, absPosition)
             } else {
                 call?.enqueue(object : Callback<ProductsList?> {
@@ -74,10 +77,10 @@ class HomeCategoryAdapter(
                             productList = response.body()!!
                             productList.setCategory(currCategory.categoryId)
                             val productObjects = ProductApiMapperImpl.fromApiModel(productList)
-                            viewModel.categoryList!![absPosition].second = productObjects
+                            currCategoryList[absPosition].second = productObjects
 
                             // Adding current category and corresponding products to the database
-                            viewModel.loadCategoryDatabase(viewModel.categoryList!![absPosition])
+                            viewModel.loadCategoryDatabase(currCategoryList[absPosition])
                             initializeProducts(holder, absPosition)
                         } else {
                             Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT)
@@ -97,9 +100,9 @@ class HomeCategoryAdapter(
     }
 
     private fun initializeProducts(holder: ViewHolder, position: Int) {
-        if (viewModel.categoryList!![position].second.isNullOrEmpty()) {
+        if (currCategoryList[position].second.isNullOrEmpty()) {
             // if no products are returned for that category
-            viewModel.categoryList?.removeAt(position)
+            currCategoryList.removeAt(position)
             notifyItemRemoved(position)
         } else {
             holder.productsLoader.stopShimmerAnimation()
@@ -109,7 +112,7 @@ class HomeCategoryAdapter(
             holder.productsView.initRecyclerView(
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
                 ProductRecyclerAdapter(
-                    viewModel.categoryList!![position].second!!,
+                    currCategoryList[position].second!!,
                     context,
                     onItemClicked
                 )
@@ -117,7 +120,17 @@ class HomeCategoryAdapter(
         }
     }
 
-    override fun getItemCount() = viewModel.categoryList?.size ?: 0
+    fun updateCategoryList(categories: List<MutablePair<Category, List<Product>?>>) {
+        currCategoryList = categories.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun resetCategoryList() {
+        currCategoryList = viewModel.categoryList!!
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = currCategoryList.size
 
     /**
      * ViewHolder for each categoryRV. Contains nested RecyclerView for product cards

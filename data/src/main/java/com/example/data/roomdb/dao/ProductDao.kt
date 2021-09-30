@@ -13,4 +13,11 @@ interface ProductDao : BaseDao<Product> {
 
     @Query("SELECT * FROM product WHERE productId = :productId")
     suspend fun getProduct(productId: String): Product
+
+    /**
+     * Find categories for the given search query
+     * @param query Search string given by user
+     */
+    @Query("SELECT * FROM product WHERE LOWER(title) LIKE '%' || :query || '%'")
+    suspend fun searchProducts(query: String): List<Product>
 }

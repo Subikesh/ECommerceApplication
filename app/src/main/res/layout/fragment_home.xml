@@ -56,15 +56,14 @@
                 android:id="@+id/home_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@android:dimen/app_icon_size"
+
                 android:visibility="gone" />
 
         <ProgressBar
                 android:id="@+id/rvLoaderProgress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@android:dimen/app_icon_size" />
+                android:layout_gravity="center"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

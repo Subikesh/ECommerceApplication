@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.data.roomdb.entities.MutablePair
 import com.example.domain.models.Category
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
@@ -33,7 +34,7 @@ class CategoryFragment : Fragment() {
     private lateinit var viewModel: HomeViewModel
 
     /** Get the maximum product count to load at a time */
-    private val PRODUCTS_COUNT = 50
+    private val PRODUCTS_COUNT = 100
     private lateinit var categoryObj: Category
 
     override fun onCreateView(
@@ -68,6 +69,7 @@ class CategoryFragment : Fragment() {
                     productsLoader.stopShimmerAnimation()
                     productsLoader.visibility = GONE
                     rvProducts.visibility = VISIBLE
+                    viewModel.loadCategoryDatabase(MutablePair(categoryObj, products))
 
                     rvProducts.initRecyclerView(
                         GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),

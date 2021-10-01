@@ -36,8 +36,9 @@ class CartRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currItem = cartProductList[position].cartItem
-        val currProduct = cartProductList[position].product
+        val absPosition = holder.absoluteAdapterPosition
+        val currItem = cartProductList[absPosition].cartItem
+        val currProduct = cartProductList[absPosition].product
 
         // Set image from url to glide
         holder.productImage.getGlideImage(context, currProduct.imageUrl)
@@ -92,9 +93,9 @@ class CartRecyclerAdapter(
 
         holder.deleteButton.setOnClickListener {
             deleteCartItem(currItem)
-            cartProductList.removeAt(position)
+            cartProductList.removeAt(absPosition)
             updateTotal(cartProductList)
-            notifyItemRemoved(position)
+            notifyItemRemoved(absPosition)
         }
     }
 

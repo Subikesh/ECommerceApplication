@@ -16,7 +16,7 @@ import com.example.ecommerceapplication.extensions.getGlideImage
 import kotlin.math.min
 
 class ProductRecyclerAdapter(
-    private val productList: List<Product>,
+    var productList: List<Product>,
     val context: Context,
     private val onItemClicked: (Product) -> Unit,
     private val MAX_PRODUCTS: Int? = null

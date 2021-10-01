@@ -4,11 +4,11 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="product_card_width">190dp</dimen>
-    <dimen name="product_card_height">250dp</dimen>
+    <dimen name="product_card_height">280dp</dimen>
     <dimen name="product_card_image">180dp</dimen>
 
     <!-- Single product page -->
-    <dimen name="product_mini_icon">40dp</dimen>
+    <dimen name="product_mini_icon">35dp</dimen>
     <dimen name="medium_text">14sp</dimen>
     <dimen name="large_text">16sp</dimen>
     <dimen name="xlarge_text">18sp</dimen>

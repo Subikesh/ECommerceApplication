@@ -5,6 +5,7 @@ import com.example.data.repository.ProductEntityMapperImpl
 import com.example.data.repository.UserEntityMapperImpl
 import com.example.data.roomdb.DatabaseContract
 import com.example.data.roomdb.entities.CartItem
+import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.roomdb.relations.CartItemAndProduct
 import com.example.domain.models.Product
 import com.example.domain.models.User
@@ -50,6 +51,8 @@ class UserShoppingCart(context: Context) {
         cartItem.quantity = quantity
         db.cartDao().updateCartItem(cartItem)
     }
+
+    suspend fun removeShoppingCart(cart: ShoppingCart) = db.cartDao().deleteShoppingCart(cart)
 
     suspend fun removeCartItem(cartItem: CartItem) {
         db.cartDao().deleteCartItem(cartItem)

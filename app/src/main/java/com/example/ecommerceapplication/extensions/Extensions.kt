@@ -38,15 +38,14 @@ fun RecyclerView.initRecyclerView(
 
 fun ImageView.getGlideImage(
     context: Context,
-    imgUrl: String,
+    imgUrl: String?,
     error: Int = R.drawable.img_not_loaded1_4x
 ) {
     val circularProgress = getCircularLoader(context)
 
-    val requestOptions = RequestOptions().apply {
-        placeholder(circularProgress)
-        error(error)
-    }
+    val requestOptions = RequestOptions()
+        .placeholder(circularProgress)
+        .error(error)
 
     Glide.with(context)
         .setDefaultRequestOptions(requestOptions)

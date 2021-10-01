@@ -132,10 +132,6 @@ class HomeFragment : Fragment() {
                     viewModel.loadMoreCategories(COUNT_ON_LOAD_MORE)
                         .observe(viewLifecycleOwner) { categoryList ->
                             if (categoryList != null && categoryList.size > totalItems) {
-                                Log.d(
-                                    "LastViewModel",
-                                    "${viewModel.categoryList!!.size} and ${homeAdapter.emptyCategoryCount} ${viewModel.categoryList!!.last().first}"
-                                )
                                 for (category in categoryList.subList(
                                     viewModel.categoryList!!.size + homeAdapter.emptyCategoryCount,
                                     categoryList.size

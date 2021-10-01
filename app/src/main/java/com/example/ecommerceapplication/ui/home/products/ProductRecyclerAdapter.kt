@@ -72,6 +72,8 @@ class ProductRecyclerAdapter(
      */
     override fun getItemCount() = MAX_PRODUCTS?.let { min(productList.size, it) } ?: productList.size
 
+
+
     /**
      * Class contains all child views of a product card
      */

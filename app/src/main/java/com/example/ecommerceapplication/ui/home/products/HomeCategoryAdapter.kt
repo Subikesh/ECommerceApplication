@@ -16,7 +16,6 @@ import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
 import com.example.data.repository.ProductApiMapperImpl
-import com.example.data.roomdb.entities.MutablePair
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
@@ -99,12 +98,20 @@ class HomeCategoryAdapter(
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+
     private fun initializeProducts(holder: ViewHolder, position: Int) {
         if (viewModel.categoryList!![position].second.isNullOrEmpty()) {
             // if no products are returned for that category
             viewModel.categoryList!!.removeAt(position)
             emptyCategoryCount++
-            Log.d("Repetition", "Curr category: ${viewModel.categoryList!!.size} Viewmodel: ${viewModel.categoryList}")
             notifyItemRemoved(position)
         } else {
             holder.productsLoader.stopShimmerAnimation()

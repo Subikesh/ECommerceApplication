@@ -53,6 +53,10 @@ class CartRecyclerAdapter(
         else if (currItem.quantity == 10)
             holder.addProductButton.isEnabled = false
 
+        holder.productTitle.setOnClickListener {
+            onItemClicked(currProduct)
+        }
+
         holder.productImage.setOnClickListener {
             onItemClicked(currProduct)
         }

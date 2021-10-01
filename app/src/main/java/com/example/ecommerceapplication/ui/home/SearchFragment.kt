@@ -1,10 +1,10 @@
 package com.example.ecommerceapplication.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +27,9 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
+    private var searchQuery: String? = null
+
+    private lateinit var searchToolbar: Toolbar
     private lateinit var rvAdapter: ProductRecyclerAdapter
 
     override fun onCreateView(
@@ -34,14 +37,16 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        val toolbar = binding.homeToolbar
-        toolbar.title = getString(R.string.app_name)
-        toolbar.title = "Search products"
+        if (searchQuery == null)
+            searchQuery = arguments?.get(SEARCH_QUERY) as String
+
+        searchToolbar = binding.searchToolbar
+        searchToolbar.title = getString(R.string.app_name)
+        searchToolbar.title = "Search results for '$searchQuery'"
         setHasOptionsMenu(true)
-        (activity as MainActivity).setSupportActionBar(toolbar)
+        (activity as MainActivity).setSupportActionBar(searchToolbar)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         return binding.root
@@ -50,25 +55,25 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val searchQuery = arguments?.get(SEARCH_QUERY) as String
         lifecycleScope.launch {
-            val products = viewModel.searchProducts(searchQuery)
-            if (products.isNotEmpty()) {
-                rvAdapter = ProductRecyclerAdapter(
-                    products,
-                    requireContext(),
-                    onItemClicked = { product ->
-                        val bundle = bundleOf(PRODUCT_OBJECT to product)
-                        findNavController().navigate(
-                            R.id.action_searchFragment_to_productFragment,
-                            bundle
-                        )
-                    })
-                binding.searchResults.initRecyclerView(
-                    GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
-                    rvAdapter
-                )
-            } else Toast.makeText(context, "No products found!", Toast.LENGTH_SHORT).show()
+            val products = viewModel.searchProducts(searchQuery ?: "")
+            rvAdapter = ProductRecyclerAdapter(
+                products,
+                requireContext(),
+                onItemClicked = { product ->
+                    val bundle = bundleOf(PRODUCT_OBJECT to product)
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_productFragment,
+                        bundle
+                    )
+                })
+            binding.searchResults.initRecyclerView(
+                GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
+                rvAdapter
+            )
+            if (products.isEmpty())
+                Toast.makeText(context, "No products found!", Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -81,10 +86,12 @@ class SearchFragment : Fragment() {
                 return if (search != null) {
                     lifecycleScope.launch {
                         val products = viewModel.searchProducts(search)
-                        if (products.isNotEmpty()) {
-                            rvAdapter.productList = products
-                            rvAdapter.notifyDataSetChanged()
-                        } else Toast.makeText(context, "No products found!", Toast.LENGTH_SHORT).show()
+                        rvAdapter.productList = products
+                        searchQuery = search
+                        searchToolbar.title = "Search results for '$search'"
+                        rvAdapter.notifyDataSetChanged()
+                        if (products.isEmpty())
+                            Toast.makeText(context, "No products found!", Toast.LENGTH_SHORT).show()
                     }
                     true
                 } else false

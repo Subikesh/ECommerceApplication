@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
     var totalItems: Int = 0
 
     private val COUNT_ON_LOAD_MORE = 10
+    private val TOTAL_CATEGORIES = 55
 
     private lateinit var homeAdapter: HomeCategoryAdapter
 
@@ -124,7 +125,7 @@ class HomeFragment : Fragment() {
                 currentItemCount = manager.childCount
                 // Items loaded by recycler view
                 totalItems = manager.itemCount
-                if (isScrolling && ((currentItemCount + scrolledOutItems) == totalItems) && viewModel.categoryList!!.size <= 57) {
+                if (isScrolling && ((currentItemCount + scrolledOutItems) == totalItems) && viewModel.categoryList!!.size <= TOTAL_CATEGORIES) {
                     isScrolling = false
                     binding.rvLoaderProgress.visibility = View.VISIBLE
 
@@ -142,8 +143,7 @@ class HomeFragment : Fragment() {
                                 }
                             }
                         }
-                } else if (isScrolling && totalItems == 58)
-                    Toast.makeText(context, "End of category list", Toast.LENGTH_SHORT).show()
+                }
             }
         })
     }

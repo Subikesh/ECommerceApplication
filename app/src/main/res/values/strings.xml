@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ECommerce Application</string>
+    <string name="app_name">BuyCart</string>
     <string name="title_home">Home</string>
     <string name="title_user">User</string>
     <string name="title_cart">Your Cart</string>

@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
 import com.example.ecommerceapplication.extensions.initAlertDialog
-import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
@@ -70,14 +68,12 @@ class ProfileFragment : Fragment() {
                 "Are you sure you want to logout?",
                 { _, _ ->
                     viewModel.logoutUser()
+                    findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
                 },
                 { dialog, _ ->
                     dialog.cancel()
                 })
-            lifecycleScope.launch {
-                alertDialog.show()
-                findNavController().navigate(R.id.action_profileFragment_to_navigation_user)
-            }
+            alertDialog.show()
         }
     }
 

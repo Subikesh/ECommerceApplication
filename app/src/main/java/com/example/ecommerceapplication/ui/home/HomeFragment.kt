@@ -35,6 +35,8 @@ class HomeFragment : Fragment() {
     var totalItems: Int = 0
 
     private val COUNT_ON_LOAD_MORE = 10
+
+    // Total categories that will be shown in homepage
     private val TOTAL_CATEGORIES = 55
 
     private lateinit var homeAdapter: HomeCategoryAdapter
@@ -82,8 +84,11 @@ class HomeFragment : Fragment() {
                     initializeCategories()
                 } else {
                     categoryShimmer.visibility = View.GONE
-                    Toast.makeText(context, "Categories not retrieved", Toast.LENGTH_SHORT).show()
-                    Log.d("API response", "Category retrieval failed")
+                    Toast.makeText(
+                        context,
+                        "Categories not retrieved. Check your internet connection.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -181,7 +186,6 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home_reload -> {
-                viewModel.categoryList = null
                 findNavController().navigate(R.id.action_navigation_home_self)
             }
         }

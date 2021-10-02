@@ -37,6 +37,7 @@ class HomeCategoryAdapter(
     private val onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
+    // Counts the number of categories removed (if api returns no products for that category)
     var emptyCategoryCount = 0
 
     /**
@@ -59,7 +60,7 @@ class HomeCategoryAdapter(
         holder.productsUrl = currCategory.productsUrl
 
         holder.productsLoader.startShimmerAnimation()
-        if (absPosition >= 0) {
+        if (absPosition >= 0 && viewModel.categoryList!!.size > absPosition) {
             val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
             val call = service?.getProductsList(currCategory.productsUrl)
             var productList: ProductsList
@@ -72,7 +73,7 @@ class HomeCategoryAdapter(
                         call: Call<ProductsList?>?,
                         response: Response<ProductsList?>
                     ) {
-                        if (response.body() != null) {
+                        if (response.body() != null && viewModel.categoryList != null) {
                             productList = response.body()!!
                             productList.setCategory(currCategory.categoryId)
                             val productObjects = ProductApiMapperImpl.fromApiModel(productList)

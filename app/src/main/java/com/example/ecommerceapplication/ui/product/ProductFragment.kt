@@ -112,17 +112,21 @@ class ProductFragment : Fragment() {
                 }
 
                 binding.buyNowButton.setOnClickListener {
-                    lifecycleScope.launch {
-                        val cart = viewModel.buyProduct()
-                        if (viewModel.isLoggedIn()) {
+                    if (viewModel.isLoggedIn()) {
+                        lifecycleScope.launch {
+                            val cart = viewModel.buyProduct()
                             val bundle = bundleOf(SHOPPING_CART to cart)
                             findNavController().navigate(
                                 R.id.action_productFragment_to_checkoutFragment,
                                 bundle
                             )
-                        } else
-                            Toast.makeText(context, "Login to buy this product", Toast.LENGTH_SHORT)
-                                .show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Please login to buy this product",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

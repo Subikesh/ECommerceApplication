@@ -33,13 +33,15 @@ class CartViewModel(context: Application) : AndroidViewModel(context) {
         else null
     }
 
-    suspend fun getOrderList() : List<OrderCartItem> {
-        val orderEntities = userOrder.getCartItem(session.user!!)
-        val orders = OrderEntityMapper.fromEntity(orderEntities)
-        for (order in orders) {
-            order.product = userOrder.getProduct(order.productId)
-        }
-        return orders
+    suspend fun getOrderList() : List<OrderCartItem>? {
+        return if (session.login) {
+            val orderEntities = userOrder.getCartItem(session.user!!)
+            val orders = OrderEntityMapper.fromEntity(orderEntities)
+            for (order in orders) {
+                order.product = userOrder.getProduct(order.productId)
+            }
+            orders
+        } else null
     }
 
     suspend fun makeOrder(cart: ShoppingCart, isSuccessful: Boolean = true) {

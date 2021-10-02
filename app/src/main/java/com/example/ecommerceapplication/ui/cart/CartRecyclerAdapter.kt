@@ -23,7 +23,7 @@ class CartRecyclerAdapter(
     // Deleting cart item
     private val deleteCartItem: (CartItem) -> Unit,
     // Updating the total cost of cart
-    private val updateTotal: (MutableList<CartItemAndProduct>) -> Unit
+    private val updateTotal: (MutableList<CartItemAndProduct>, Int) -> Unit
 ) :
     RecyclerView.Adapter<CartRecyclerAdapter.ViewHolder>() {
 
@@ -37,6 +37,7 @@ class CartRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val absPosition = holder.absoluteAdapterPosition
+        val currCart = cartProductList[absPosition]
         val currItem = cartProductList[absPosition].cartItem
         val currProduct = cartProductList[absPosition].product
 
@@ -92,13 +93,13 @@ class CartRecyclerAdapter(
             val quantity = Integer.valueOf(holder.quantity.text.toString())
             saveItemQuantity(currItem, quantity)
             holder.saveButton.isEnabled = false
-            updateTotal(cartProductList)
+            updateTotal(cartProductList, currItem.cartId)
         }
 
         holder.deleteButton.setOnClickListener {
             deleteCartItem(currItem)
-            cartProductList.removeAt(absPosition)
-            updateTotal(cartProductList)
+            cartProductList.remove(currCart)
+            updateTotal(cartProductList, currItem.cartId)
             notifyItemRemoved(absPosition)
         }
     }

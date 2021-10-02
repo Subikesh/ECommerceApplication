@@ -87,13 +87,13 @@ class CartFragment : Fragment() {
                     deleteCartItem = {
                         viewModel.deleteCartItem(it)
                     },
-                    updateTotal = { cartItemList ->
+                    updateTotal = { cartItemList, cartId ->
                         var price = 0.0
                         for (cartItem in cartItemList)
                             price += cartItem.product.discountPrice * cartItem.cartItem.quantity
                         // TODO: Index out of bounds on wishlist
                         binding.totalCost.text = getString(R.string.price_holder, price)
-                        viewModel.updateTotal(cartItemList[0].cartItem.cartId, price)
+                        viewModel.updateTotal(cartId, price)
                     })
 
                 rvCart.initRecyclerView(LinearLayoutManager(requireActivity()), cartRvAdapter)

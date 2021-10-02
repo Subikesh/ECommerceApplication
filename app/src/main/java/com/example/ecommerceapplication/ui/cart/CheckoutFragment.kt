@@ -5,18 +5,17 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.ecommerceapplication.MainActivity
-import com.example.ecommerceapplication.R
-import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
-
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.roomdb.entities.ShoppingCart
+import com.example.ecommerceapplication.MainActivity
+import com.example.ecommerceapplication.R
+import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
 import com.example.ecommerceapplication.extensions.initAlertDialog
 import com.example.ecommerceapplication.validators.TextValidators
 import kotlinx.coroutines.launch

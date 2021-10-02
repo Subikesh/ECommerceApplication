@@ -50,7 +50,9 @@
             tools:layout="@layout/fragment_cart">
         <action
                 android:id="@+id/action_navigation_cart_to_productFragment"
-                app:destination="@id/productFragment" />
+                app:destination="@id/productFragment"
+                app:popUpTo="@id/productFragment"
+                app:popUpToInclusive="true" />
         <action
                 android:id="@+id/action_navigation_cart_to_orderFragment"
                 app:destination="@id/orderFragment" />
@@ -70,7 +72,8 @@
         <action
                 android:id="@+id/action_loginFragment_to_navigation_home"
                 app:destination="@id/navigation_home"
-                app:popUpTo="@id/navigation_user" />
+                app:popUpTo="@id/navigation_user"
+                app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -124,9 +127,6 @@
         <action
                 android:id="@+id/action_productFragment_to_navigation_cart"
                 app:destination="@id/navigation_cart" />
-        <action
-                android:id="@+id/action_productFragment_to_orderFragment"
-                app:destination="@id/orderFragment" />
         <action
                 android:id="@+id/action_productFragment_to_checkoutFragment"
                 app:destination="@id/checkoutFragment" />

@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.ECommerceApplication" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/space_cadet</item>
-        <item name="colorPrimaryVariant">@color/space_cadet</item>
+        <item name="colorPrimary">@color/design_default_color_primary</item>
+        <item name="colorPrimaryVariant">@color/design_default_color_primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

@@ -1,7 +1,6 @@
 package com.example.ecommerceapplication
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
@@ -10,6 +9,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,18 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         // Setup action bar with nav controller to implement up button in action bar
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
-
-        /*// Hide bottom navigation menu on scroll
-        val nestedScroll = binding.nestedScroll
-        nestedScroll.setOnScrollChangeListener(
-            NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            val verticalScroll = scrollY - oldScrollY
-            if (verticalScroll > 10 && navView.isShown) {
-                navView.visibility = View.GONE
-            } else if (verticalScroll < -10) {
-                navView.visibility = View.VISIBLE
-            }
-        })*/
     }
 
     /**

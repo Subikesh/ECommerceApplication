@@ -8,7 +8,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="3dp"
-        android:background="@color/light_grey"
+        android:background="@color/app_color_2"
         android:orientation="vertical"
         tools:ignore="NamespaceTypo">
 
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/today_s_deal"
             android:textColor="@color/black"
+            android:layout_marginBottom="3dp"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,7 +95,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/round"
-            android:backgroundTint="@color/cinnabar"
+            android:backgroundTint="@color/app_color_4"
             android:gravity="center"
             android:text="@string/discount"
             android:textColor="@color/white"

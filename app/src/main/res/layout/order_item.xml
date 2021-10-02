@@ -47,9 +47,11 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginStart="16dp"
+            android:contentDescription="Product Image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/img_not_loaded1_4x" />
+            app:srcCompat="@drawable/img_not_loaded1_4x"
+            tools:ignore="HardcodedText" />
 
     <TextView
             android:id="@+id/order_item_title"
@@ -81,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="5dp"
-            android:background="@color/grey"
+            android:background="@color/app_color_3"
             app:layout_constraintTop_toBottomOf="@+id/order_item_image"
             tools:layout_editor_absoluteX="0dp" />
 

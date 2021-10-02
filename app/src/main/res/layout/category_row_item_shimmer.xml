@@ -12,7 +12,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@color/grey"
+            android:background="@color/app_color_3"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,9 +54,9 @@
 
     <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="3dp"
             android:layout_marginTop="5dp"
-            android:background="@color/roman_silver"
+            android:background="@color/app_color_3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/products_shimmer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -83,16 +83,23 @@ class HomeCategoryAdapter(
                             viewModel.loadCategoryDatabase(viewModel.categoryList!![absPosition])
                             initializeProducts(holder, absPosition)
                         } else {
-                            Toast.makeText(context, "Products retrieval failed", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                context,
+                                "Products retrieval failed. Check your internet connection",
+                                Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
 
                     override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
                         holder.productsLoader.visibility = View.GONE
-                        Toast.makeText(context, "Product retrieval failed", Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            context,
+                            "Product retrieval failed. Check your internet connection",
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
-                        Log.d("API response", "Failed products retrieval: $t")
                     }
                 })
             }

@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="5dp"
-            android:background="@color/roman_silver"
+            android:background="@color/app_color_3"
             app:layout_constraintTop_toBottomOf="@id/category_products_container"
             tools:layout_editor_absoluteX="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

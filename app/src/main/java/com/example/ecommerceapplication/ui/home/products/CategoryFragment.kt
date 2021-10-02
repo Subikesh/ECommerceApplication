@@ -63,7 +63,7 @@ class CategoryFragment : Fragment() {
         val productsLoader = binding.categoryProductsLoader
         productsLoader.startShimmerAnimation()
 
-        viewModel.loadProducts(productsUrl,categoryObj.categoryId, PRODUCTS_COUNT)
+        viewModel.loadProducts(productsUrl, categoryObj.categoryId, PRODUCTS_COUNT)
             .observe(viewLifecycleOwner) { products ->
                 if (products != null) {
                     productsLoader.stopShimmerAnimation()
@@ -86,8 +86,11 @@ class CategoryFragment : Fragment() {
                     )
                 } else {
                     productsLoader.visibility = GONE
-                    Toast.makeText(context, "Products not retrieved", Toast.LENGTH_SHORT).show()
-                    Log.d("API response", "Product retrieval failed")
+                    Toast.makeText(
+                        context,
+                        "Products retrieval failed. Check your internet connection",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }

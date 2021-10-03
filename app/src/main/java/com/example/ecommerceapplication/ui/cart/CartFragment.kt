@@ -91,7 +91,6 @@ class CartFragment : Fragment() {
                         var price = 0.0
                         for (cartItem in cartItemList)
                             price += cartItem.product.discountPrice * cartItem.cartItem.quantity
-                        // TODO: Index out of bounds on wishlist
                         binding.totalCost.text = getString(R.string.price_holder, price)
                         viewModel.updateTotal(cartId, price)
                     })

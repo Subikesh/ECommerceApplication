@@ -18,8 +18,7 @@ data class Product(
     val codAvailable: Boolean = true,
     val productUrl: String? = null,
     val inStock: Boolean = true,
-    val discountPercent: Double,
-    // TODO: get the specification list(table) in some other entity (general and dimensions)
+    val discountPercent: Double
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

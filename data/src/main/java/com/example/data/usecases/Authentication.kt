@@ -57,7 +57,7 @@ class Authentication(context: Context) {
             insertUser.userId = db.userDao().insert(insertUser).toInt()
             // Creating shopping cart for user
             db.cartDao().addShoppingCart(ShoppingCart(userId = insertUser.userId))
-            Log.d("LoginFragment", "userSignup: userId: ${insertUser.userId} created")
+            Log.d("LoginFragment", "userSignup: userId: $insertUser created")
             val userObj = UserEntityMapperImpl.fromEntity(insertUser)
             userLogin(userObj)
             userObj

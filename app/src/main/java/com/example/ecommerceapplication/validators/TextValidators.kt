@@ -77,7 +77,6 @@ object TextValidators {
     }
 
     private fun checkText(editText: EditText, predicate: Boolean, error: String): Boolean {
-        Log.d("Validation", "$error $predicate ${editText.text.length}")
         return if (predicate) {
             editText.error = error
             editText.requestFocus()

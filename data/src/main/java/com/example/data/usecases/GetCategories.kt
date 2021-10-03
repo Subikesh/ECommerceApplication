@@ -24,7 +24,6 @@ class GetCategories {
                 response: Response<CategoryResult>
             ) {
                 val categoryObjects = response.body()!!
-                Log.d("API response", "Categories retrieved")
                 categoryList = CategoryApiMapperImpl.fromApiModel(categoryObjects)
                 allCategories.value = categoryList
             }

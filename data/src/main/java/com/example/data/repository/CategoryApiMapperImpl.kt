@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.api.models.API_VERSION
 import com.example.data.api.models.CategoryResult
 import com.example.domain.models.Category

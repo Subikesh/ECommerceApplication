@@ -19,6 +19,8 @@ import com.example.ecommerceapplication.ui.home.products.ProductRecyclerAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import kotlinx.coroutines.launch
 
+// TODO: Move this fragment to app>ui>cart
+
 class WishlistFragment : Fragment() {
 
     private var _binding: FragmentWishlistBinding? = null

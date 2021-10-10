@@ -1,12 +1,12 @@
 package com.example.data.api
 
-import android.util.Log
 import com.example.data.api.models.ProductsList
 import retrofit2.Call
 import com.example.data.api.models.CategoryResult
 import retrofit2.http.*
 
 const val AFFILIATE_ID = "amaratasi"
+// TODO: add affiliate token in secrets
 const val AFFILIATE_TOKEN = "34c929c04f054f20ad7143ac7dad8b26"
 
 interface GetApiDataService {

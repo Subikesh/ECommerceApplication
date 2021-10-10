@@ -1,6 +1,5 @@
 package com.example.data.usecases
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance

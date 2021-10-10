@@ -1,7 +1,6 @@
 package com.example.ecommerceapplication.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.AbsListView
 import android.widget.Toast
@@ -9,19 +8,17 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.roomdb.entities.MutablePair
 import com.example.ecommerceapplication.MainActivity
-import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
-import com.example.data.roomdb.entities.MutablePair
-import kotlinx.coroutines.launch
+import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 
 class HomeFragment : Fragment() {
 
@@ -94,6 +91,10 @@ class HomeFragment : Fragment() {
         }
     }
 
+    /**
+     * Initialize categories recyclerview in homepage
+     * Stops the shimmer loader and displays categories
+     */
     private fun initializeCategories() {
         val rvCategories = binding.homeRecyclerView
         val categoryShimmer = binding.categoryLoader
@@ -153,9 +154,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    /**
-     * Inflating search and filter menu to actionbar
-     */
+    /** Inflating search in actionbar */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_toolbar_menu, menu)
         val searchView = menu.findItem(R.id.home_search).actionView as SearchView

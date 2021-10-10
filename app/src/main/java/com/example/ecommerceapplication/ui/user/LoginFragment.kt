@@ -59,6 +59,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        // Clearing password text on state restored
         binding.loginPassword.text.clear()
     }
 

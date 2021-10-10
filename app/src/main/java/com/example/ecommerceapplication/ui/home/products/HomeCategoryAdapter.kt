@@ -1,7 +1,6 @@
 package com.example.ecommerceapplication.ui.home.products
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -151,7 +150,7 @@ class HomeCategoryAdapter(
         lateinit var productsUrl: String
 
         init {
-            // On click of show all button for each category, It redirects to page showing
+            // On click of show all button for each category, redirect to page showing
             // all products of that category.
             categoryTopBar.setOnClickListener {
                 val bundle = bundleOf(CATEGORY_OBJECT to category)

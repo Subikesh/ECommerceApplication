@@ -1,6 +1,5 @@
 package com.example.data.roomdb.dao
 
-import android.util.Log
 import androidx.room.*
 import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.Product

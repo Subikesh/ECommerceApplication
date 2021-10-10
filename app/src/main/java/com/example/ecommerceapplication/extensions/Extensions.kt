@@ -35,7 +35,6 @@ fun RecyclerView.initRecyclerView(
  * @param imgUrl    Url of image
  * @param error     Error image to be shown if image not loaded
  */
-
 fun ImageView.getGlideImage(
     context: Context,
     imgUrl: String?,

@@ -28,15 +28,6 @@ class HomeViewModel(context: Application) : AndroidViewModel(context) {
         productsApi.callApi(productsUrl, categoryId, itemCount)
 
     /**
-     * Loads all the categories and products in categoryList to database
-     */
-    fun loadCategoriesDatabase() {
-        viewModelScope.launch {
-            categoryDatabase.insertCategories(categoryList!!.toList())
-        }
-    }
-
-    /**
      * Loads the category and products from categoryPair to database
      * @param categoryPair MutablePair of category and List of products
      */

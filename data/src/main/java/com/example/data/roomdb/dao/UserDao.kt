@@ -3,9 +3,7 @@ package com.example.data.roomdb.dao
 import androidx.room.*
 import com.example.data.roomdb.entities.User
 
-/**
- * User data access object in room database
- */
+/** User data access object in room database */
 @Dao
 interface UserDao: BaseDao<User> {
     /**

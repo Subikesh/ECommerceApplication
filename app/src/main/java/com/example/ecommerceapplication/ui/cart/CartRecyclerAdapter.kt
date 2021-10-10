@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.core.text.isDigitsOnly
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.Product
@@ -70,7 +72,7 @@ class CartRecyclerAdapter(
             if (++quantity == 10)
                 holder.addProductButton.isEnabled = false
 
-            holder.productPrice.text = "${currProduct.discountPrice * quantity}"
+            holder.productPrice.text = context.getString(R.string.price_holder, currProduct.discountPrice * quantity)
             holder.quantity.text = "$quantity"
             holder.saveButton.isEnabled = true
         }
@@ -83,7 +85,7 @@ class CartRecyclerAdapter(
             if (--quantity == 1)
                 holder.reduceProductButton.isEnabled = false
 
-            holder.productPrice.text = "${currProduct.discountPrice * quantity}"
+            holder.productPrice.text = context.getString(R.string.price_holder, currProduct.discountPrice * quantity)
             holder.quantity.text = "$quantity"
             holder.saveButton.isEnabled = true
         }

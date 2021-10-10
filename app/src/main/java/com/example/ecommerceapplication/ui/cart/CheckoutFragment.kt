@@ -119,8 +119,7 @@ class CheckoutFragment : Fragment() {
 
    private fun validateInputs() = TextValidators.checkCard(binding.cardInputCheckout) &&
             TextValidators.checkEmpty(binding.nameInputCheckout, "Enter card owner name") &&
-            TextValidators.checkMonth(binding.expiryMonth) &&
-            TextValidators.checkYear(binding.expiryYearCheckout) &&
+            TextValidators.checkExpiry(binding.expiryMonth, binding.expiryYearCheckout) &&
             TextValidators.checkCvv(binding.cvvInputCheckout)
 
     override fun onDestroyView() {

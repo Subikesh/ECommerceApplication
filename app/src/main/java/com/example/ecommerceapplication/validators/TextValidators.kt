@@ -2,8 +2,8 @@ package com.example.ecommerceapplication.validators
 
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import android.widget.EditText
+import java.util.*
 import java.util.regex.Pattern
 
 object TextValidators {
@@ -90,6 +90,17 @@ object TextValidators {
             !(monthText.text.isNotEmpty() && Integer.valueOf(monthText.text.toString()) <= 12),
             EXPIRY_MONTH_ERROR
         )
+
+    fun checkExpiry(monthText: EditText, yearText: EditText): Boolean {
+        return if (checkYear(yearText) && checkMonth(monthText)) {
+            val thisYear = Calendar.getInstance().get(Calendar.YEAR)
+            val thisMonth = Calendar.getInstance().get(Calendar.MONTH)
+            if (!((Integer.valueOf(yearText.text.toString()) > thisYear) || (Integer.valueOf(yearText.text.toString()) == thisYear && Integer.valueOf(monthText.text.toString()) > thisMonth))) {
+                yearText.error = "Card already expired"
+                false
+            } else true
+        } else false
+    }
 
     fun checkYear(yearText: EditText) =
         checkText(yearText, yearText.text.length < 4, EXPIRY_YEAR_ERROR)

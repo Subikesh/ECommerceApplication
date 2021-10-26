@@ -39,7 +39,7 @@
             <EditText
                     android:id="@+id/signup_username"
                     style="@style/login_text_view"
-                    android:autofillHints="username"
+                    android:autofillHints="fullname"
                     android:ems="10"
                     android:hint="@string/username_hint"
                     android:inputType="text" />

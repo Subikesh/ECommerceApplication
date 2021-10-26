@@ -1,7 +1,10 @@
 package com.example.ecommerceapplication.ui.home
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -82,7 +85,12 @@ class SearchFragment : Fragment() {
         val searchView = menu.findItem(R.id.search_button).actionView as SearchView
         searchView.queryHint = "Type here to search..."
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onQueryTextSubmit(search: String?): Boolean {
+                requireActivity().currentFocus?.let { view ->
+                    val inputManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    inputManager?.hideSoftInputFromWindow(view.windowToken, 0)
+                }
                 return if (search != null) {
                     lifecycleScope.launch {
                         val products = viewModel.searchProducts(search)

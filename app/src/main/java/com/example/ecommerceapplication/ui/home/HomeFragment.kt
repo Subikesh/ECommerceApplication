@@ -1,7 +1,9 @@
 package com.example.ecommerceapplication.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -161,6 +163,10 @@ class HomeFragment : Fragment() {
         searchView.queryHint = "Type here to search..."
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(s: String?): Boolean {
+                requireActivity().currentFocus?.let { view ->
+                    val inputManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    inputManager?.hideSoftInputFromWindow(view.windowToken, 0)
+                }
                 return if (s != null) {
                     val bundle = bundleOf(SEARCH_QUERY to s)
                     findNavController().navigate(

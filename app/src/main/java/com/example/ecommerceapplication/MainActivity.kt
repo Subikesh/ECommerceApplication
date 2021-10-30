@@ -1,15 +1,15 @@
 package com.example.ecommerceapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,11 +31,27 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_user, R.id.navigation_cart
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+
+        navView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    if (item.isChecked) {
+                        NavigationUI.onNavDestinationSelected(item, navController)
+                    } else {
+                        item.isChecked = true
+                        Log.d(TAG, "Home navigation selected")
+                        navController.popBackStack(R.id.navigation_home, false)
+                        return@setOnItemSelectedListener false
+                    }
+                }
+                else ->
+                    NavigationUI.onNavDestinationSelected(item, navController)
+            }
+            true
+        }
 
         // Setup action bar with nav controller to implement up button in action bar
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     /**

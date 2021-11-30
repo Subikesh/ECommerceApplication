@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
+import com.example.ecommerceapplication.extensions.createNotificationChannels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val TAG = "MainActivity"
@@ -22,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        createNotificationChannels(this)
 
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_fragment)

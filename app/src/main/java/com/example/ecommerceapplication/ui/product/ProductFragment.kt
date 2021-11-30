@@ -3,12 +3,15 @@ package com.example.ecommerceapplication.ui.product
 import android.graphics.Paint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,6 +19,7 @@ import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProductBinding
+import com.example.ecommerceapplication.extensions.NotificationChannels
 import com.example.ecommerceapplication.extensions.getGlideImage
 import com.example.ecommerceapplication.ui.cart.SHOPPING_CART
 import kotlinx.coroutines.launch
@@ -134,13 +138,41 @@ class ProductFragment : Fragment() {
 
         /** Implementing on click functionalities */
         binding.wishlistProduct.setOnClickListener {
+            // Notify user that wishlist updated
+            val notificationId = 0
+            val builder = NotificationCompat.Builder(
+                requireContext(),
+                NotificationChannels.OffersChannel.CHANNEL_ID
+            ).setSmallIcon(R.mipmap.ic_launcher_round)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setTimeoutAfter(10000)
+
             lifecycleScope.launch {
                 if (viewModel.wishlistProduct()) {
                     Toast.makeText(context, "Product added to your wishlist", Toast.LENGTH_SHORT)
                         .show()
                     (it as ImageButton).setImageResource(R.drawable.heart_filled_24)
+                    builder.setContentTitle("Added item to your wishlist!")
+                        .setContentText(
+                            "${
+                                if (productObj.title.length > 15)
+                                    productObj.title.substring(0, 15) + "..."
+                                else productObj.title
+                            } added to your wishlist"
+                        )
                 } else {
                     (it as ImageButton).setImageResource(R.drawable.heart_blank_24)
+                    builder.setContentTitle("Removed item from your wishlist!")
+                        .setContentText("${
+                            if (productObj.title.length > 15)
+                                productObj.title.substring(0, 15) + "..."
+                            else productObj.title
+                        } removed from your wishlist")
+                }
+                // Showing notification
+                with(NotificationManagerCompat.from(requireContext())) {
+                    notify(notificationId, builder.build())
+                    Log.d("Notification", "Notification started")
                 }
             }
         }

@@ -11,16 +11,18 @@ sealed class NotificationChannels(
     val CHANNEL_ID: String = DEFAULT_CHANNEL_ID,
     val name: String,
     val descriptionText: String = "",
+    val notificationId: Int = 0,
     private val importance: Int = IMPORTANCE_DEFAULT
 ) {
     object DefaultChannel : NotificationChannels(name = "Default channel")
     object OrdersChannel :
-        NotificationChannels("Orders", "Order notifications", "Notifications to track an order")
+        NotificationChannels("Orders", "Order notifications", "Notifications to track an order", 1)
 
     object CartChannel : NotificationChannels(
         "Cart",
         "Cart notifications",
         "Notifications to track cart activities",
+        2,
         IMPORTANCE_LOW
     )
 
@@ -28,6 +30,7 @@ sealed class NotificationChannels(
         "User",
         "User notifications",
         "Notifications on user profile changes",
+        3,
         IMPORTANCE_HIGH
     )
 
@@ -35,6 +38,7 @@ sealed class NotificationChannels(
         "Offers",
         "Offers notifications",
         "Notifies latest offers and trending products",
+        4,
         IMPORTANCE_LOW
     )
 
@@ -58,10 +62,4 @@ fun createNotificationChannels(context: Context) {
     NotificationChannels.CartChannel.createNotificationChannel(context)
     NotificationChannels.UserConfigChannel.createNotificationChannel(context)
     NotificationChannels.OffersChannel.createNotificationChannel(context)
-    // Traverse through NotificationChannels objects and add notification channel
-//    for (channel in NotificationChannels::class.staticProperties) {
-//        val notifChannel = channel.get() as NotificationChannels
-//        Log.d("Notification", "Channel: ${notifChannel.name}")
-//        notifChannel.createNotificationChannel(context)
-//    }
 }

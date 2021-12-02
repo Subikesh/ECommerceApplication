@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
@@ -140,12 +141,21 @@ class ProductFragment : Fragment() {
         binding.wishlistProduct.setOnClickListener {
             // Notify user that wishlist updated
             val notificationId = 0
+
+            // Redirect to wishlist page
+            val redirectIntent = NavDeepLinkBuilder(requireActivity())
+                .setGraph(R.navigation.mobile_navigation)
+                .setDestination(R.id.wishlistFragment)
+                .createPendingIntent()
+
             val builder = NotificationCompat.Builder(
                 requireContext(),
                 NotificationChannels.OffersChannel.CHANNEL_ID
             ).setSmallIcon(R.mipmap.ic_launcher_round)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setTimeoutAfter(10000)
+                .setContentIntent(redirectIntent)
+
 
             lifecycleScope.launch {
                 if (viewModel.wishlistProduct()) {

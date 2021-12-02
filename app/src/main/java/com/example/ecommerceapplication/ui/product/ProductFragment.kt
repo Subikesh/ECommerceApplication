@@ -140,17 +140,17 @@ class ProductFragment : Fragment() {
         /** Implementing on click functionalities */
         binding.wishlistProduct.setOnClickListener {
             // Notify user that wishlist updated
-            val notificationId = 0
-
-            // Redirect to wishlist page
+            // Redirect to wishlist page when notification clicked
             val redirectIntent = NavDeepLinkBuilder(requireActivity())
                 .setGraph(R.navigation.mobile_navigation)
                 .setDestination(R.id.wishlistFragment)
                 .createPendingIntent()
 
+            val notificationChannel = NotificationChannels.OffersChannel
+
             val builder = NotificationCompat.Builder(
                 requireContext(),
-                NotificationChannels.OffersChannel.CHANNEL_ID
+                notificationChannel.CHANNEL_ID
             ).setSmallIcon(R.mipmap.ic_launcher_round)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setTimeoutAfter(10000)
@@ -181,7 +181,7 @@ class ProductFragment : Fragment() {
                 }
                 // Showing notification
                 with(NotificationManagerCompat.from(requireContext())) {
-                    notify(notificationId, builder.build())
+                    notify(notificationChannel.notificationId, builder.build())
                     Log.d("Notification", "Notification started")
                 }
             }

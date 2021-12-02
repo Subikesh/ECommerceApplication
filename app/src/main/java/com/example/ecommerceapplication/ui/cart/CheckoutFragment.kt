@@ -8,14 +8,18 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
 import com.example.data.roomdb.entities.ShoppingCart
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
+import com.example.ecommerceapplication.extensions.NotificationChannels
 import com.example.ecommerceapplication.extensions.initAlertDialog
 import com.example.ecommerceapplication.validators.TextValidators
 import kotlinx.coroutines.launch
@@ -52,6 +56,21 @@ class CheckoutFragment : Fragment() {
         cart = arguments?.get(SHOPPING_CART) as ShoppingCart?
         val buyFromProduct: Boolean = (cart != null)
 
+        // Deeplink PendingIntent to go to order fragment
+        val redirectIntent = NavDeepLinkBuilder(requireActivity())
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.orderFragment)
+            .createPendingIntent()
+
+        val notificationChannel = NotificationChannels.OrdersChannel
+
+        val builder = NotificationCompat.Builder(
+            requireContext(),
+            notificationChannel.CHANNEL_ID
+        ).setSmallIcon(R.mipmap.ic_launcher_round)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(redirectIntent)
+
         // Card number formatting
         binding.cardInputCheckout.addTextChangedListener(object : TextWatcher {
             private var current = ""
@@ -80,6 +99,13 @@ class CheckoutFragment : Fragment() {
                     "Are you sure you want to place the order?",
                     { _, _ ->
                         lifecycleScope.launch {
+                            builder.setContentTitle("Order placed!")
+                                .setContentText("Your order is placed successfully!")
+                            // Show order placed notification
+                            with(NotificationManagerCompat.from(requireContext())) {
+                                notify(notificationChannel.notificationId, builder.build())
+                            }
+
                             if (buyFromProduct)
                                 viewModel.makeOrder(cart!!)
                             else
@@ -93,23 +119,21 @@ class CheckoutFragment : Fragment() {
         }
 
         binding.failPaymentBtn.setOnClickListener {
-            if (validateInputs()) {
-                val alertDialog = AlertDialog.Builder(requireActivity())
-                alertDialog.initAlertDialog(
-                    "Order confirmation",
-                    "Are you sure you want to place the order?",
-                    { _, _ ->
-                        lifecycleScope.launch {
-                            if (buyFromProduct)
-                                viewModel.makeOrder(cart!!, false)
-                            else
-                                viewModel.moveCartToOrder(false)
-                            findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
-                        }
-                    },
-                    { dialog, _ -> dialog.cancel() })
-                alertDialog.show()
-            }
+            val alertDialog = AlertDialog.Builder(requireActivity())
+            alertDialog.initAlertDialog(
+                "Order confirmation",
+                "Are you sure you want to place the order?",
+                { _, _ ->
+                    lifecycleScope.launch {
+                        if (buyFromProduct)
+                            viewModel.makeOrder(cart!!, false)
+                        else
+                            viewModel.moveCartToOrder(false)
+                        findNavController().navigate(R.id.action_checkoutFragment_to_orderFragment)
+                    }
+                },
+                { dialog, _ -> dialog.cancel() })
+            alertDialog.show()
         }
 
         binding.cancelPaymentBtn.setOnClickListener {
@@ -117,7 +141,7 @@ class CheckoutFragment : Fragment() {
         }
     }
 
-   private fun validateInputs() = TextValidators.checkCard(binding.cardInputCheckout) &&
+    private fun validateInputs() = TextValidators.checkCard(binding.cardInputCheckout) &&
             TextValidators.checkEmpty(binding.nameInputCheckout, "Enter card owner name") &&
             TextValidators.checkExpiry(binding.expiryMonth, binding.expiryYearCheckout) &&
             TextValidators.checkCvv(binding.cvvInputCheckout)

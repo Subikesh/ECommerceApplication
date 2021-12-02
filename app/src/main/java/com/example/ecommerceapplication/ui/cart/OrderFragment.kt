@@ -56,7 +56,7 @@ class OrderFragment : Fragment() {
                     Toast.makeText(context, "You have not made any orders yet.", Toast.LENGTH_SHORT)
                         .show()
                 }
-            } else // If user tries to see orders when logged out
+            } else // If user tries to see orders when he's logged out
                 findNavController().popBackStack(R.id.navigation_home, false)
         }
     }

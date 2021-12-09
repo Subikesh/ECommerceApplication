@@ -38,10 +38,12 @@ class ProductViewModel(val context: Application) : AndroidViewModel(context) {
             userWishlist.removeWishlist(session.user!!, product)
             Toast.makeText(context, "Product removed from your wishlist", Toast.LENGTH_SHORT).show()
             false
+        } else if (!session.login) {
+            Toast.makeText(context, "Please login to wishlist any product", Toast.LENGTH_SHORT)
+                .show()
+            false
         } else {
-            if (!session.login)
-                Toast.makeText(context, "Please login to wishlist any product", Toast.LENGTH_SHORT).show()
-            else
+            if (session.login)
                 userWishlist.addWishlist(session.user!!, product)
             session.login
         }

@@ -34,6 +34,11 @@ class GetCategories {
         return allCategories
     }
 
+    /**
+     * Loads more categories to list and appends to allCategories
+     * @param categoryCount number of categories to be loaded
+     * @return complete list of categories that was loaded
+     */
     fun loadMoreCategories(categoryCount: Int): MutableLiveData<List<Category>> {
         val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
         val call = service?.getCategories()

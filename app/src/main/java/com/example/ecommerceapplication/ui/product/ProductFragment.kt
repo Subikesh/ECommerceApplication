@@ -98,7 +98,7 @@ class ProductFragment : Fragment() {
             }
         }
 
-        // Set wishlist as selected if it is already selected
+        // Set wishlist heart filled if it is already selected
         lifecycleScope.launch {
             if (viewModel.inWishlist()) {
                 binding.wishlistProduct.setImageResource(R.drawable.heart_filled_24)
@@ -111,9 +111,10 @@ class ProductFragment : Fragment() {
                     if (viewModel.addProductToCart()) {
                         Toast.makeText(context, "Product added to cart", Toast.LENGTH_SHORT).show()
                         itemInCart()
-                    } else
+                    } else {
                         Toast.makeText(context, "Login to add product to cart", Toast.LENGTH_SHORT)
                             .show()
+                    }
                 }
 
                 binding.buyNowButton.setOnClickListener {
@@ -148,21 +149,16 @@ class ProductFragment : Fragment() {
 
             val notificationChannel = NotificationChannels.OffersChannel
 
-            val builder = NotificationCompat.Builder(
-                requireContext(),
-                notificationChannel.CHANNEL_ID
-            ).setSmallIcon(R.mipmap.ic_launcher_round)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setTimeoutAfter(10000)
-                .setContentIntent(redirectIntent)
-
-
             lifecycleScope.launch {
                 if (viewModel.wishlistProduct()) {
-                    Toast.makeText(context, "Product added to your wishlist", Toast.LENGTH_SHORT)
-                        .show()
-                    (it as ImageButton).setImageResource(R.drawable.heart_filled_24)
-                    builder.setContentTitle("Added item to your wishlist!")
+                    val builder = NotificationCompat.Builder(
+                        requireContext(),
+                        notificationChannel.CHANNEL_ID
+                    ).setSmallIcon(R.mipmap.ic_launcher_round)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setTimeoutAfter(10000)
+                        .setContentIntent(redirectIntent)
+                        .setContentTitle("Added item to your wishlist!")
                         .setContentText(
                             "${
                                 if (productObj.title.length > 15)
@@ -170,19 +166,18 @@ class ProductFragment : Fragment() {
                                 else productObj.title
                             } added to your wishlist"
                         )
+
+                    Toast.makeText(context, "Product added to your wishlist", Toast.LENGTH_SHORT)
+                        .show()
+                    (it as ImageButton).setImageResource(R.drawable.heart_filled_24)
+
+                    // Showing notification
+                    with(NotificationManagerCompat.from(requireContext())) {
+                        notify(notificationChannel.notificationId, builder.build())
+                        Log.d("Notification", "Notification started")
+                    }
                 } else {
                     (it as ImageButton).setImageResource(R.drawable.heart_blank_24)
-                    builder.setContentTitle("Removed item from your wishlist!")
-                        .setContentText("${
-                            if (productObj.title.length > 15)
-                                productObj.title.substring(0, 15) + "..."
-                            else productObj.title
-                        } removed from your wishlist")
-                }
-                // Showing notification
-                with(NotificationManagerCompat.from(requireContext())) {
-                    notify(notificationChannel.notificationId, builder.build())
-                    Log.d("Notification", "Notification started")
                 }
             }
         }

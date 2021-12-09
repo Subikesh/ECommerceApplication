@@ -16,6 +16,7 @@ interface ProductDao : BaseDao<Product> {
 
     /**
      * Find categories and products for the given search query
+     * Searches product title, brand and category title
      * @param query Search string given by user
      */
     @Query("SELECT p.* FROM product p, category c WHERE c.categoryId = p.categoryId AND (LOWER(p.title) LIKE '%' || :query || '%' OR LOWER(p.brand) LIKE '%' || :query || '%' OR LOWER(c.title) LIKE '%' || :query || '%')")

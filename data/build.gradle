@@ -39,7 +39,18 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.1.0'
 
     api project(":domain")
+
+    // Room db
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
 }

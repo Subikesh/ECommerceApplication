@@ -1,23 +1,24 @@
 package com.example.data.usecases
 
-import android.content.Context
 import android.database.sqlite.SQLiteException
 import android.util.Log
 import com.example.data.repository.UserEntityMapperImpl
-import com.example.data.roomdb.DatabaseContract
+import com.example.data.roomdb.dao.ShoppingCartDao
+import com.example.data.roomdb.dao.UserDao
 import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.roomdb.entities.User
 import com.example.data.session.SessionManager
+import javax.inject.Inject
+
 
 /**
  * Class contains helper methods for user authentication
  */
-class Authentication(context: Context) {
-    /** Database object to access database */
-    private val db = DatabaseContract.getInstance(context)
-
-    /** For keeping track of user login */
-    private val session = SessionManager(context)
+class Authentication @Inject constructor(
+    private val session: SessionManager,
+    private val userDao: UserDao,
+    private val cartDao: ShoppingCartDao
+) {
 
     /**
      * Login user using user mail and password
@@ -26,7 +27,7 @@ class Authentication(context: Context) {
      * @return the user entity who is logged in
      */
     suspend fun userLogin(email: String, password: String): com.example.domain.models.User? {
-        val user = db.userDao().findLogin(email, password)
+        val user = userDao.findLogin(email, password)
         return if (user != null) {
             userLogin(UserEntityMapperImpl.fromEntity(user))
             Log.i("LoginFragment", "userLogin: $user logged in")
@@ -54,9 +55,9 @@ class Authentication(context: Context) {
     suspend fun userSignup(email: String, password: String, username: String): com.example.domain.models.User? {
         val insertUser = User(username = username, password = password, email = email)
         return try {
-            insertUser.userId = db.userDao().insert(insertUser).toInt()
+            insertUser.userId = userDao.insert(insertUser).toInt()
             // Creating shopping cart for user
-            db.cartDao().addShoppingCart(ShoppingCart(userId = insertUser.userId))
+            cartDao.addShoppingCart(ShoppingCart(userId = insertUser.userId))
             Log.d("LoginFragment", "userSignup: userId: $insertUser created")
             val userObj = UserEntityMapperImpl.fromEntity(insertUser)
             userLogin(userObj)

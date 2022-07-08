@@ -11,15 +11,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.data.di.RoomModule
 import com.example.data.repository.ProductEntityMapperImpl
+import com.example.data.session.SessionManager
+import com.example.data.usecases.Authentication
+import com.example.data.usecases.UserWishlist
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCartBinding
+import com.example.ecommerceapplication.di.AppModule
+import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class CartFragment : Fragment() {
+
+    @Inject
+    lateinit var session: SessionManager
 
     private lateinit var viewModel: CartViewModel
     private var _binding: FragmentCartBinding? = null
@@ -30,7 +40,12 @@ class CartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(CartViewModel::class.java)
+        DaggerAppComponent.builder()
+            .appModule(AppModule(requireActivity()))
+            .roomModule(RoomModule(requireActivity()))
+            .build().inject(this)
+        val factory = CartViewModel.Factory(requireActivity().application, session)
+        viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
 
         _binding = FragmentCartBinding.inflate(inflater, container, false)
 

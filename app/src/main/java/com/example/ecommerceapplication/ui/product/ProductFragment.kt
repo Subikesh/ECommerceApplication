@@ -1,10 +1,8 @@
 package com.example.ecommerceapplication.ui.product
 
 import android.graphics.Paint
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,21 +11,34 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
+import com.example.data.di.RoomModule
+import com.example.data.session.SessionManager
+import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProductBinding
+import com.example.ecommerceapplication.di.AppModule
+import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.NotificationChannels
 import com.example.ecommerceapplication.extensions.getGlideImage
 import com.example.ecommerceapplication.ui.cart.SHOPPING_CART
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val PRODUCT_OBJECT = "productObject"
 
 class ProductFragment : Fragment() {
+
+    @Inject
+    lateinit var session: SessionManager
+    @Inject
+    lateinit var userWishlist: UserWishlist
 
     private var _binding: FragmentProductBinding? = null
     private val binding get() = _binding!!
@@ -39,7 +50,13 @@ class ProductFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+        DaggerAppComponent.builder()
+            .appModule(AppModule(requireActivity()))
+            .roomModule(RoomModule(requireActivity()))
+            .build().inject(this)
+
+        val factory = ProductViewModel.Factory(requireActivity().application, session, userWishlist)
+        viewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
         _binding = FragmentProductBinding.inflate(inflater, container, false)
 
         productObj = arguments?.get(PRODUCT_OBJECT) as Product

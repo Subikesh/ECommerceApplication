@@ -8,16 +8,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
+import com.example.data.usecases.Authentication
+import com.example.data.usecases.UserWishlist
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
+import com.example.ecommerceapplication.di.AppModule
+import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initAlertDialog
+import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
+    @Inject
+    lateinit var authentication: Authentication
+    @Inject
+    lateinit var session: SessionManager
+    @Inject
+    lateinit var userWishlist: UserWishlist
 
     private var _binding: FragmentProfileBinding? = null
-    private lateinit var session: SessionManager
     private val binding get() = _binding!!
 
     private lateinit var viewModel: UserViewModel
@@ -26,11 +37,14 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        DaggerAppComponent.builder()
+            .appModule(AppModule(requireActivity()))
+            .roomModule(RoomModule(requireActivity()))
+            .build().inject(this)
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        session = SessionManager(requireContext())
-
-        viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+        val factory = UserViewModel.Factory(authentication, session, userWishlist)
+        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         // Toolbar
         val toolbar = binding.profileToolbar.root
@@ -44,7 +58,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val session = SessionManager(requireActivity())
         val user = session.user
         binding.profileUsername.text = user?.username
         binding.profileEmail.text = user?.email

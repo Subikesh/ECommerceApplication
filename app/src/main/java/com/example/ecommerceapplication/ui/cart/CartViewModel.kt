@@ -1,7 +1,10 @@
 package com.example.ecommerceapplication.ui.cart
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.data.repository.OrderEntityMapper
 import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.OrderCartItem
@@ -12,9 +15,8 @@ import com.example.data.usecases.UserOrders
 import com.example.data.usecases.UserShoppingCart
 import kotlinx.coroutines.launch
 
-class CartViewModel(context: Application) : AndroidViewModel(context) {
+class CartViewModel constructor(context: Application, private val session: SessionManager) : AndroidViewModel(context) {
 
-    private val session = SessionManager(context)
     private val userShoppingCart = UserShoppingCart(context)
     private val userOrder = UserOrders(context)
 
@@ -63,5 +65,15 @@ class CartViewModel(context: Application) : AndroidViewModel(context) {
 
     fun deleteCartItem(cartItem: CartItem) {
         viewModelScope.launch { userShoppingCart.removeCartItem(cartItem) }
+    }
+
+    class Factory constructor(
+        private val application: Application,
+        private val session: SessionManager,
+    ) : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return CartViewModel(application, session) as T
+        }
     }
 }

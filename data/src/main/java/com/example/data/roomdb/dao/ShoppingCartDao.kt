@@ -57,7 +57,7 @@ abstract class ShoppingCartDao {
     @Transaction
     @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM shoppingcart, cartitem WHERE shoppingcart.cartId = cartitem.cartId AND shoppingcart.userId = :userId AND cartitem.productId = :productId")
-    abstract suspend fun findCartItem(userId: Int, productId: String): ShoppingCartWithCartItems
+    abstract suspend fun findCartItem(userId: Int, productId: String): ShoppingCartWithCartItems?
 
     @Query("UPDATE shoppingcart SET total = :price WHERE cartId = :cartId")
     abstract suspend fun updateCartPrice(cartId: Int, price: Double)

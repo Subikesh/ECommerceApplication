@@ -1,24 +1,22 @@
 package com.example.data.session
 
-import android.content.Context
-import android.content.SharedPreferences
+import com.example.data.utils.preferences.SessionPreferenceKeys.KEY_LOGGED_IN
+import com.example.data.utils.preferences.SessionPreferenceKeys.KEY_USER
+import com.example.data.utils.preferences.SessionPreferences
 import com.example.domain.models.User
 import com.google.gson.Gson
+import javax.inject.Inject
 
 /**
  * Class to track session information like user login status
  */
-class SessionManager(context: Context) {
-    var preferences: SharedPreferences =
-        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-    var editor: SharedPreferences.Editor = preferences.edit()
+class SessionManager @Inject constructor(private val preferences: SessionPreferences) {
 
     /** Tracks if user is logged in or not */
     var login: Boolean
         get() = preferences.getBoolean(KEY_LOGGED_IN, false)
         set(value) {
-            editor.putBoolean(KEY_LOGGED_IN, value)
-            editor.commit()
+            preferences.putBoolean(KEY_LOGGED_IN, value)
         }
 
     /**
@@ -26,20 +24,13 @@ class SessionManager(context: Context) {
      */
     var user: User?
         get() {
-            val userJson = preferences.getString(KEY_USER, null)
+            val userJson = preferences.getStringOrNull(KEY_USER)
             val gson = Gson()
             return gson.fromJson(userJson, User::class.java)
         }
         set(newUser) {
             val gson = Gson()
             val userJson = gson.toJson(newUser)
-            editor.putString(KEY_USER, userJson)
-            editor.commit()
+            preferences.putString(KEY_USER, userJson)
         }
-
-    companion object {
-        private const val PREF_NAME: String = "EcommerceSession"
-        private const val KEY_LOGGED_IN: String = "isLoggedIn"
-        private const val KEY_USER: String = "currentUser"
-    }
 }

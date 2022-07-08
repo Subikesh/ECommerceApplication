@@ -1,18 +1,18 @@
 package com.example.ecommerceapplication.ui.user
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.data.session.SessionManager
-import com.example.domain.models.User
 import com.example.data.usecases.Authentication
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
+import com.example.domain.models.User
 
-class UserViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val authentication = Authentication(application)
-    private val session = SessionManager(application)
-    private val userWishlist = UserWishlist(application)
+class UserViewModel constructor(
+    private val authentication: Authentication,
+    private val session: SessionManager,
+    private val userWishlist: UserWishlist
+) : ViewModel() {
 
     var user: User? = null
         private set
@@ -60,5 +60,16 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         if (session.user != null)
             products = userWishlist.getWishlist(session.user!!)
         return products
+    }
+
+    class Factory constructor(
+        private val authentication: Authentication,
+        private val session: SessionManager,
+        private val userWishlist: UserWishlist
+    ) : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return UserViewModel(authentication, session, userWishlist) as T
+        }
     }
 }

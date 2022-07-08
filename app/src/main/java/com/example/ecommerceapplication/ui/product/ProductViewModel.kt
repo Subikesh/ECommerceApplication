@@ -1,22 +1,26 @@
 package com.example.ecommerceapplication.ui.product
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.data.session.SessionManager
+import com.example.data.usecases.Authentication
 import com.example.data.usecases.UserOrders
 import com.example.data.usecases.UserShoppingCart
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
+import com.example.ecommerceapplication.ui.user.UserViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductViewModel(val context: Application) : AndroidViewModel(context) {
+class ProductViewModel constructor(private val context: Application, private val session: SessionManager, private val userWishlist: UserWishlist) : AndroidViewModel(context) {
 
     private lateinit var product: Product
-    private val session = SessionManager(context)
 
-    private val userWishlist = UserWishlist(context)
     private val userShoppingCart = UserShoppingCart(context)
     private val userOrders = UserOrders(context)
 
@@ -68,4 +72,15 @@ class ProductViewModel(val context: Application) : AndroidViewModel(context) {
     suspend fun buyProduct() = userOrders.buyProduct(session.user!!, product)
 
     fun isLoggedIn() = session.login
+
+    class Factory constructor(
+        private val application: Application,
+        private val session: SessionManager,
+        private val userWishlist: UserWishlist
+    ) : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return ProductViewModel(application, session, userWishlist) as T
+        }
+    }
 }

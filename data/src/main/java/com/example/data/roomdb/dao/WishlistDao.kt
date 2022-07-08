@@ -21,5 +21,5 @@ interface WishlistDao {
 
     /** Check if this product is already in user's wishlist */
     @Query("SELECT * FROM userproductcrossref WHERE userId = :userId AND productId = :productId")
-    suspend fun findWishlist(userId: Int, productId: String): UserProductCrossRef
+    suspend fun findWishlist(userId: Int, productId: String): UserProductCrossRef?
 }

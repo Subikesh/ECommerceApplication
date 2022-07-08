@@ -2,6 +2,7 @@ package com.example.ecommerceapplication.di
 
 import com.example.data.di.PreferenceModule
 import com.example.data.di.RoomModule
+import com.example.ecommerceapplication.ui.product.ProductFragment
 import com.example.ecommerceapplication.ui.user.*
 import dagger.Component
 import javax.inject.Singleton
@@ -14,4 +15,5 @@ interface AppComponent {
     fun inject(fragment: SignupFragment)
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: WishlistFragment)
+    fun inject(fragment: ProductFragment)
 }

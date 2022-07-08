@@ -2,6 +2,9 @@ package com.example.ecommerceapplication.di
 
 import com.example.data.di.PreferenceModule
 import com.example.data.di.RoomModule
+import com.example.ecommerceapplication.ui.cart.CartFragment
+import com.example.ecommerceapplication.ui.cart.CheckoutFragment
+import com.example.ecommerceapplication.ui.cart.OrderFragment
 import com.example.ecommerceapplication.ui.product.ProductFragment
 import com.example.ecommerceapplication.ui.user.*
 import dagger.Component
@@ -16,4 +19,7 @@ interface AppComponent {
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: WishlistFragment)
     fun inject(fragment: ProductFragment)
+    fun inject(fragment: CheckoutFragment)
+    fun inject(fragment: CartFragment)
+    fun inject(fragment: OrderFragment)
 }

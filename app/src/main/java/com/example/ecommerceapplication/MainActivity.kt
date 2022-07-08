@@ -1,7 +1,6 @@
 package com.example.ecommerceapplication
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
@@ -9,10 +8,9 @@ import androidx.navigation.ui.*
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
 import com.example.ecommerceapplication.extensions.createNotificationChannels
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import javax.inject.Inject
 
-private const val TAG = "MainActivity"
-
-class MainActivity : AppCompatActivity() {
+class MainActivity @Inject constructor() : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -42,7 +40,6 @@ class MainActivity : AppCompatActivity() {
                         NavigationUI.onNavDestinationSelected(item, navController)
                     } else {
                         item.isChecked = true
-                        Log.d(TAG, "Home navigation selected")
                         navController.popBackStack(R.id.navigation_home, false)
                         return@setOnItemSelectedListener false
                     }

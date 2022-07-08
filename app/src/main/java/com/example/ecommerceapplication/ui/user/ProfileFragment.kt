@@ -13,11 +13,11 @@ import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
 import com.example.ecommerceapplication.extensions.initAlertDialog
+import javax.inject.Inject
 
-class ProfileFragment : Fragment() {
+class ProfileFragment @Inject constructor(private val session: SessionManager) : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-    private lateinit var session: SessionManager
     private val binding get() = _binding!!
 
     private lateinit var viewModel: UserViewModel
@@ -28,8 +28,6 @@ class ProfileFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        session = SessionManager(requireContext())
-
         viewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         // Toolbar
@@ -44,7 +42,6 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val session = SessionManager(requireActivity())
         val user = session.user
         binding.profileUsername.text = user?.username
         binding.profileEmail.text = user?.email

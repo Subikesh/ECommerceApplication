@@ -1,18 +1,25 @@
 package com.example.ecommerceapplication.ui.user
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import com.example.data.session.SessionManager
-import com.example.domain.models.User
 import com.example.data.usecases.Authentication
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
+import com.example.domain.models.User
+import com.example.ecommerceapplication.di.ViewModelAssistedFactory
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class UserViewModel(application: Application) : AndroidViewModel(application) {
+class UserViewModel @AssistedInject constructor(
+    @Assisted private val stateHandle: SavedStateHandle,
+    private val authentication: Authentication,
+    private val session: SessionManager,
+    private val userWishlist: UserWishlist
+) : ViewModel() {
 
-    private val authentication = Authentication(application)
-    private val session = SessionManager(application)
-    private val userWishlist = UserWishlist(application)
+    @dagger.assisted.AssistedFactory
+    interface Factory : ViewModelAssistedFactory<UserViewModel>
 
     var user: User? = null
         private set

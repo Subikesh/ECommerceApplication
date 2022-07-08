@@ -1,6 +1,7 @@
 package com.example.ecommerceapplication.ui.product
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,13 +11,12 @@ import com.example.data.usecases.UserShoppingCart
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductViewModel(val context: Application) : AndroidViewModel(context) {
+class ProductViewModel @Inject constructor(private val context: Application, private val session: SessionManager, private val userWishlist: UserWishlist) : AndroidViewModel(context) {
 
     private lateinit var product: Product
-    private val session = SessionManager(context)
 
-    private val userWishlist = UserWishlist(context)
     private val userShoppingCart = UserShoppingCart(context)
     private val userOrders = UserOrders(context)
 

@@ -11,10 +11,10 @@ import com.example.data.session.SessionManager
 import com.example.data.usecases.UserOrders
 import com.example.data.usecases.UserShoppingCart
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CartViewModel(context: Application) : AndroidViewModel(context) {
+class CartViewModel @Inject constructor(context: Application, private val session: SessionManager) : AndroidViewModel(context) {
 
-    private val session = SessionManager(context)
     private val userShoppingCart = UserShoppingCart(context)
     private val userOrder = UserOrders(context)
 

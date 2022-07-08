@@ -1,25 +1,18 @@
 package com.example.ecommerceapplication.ui.user
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.data.session.SessionManager
 import com.example.data.usecases.Authentication
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
 import com.example.domain.models.User
-import com.example.ecommerceapplication.di.ViewModelAssistedFactory
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 
-class UserViewModel @AssistedInject constructor(
-    @Assisted private val stateHandle: SavedStateHandle,
+class UserViewModel constructor(
     private val authentication: Authentication,
     private val session: SessionManager,
     private val userWishlist: UserWishlist
 ) : ViewModel() {
-
-    @dagger.assisted.AssistedFactory
-    interface Factory : ViewModelAssistedFactory<UserViewModel>
 
     var user: User? = null
         private set
@@ -67,5 +60,16 @@ class UserViewModel @AssistedInject constructor(
         if (session.user != null)
             products = userWishlist.getWishlist(session.user!!)
         return products
+    }
+
+    class Factory constructor(
+        private val authentication: Authentication,
+        private val session: SessionManager,
+        private val userWishlist: UserWishlist
+    ) : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return UserViewModel(authentication, session, userWishlist) as T
+        }
     }
 }

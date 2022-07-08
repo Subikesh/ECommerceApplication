@@ -11,12 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.data.di.RoomModule
+import com.example.data.session.SessionManager
+import com.example.data.usecases.Authentication
+import com.example.data.usecases.UserWishlist
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentLoginBinding
 import com.example.ecommerceapplication.di.AppModule
 import com.example.ecommerceapplication.di.DaggerAppComponent
-import com.example.ecommerceapplication.di.ViewModelFactoryByInjection
 import com.example.ecommerceapplication.validators.TextValidators
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,10 +26,15 @@ import javax.inject.Inject
 class LoginFragment : Fragment() {
 
     @Inject
-    lateinit var factory: ViewModelFactoryByInjection
+    lateinit var authentication: Authentication
+    @Inject
+    lateinit var session: SessionManager
+    @Inject
+    lateinit var userWishlist: UserWishlist
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    val viewModel = ViewModelProvider(this, factory.create(this)).get(UserViewModel::class.java)
+    lateinit var viewModel: UserViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +44,9 @@ class LoginFragment : Fragment() {
             .appModule(AppModule(requireActivity()))
             .roomModule(RoomModule(requireActivity()))
             .build().inject(this)
+
+        val factory = UserViewModel.Factory(authentication, session, userWishlist)
+        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)

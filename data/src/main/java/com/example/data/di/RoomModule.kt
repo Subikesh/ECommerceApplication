@@ -32,6 +32,12 @@ class RoomModule(context: Context) {
 
     @Singleton
     @Provides
+    fun providesCategoryDao(database: EcommerceDatabase): CategoryDao {
+        return database.categoryDao()
+    }
+
+    @Singleton
+    @Provides
     fun providesWishlistDao(database: EcommerceDatabase): WishlistDao {
         return database.wishlistDao()
     }

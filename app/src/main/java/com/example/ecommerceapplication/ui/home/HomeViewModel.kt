@@ -1,22 +1,21 @@
 package com.example.ecommerceapplication.ui.home
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.data.repository.ProductEntityMapperImpl
+import com.example.data.roomdb.entities.MutablePair
 import com.example.data.usecases.CategoryDatabase
 import com.example.data.usecases.GetCategories
 import com.example.data.usecases.GetProducts
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import kotlinx.coroutines.launch
-import com.example.data.roomdb.entities.MutablePair
 
-class HomeViewModel(context: Application) : AndroidViewModel(context) {
-    private var categoryApi = GetCategories()
-    private val productsApi = GetProducts()
-
-    private val categoryDatabase = CategoryDatabase(context)
+class HomeViewModel(
+    private val categoryApi: GetCategories,
+    private val productsApi: GetProducts,
+    private val categoryDatabase: CategoryDatabase
+) : ViewModel() {
 
     var categoryList: MutableList<MutablePair<Category, List<Product>?>>? = null
 
@@ -38,4 +37,15 @@ class HomeViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     suspend fun searchProducts(search: String) = categoryDatabase.searchProducts(search)
+
+    class Factory constructor(
+        private val categoryApi: GetCategories,
+        private val productsApi: GetProducts,
+        private val categoryDatabase: CategoryDatabase
+    ) : ViewModelProvider.Factory {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return HomeViewModel(categoryApi, productsApi, categoryDatabase) as T
+        }
+    }
 }

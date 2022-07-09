@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
+import com.example.data.usecases.UserOrders
 import com.example.data.usecases.UserShoppingCart
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -28,6 +29,8 @@ class OrderFragment : Fragment() {
     lateinit var session: SessionManager
     @Inject
     lateinit var userShoppingCart: UserShoppingCart
+    @Inject
+    lateinit var userOrder: UserOrders
 
     private lateinit var viewModel: CartViewModel
     private var _binding: FragmentOrderBinding? = null
@@ -41,7 +44,7 @@ class OrderFragment : Fragment() {
             .appModule(AppModule(requireActivity()))
             .roomModule(RoomModule(requireActivity()))
             .build().inject(this)
-        val factory = CartViewModel.Factory(requireActivity().application, session, userShoppingCart)
+        val factory = CartViewModel.Factory(session, userShoppingCart, userOrder)
         viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
 
         _binding = FragmentOrderBinding.inflate(inflater, container, false)

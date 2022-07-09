@@ -1,13 +1,9 @@
 package com.example.data.di
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.data.roomdb.EcommerceDatabase
-import com.example.data.roomdb.dao.ProductDao
-import com.example.data.roomdb.dao.ShoppingCartDao
-import com.example.data.roomdb.dao.UserDao
-import com.example.data.roomdb.dao.WishlistDao
+import com.example.data.roomdb.dao.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -45,6 +41,13 @@ class RoomModule(context: Context) {
     fun providesShoppingCartDao(database: EcommerceDatabase): ShoppingCartDao {
         return database.cartDao()
     }
+
+    @Singleton
+    @Provides
+    fun providesOrdersDao(database: EcommerceDatabase): OrderDao {
+        return database.orderDao()
+    }
+
 
 //    @Singleton
 //    @Provides

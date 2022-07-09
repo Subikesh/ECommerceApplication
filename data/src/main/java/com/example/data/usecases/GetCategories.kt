@@ -8,8 +8,9 @@ import com.example.data.repository.CategoryApiMapperImpl
 import com.example.domain.models.Category
 import retrofit2.Call
 import retrofit2.Response
+import javax.inject.Inject
 
-class GetCategories {
+class GetCategories @Inject constructor() {
     private val allCategories: MutableLiveData<List<Category>> = MutableLiveData()
     private var categoryList: MutableList<Category> = mutableListOf()
 

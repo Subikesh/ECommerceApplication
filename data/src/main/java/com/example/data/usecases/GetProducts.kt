@@ -9,8 +9,9 @@ import com.example.domain.models.Product
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class GetProducts {
+class GetProducts @Inject constructor() {
     private val allProducts: MutableLiveData<List<Product>> = MutableLiveData()
     private var productsList: List<Product> = listOf()
 

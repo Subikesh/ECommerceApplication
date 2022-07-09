@@ -1,8 +1,5 @@
 package com.example.ecommerceapplication.ui.product
 
-import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -11,13 +8,19 @@ import com.example.data.usecases.UserOrders
 import com.example.data.usecases.UserShoppingCart
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
+import com.example.ecommerceapplication.util.ToastDuration
+import com.example.ecommerceapplication.util.ToastUtil
 import kotlinx.coroutines.launch
 
-class ProductViewModel constructor(private val context: Application, private val session: SessionManager, private val userWishlist: UserWishlist, private val userShoppingCart: UserShoppingCart) : AndroidViewModel(context) {
+class ProductViewModel constructor(
+    private val session: SessionManager,
+    private val userWishlist: UserWishlist,
+    private val userShoppingCart: UserShoppingCart,
+    private val userOrders: UserOrders,
+    private val toastUtil: ToastUtil
+) : ViewModel() {
 
     private lateinit var product: Product
-
-    private val userOrders = UserOrders(context)
 
     internal fun setProduct(_product: Product) {
         product = _product
@@ -35,11 +38,10 @@ class ProductViewModel constructor(private val context: Application, private val
         val inWishlist = inWishlist()
         return if (inWishlist) {
             userWishlist.removeWishlist(session.user!!, product)
-            Toast.makeText(context, "Product removed from your wishlist", Toast.LENGTH_SHORT).show()
+            toastUtil.displayToast("Product removed from your wishlist", ToastDuration.SHORT)
             false
         } else if (!session.login) {
-            Toast.makeText(context, "Please login to wishlist any product", Toast.LENGTH_SHORT)
-                .show()
+            toastUtil.displayToast("Please login to wishlist any product", ToastDuration.SHORT)
             false
         } else {
             if (session.login)
@@ -69,14 +71,15 @@ class ProductViewModel constructor(private val context: Application, private val
     fun isLoggedIn() = session.login
 
     class Factory constructor(
-        private val application: Application,
         private val session: SessionManager,
         private val userWishlist: UserWishlist,
-        private val userShoppingCart: UserShoppingCart
+        private val userShoppingCart: UserShoppingCart,
+        private val userOrders: UserOrders,
+        private val toastUtil: ToastUtil
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ProductViewModel(application, session, userWishlist, userShoppingCart) as T
+            return ProductViewModel(session, userWishlist, userShoppingCart, userOrders, toastUtil) as T
         }
     }
 }

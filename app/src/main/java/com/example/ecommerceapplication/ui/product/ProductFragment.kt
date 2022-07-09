@@ -18,6 +18,7 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
 import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
+import com.example.data.usecases.UserShoppingCart
 import com.example.data.usecases.UserWishlist
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
@@ -39,6 +40,8 @@ class ProductFragment : Fragment() {
     lateinit var session: SessionManager
     @Inject
     lateinit var userWishlist: UserWishlist
+    @Inject
+    lateinit var userShoppingCart: UserShoppingCart
 
     private var _binding: FragmentProductBinding? = null
     private val binding get() = _binding!!
@@ -55,7 +58,7 @@ class ProductFragment : Fragment() {
             .roomModule(RoomModule(requireActivity()))
             .build().inject(this)
 
-        val factory = ProductViewModel.Factory(requireActivity().application, session, userWishlist)
+        val factory = ProductViewModel.Factory(requireActivity().application, session, userWishlist, userShoppingCart)
         viewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
         _binding = FragmentProductBinding.inflate(inflater, container, false)
 

@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.data.di.RoomModule
 import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.session.SessionManager
+import com.example.data.usecases.UserShoppingCart
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
@@ -35,6 +36,8 @@ class CheckoutFragment : Fragment() {
 
     @Inject
     lateinit var session: SessionManager
+    @Inject
+    lateinit var userShoppingCart: UserShoppingCart
 
     private var _binding: FragmentCheckoutBinding? = null
     private val binding get() = _binding!!
@@ -51,7 +54,7 @@ class CheckoutFragment : Fragment() {
             .roomModule(RoomModule(requireActivity()))
             .build().inject(this)
 
-        val factory = CartViewModel.Factory(requireActivity().application, session)
+        val factory = CartViewModel.Factory(requireActivity().application, session, userShoppingCart)
         viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 

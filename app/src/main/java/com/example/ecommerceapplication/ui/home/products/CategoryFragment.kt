@@ -12,14 +12,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.data.di.RoomModule
 import com.example.data.roomdb.entities.MutablePair
+import com.example.data.usecases.CategoryDatabase
+import com.example.data.usecases.GetCategories
+import com.example.data.usecases.GetProducts
 import com.example.domain.models.Category
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
+import com.example.ecommerceapplication.di.AppModule
+import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.HomeViewModel
+import javax.inject.Inject
 
 const val CATEGORY_OBJECT = "categoryObject"
 
@@ -27,6 +34,13 @@ const val CATEGORY_OBJECT = "categoryObject"
  * Display single category items in a page
  */
 class CategoryFragment : Fragment() {
+
+    @Inject
+    lateinit var categoryApi: GetCategories
+    @Inject
+    lateinit var productsApi: GetProducts
+    @Inject
+    lateinit var categoryDatabase: CategoryDatabase
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
@@ -40,8 +54,14 @@ class CategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        DaggerAppComponent.builder()
+            .appModule(AppModule(requireActivity()))
+            .roomModule(RoomModule(requireActivity()))
+            .build().inject(this)
+
+        val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
+        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         categoryObj = (arguments?.get(CATEGORY_OBJECT) as Category)
 

@@ -14,17 +14,31 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.data.di.RoomModule
+import com.example.data.usecases.CategoryDatabase
+import com.example.data.usecases.GetCategories
+import com.example.data.usecases.GetProducts
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentSearchBinding
+import com.example.ecommerceapplication.di.AppModule
+import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.products.ProductRecyclerAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 const val SEARCH_QUERY = "searchQuery"
 
 class SearchFragment : Fragment() {
+
+    @Inject
+    lateinit var categoryApi: GetCategories
+    @Inject
+    lateinit var productsApi: GetProducts
+    @Inject
+    lateinit var categoryDatabase: CategoryDatabase
 
     private lateinit var viewModel: HomeViewModel
     private var _binding: FragmentSearchBinding? = null
@@ -39,7 +53,13 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        DaggerAppComponent.builder()
+            .appModule(AppModule(requireActivity()))
+            .roomModule(RoomModule(requireActivity()))
+            .build().inject(this)
+
+        val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
+        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         if (searchQuery == null)

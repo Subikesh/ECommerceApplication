@@ -6,6 +6,7 @@ import com.example.ecommerceapplication.ui.cart.CartFragment
 import com.example.ecommerceapplication.ui.cart.CheckoutFragment
 import com.example.ecommerceapplication.ui.cart.OrderFragment
 import com.example.ecommerceapplication.ui.home.HomeFragment
+import com.example.ecommerceapplication.ui.home.SearchFragment
 import com.example.ecommerceapplication.ui.product.ProductFragment
 import com.example.ecommerceapplication.ui.user.*
 import dagger.Component
@@ -24,4 +25,5 @@ interface AppComponent {
     fun inject(fragment: CheckoutFragment)
     fun inject(fragment: CartFragment)
     fun inject(fragment: OrderFragment)
+    fun inject(fragment: SearchFragment)
 }

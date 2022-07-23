@@ -1,4 +1,4 @@
-package com.example.data.usecases
+package com.example.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import com.example.data.api.GetApiDataService

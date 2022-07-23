@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.di.RoomModule
 import com.example.data.roomdb.entities.MutablePair
-import com.example.data.usecases.CategoryDatabase
-import com.example.data.usecases.GetCategories
-import com.example.data.usecases.GetProducts
+import com.example.data.repository.CategoryDatabase
+import com.example.data.repository.GetCategories
+import com.example.data.repository.GetProducts
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding

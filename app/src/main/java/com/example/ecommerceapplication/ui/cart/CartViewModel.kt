@@ -9,8 +9,8 @@ import com.example.data.roomdb.entities.OrderCartItem
 import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.roomdb.relations.CartItemAndProduct
 import com.example.data.session.SessionManager
-import com.example.data.usecases.UserOrders
-import com.example.data.usecases.UserShoppingCart
+import com.example.data.repository.UserOrders
+import com.example.data.repository.UserShoppingCart
 import kotlinx.coroutines.launch
 
 class CartViewModel constructor(private val session: SessionManager, private val userShoppingCart: UserShoppingCart, private val userOrder: UserOrders) : ViewModel() {

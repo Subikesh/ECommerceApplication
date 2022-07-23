@@ -1,4 +1,4 @@
-package com.example.data.usecases
+package com.example.data.repository
 
 import com.example.data.mapper.ProductEntityMapperImpl
 import com.example.data.roomdb.dao.ProductDao

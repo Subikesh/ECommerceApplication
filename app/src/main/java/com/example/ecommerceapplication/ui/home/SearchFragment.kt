@@ -15,9 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.data.di.RoomModule
-import com.example.data.usecases.CategoryDatabase
-import com.example.data.usecases.GetCategories
-import com.example.data.usecases.GetProducts
+import com.example.data.repository.CategoryDatabase
+import com.example.data.repository.GetCategories
+import com.example.data.repository.GetProducts
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentSearchBinding

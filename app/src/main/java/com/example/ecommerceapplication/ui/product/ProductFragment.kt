@@ -18,9 +18,9 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
 import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
-import com.example.data.usecases.UserOrders
-import com.example.data.usecases.UserShoppingCart
-import com.example.data.usecases.UserWishlist
+import com.example.data.repository.UserOrders
+import com.example.data.repository.UserShoppingCart
+import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R

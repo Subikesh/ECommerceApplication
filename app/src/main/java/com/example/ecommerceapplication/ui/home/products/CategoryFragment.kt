@@ -14,9 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.data.di.RoomModule
 import com.example.data.roomdb.entities.MutablePair
-import com.example.data.usecases.CategoryDatabase
-import com.example.data.usecases.GetCategories
-import com.example.data.usecases.GetProducts
+import com.example.data.repository.CategoryDatabase
+import com.example.data.repository.GetCategories
+import com.example.data.repository.GetProducts
 import com.example.domain.models.Category
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT

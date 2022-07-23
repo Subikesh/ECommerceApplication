@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.data.session.SessionManager
-import com.example.data.usecases.UserOrders
-import com.example.data.usecases.UserShoppingCart
-import com.example.data.usecases.UserWishlist
+import com.example.data.repository.UserOrders
+import com.example.data.repository.UserShoppingCart
+import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.util.ToastDuration
 import com.example.ecommerceapplication.util.ToastUtil

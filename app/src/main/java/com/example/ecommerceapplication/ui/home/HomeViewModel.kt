@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.data.roomdb.entities.MutablePair
-import com.example.data.usecases.CategoryDatabase
-import com.example.data.usecases.GetCategories
-import com.example.data.usecases.GetProducts
+import com.example.data.repository.CategoryDatabase
+import com.example.data.repository.GetCategories
+import com.example.data.repository.GetProducts
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import kotlinx.coroutines.launch

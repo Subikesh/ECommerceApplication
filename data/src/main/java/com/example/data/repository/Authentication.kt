@@ -1,4 +1,4 @@
-package com.example.data.usecases
+package com.example.data.repository
 
 import android.database.sqlite.SQLiteException
 import android.util.Log

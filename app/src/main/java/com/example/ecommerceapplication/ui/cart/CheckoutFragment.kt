@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.data.di.RoomModule
 import com.example.data.roomdb.entities.ShoppingCart
 import com.example.data.session.SessionManager
-import com.example.data.usecases.UserOrders
-import com.example.data.usecases.UserShoppingCart
+import com.example.data.repository.UserOrders
+import com.example.data.repository.UserShoppingCart
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding

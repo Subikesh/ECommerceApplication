@@ -3,8 +3,8 @@ package com.example.ecommerceapplication.ui.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.data.session.SessionManager
-import com.example.data.usecases.Authentication
-import com.example.data.usecases.UserWishlist
+import com.example.data.repository.Authentication
+import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
 import com.example.domain.models.User
 

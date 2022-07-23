@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
-import com.example.data.repository.ProductApiMapperImpl
+import com.example.data.mapper.ProductApiMapperImpl
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.R

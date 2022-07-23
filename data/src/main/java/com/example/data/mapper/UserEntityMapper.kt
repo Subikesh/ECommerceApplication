@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.example.data.mapper
 
 import com.example.data.roomdb.entities.User
 import com.example.domain.repository.UserEntityMapper

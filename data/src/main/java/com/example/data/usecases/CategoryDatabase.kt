@@ -1,7 +1,7 @@
 package com.example.data.usecases
 
-import com.example.data.repository.CategoryEntityMapperImpl
-import com.example.data.repository.ProductEntityMapperImpl
+import com.example.data.mapper.CategoryEntityMapperImpl
+import com.example.data.mapper.ProductEntityMapperImpl
 import com.example.data.roomdb.dao.CategoryDao
 import com.example.data.roomdb.dao.ProductDao
 import com.example.data.roomdb.entities.MutablePair

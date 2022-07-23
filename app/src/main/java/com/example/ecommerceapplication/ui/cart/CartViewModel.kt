@@ -1,11 +1,9 @@
 package com.example.ecommerceapplication.ui.cart
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.data.repository.OrderEntityMapper
+import com.example.data.mapper.OrderEntityMapper
 import com.example.data.roomdb.entities.CartItem
 import com.example.data.roomdb.entities.OrderCartItem
 import com.example.data.roomdb.entities.ShoppingCart

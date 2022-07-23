@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.data.api.GetApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
-import com.example.data.repository.ProductApiMapperImpl
+import com.example.data.mapper.ProductApiMapperImpl
 import com.example.domain.models.Product
 import retrofit2.Call
 import retrofit2.Callback

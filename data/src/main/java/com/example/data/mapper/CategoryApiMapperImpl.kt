@@ -1,4 +1,4 @@
-package com.example.data.repository
+package com.example.data.mapper
 
 import com.example.data.api.models.API_VERSION
 import com.example.data.api.models.CategoryResult

@@ -1,8 +1,7 @@
-package com.example.data.repository
+package com.example.data.mapper
 
 import com.example.data.api.models.ProductsList
 import com.example.domain.models.Product
-import com.example.domain.models.Price
 import com.example.domain.repository.ProductApiMapper
 
 object ProductApiMapperImpl : ProductApiMapper<ProductsList> {

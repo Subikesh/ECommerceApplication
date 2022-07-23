@@ -2,7 +2,7 @@ package com.example.data.usecases
 
 import android.database.sqlite.SQLiteException
 import android.util.Log
-import com.example.data.repository.UserEntityMapperImpl
+import com.example.data.mapper.UserEntityMapperImpl
 import com.example.data.roomdb.dao.ShoppingCartDao
 import com.example.data.roomdb.dao.UserDao
 import com.example.data.roomdb.entities.ShoppingCart

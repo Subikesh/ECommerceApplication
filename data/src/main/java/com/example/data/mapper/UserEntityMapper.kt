@@ -1,7 +1,7 @@
 package com.example.data.mapper
 
 import com.example.data.roomdb.entities.User
-import com.example.domain.repository.UserEntityMapper
+import com.example.domain.mapper.UserEntityMapper
 
 object UserEntityMapperImpl : UserEntityMapper<User> {
     override fun fromEntity(entity: User) =

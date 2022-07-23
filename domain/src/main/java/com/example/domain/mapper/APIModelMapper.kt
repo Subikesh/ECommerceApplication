@@ -1,4 +1,4 @@
-package com.example.domain.repository
+package com.example.domain.mapper
 
 import com.example.domain.models.Category
 import com.example.domain.models.Product

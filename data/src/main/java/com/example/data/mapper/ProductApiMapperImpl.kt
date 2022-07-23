@@ -2,7 +2,7 @@ package com.example.data.mapper
 
 import com.example.data.api.models.ProductsList
 import com.example.domain.models.Product
-import com.example.domain.repository.ProductApiMapper
+import com.example.domain.mapper.ProductApiMapper
 
 object ProductApiMapperImpl : ProductApiMapper<ProductsList> {
     /**

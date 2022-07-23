@@ -3,11 +3,10 @@ package com.example.data.mapper
 import com.example.data.api.models.API_VERSION
 import com.example.data.api.models.CategoryResult
 import com.example.domain.models.Category
-import com.example.domain.repository.CategoryApiMapper
+import com.example.domain.mapper.CategoryApiMapper
 import kotlin.math.min
 
-object CategoryApiMapperImpl :
-    CategoryApiMapper<CategoryResult> {
+object CategoryApiMapperImpl : CategoryApiMapper<CategoryResult> {
     override fun fromApiModel(apiModel: CategoryResult, itemCount: Int) =
         fromApiModel(apiModel, 0, itemCount)
 

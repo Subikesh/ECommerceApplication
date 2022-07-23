@@ -2,7 +2,7 @@ package com.example.data.mapper
 
 import com.example.data.roomdb.entities.Product
 import com.example.domain.models.Price
-import com.example.domain.repository.ProductEntityMapper
+import com.example.domain.mapper.ProductEntityMapper
 
 object ProductEntityMapperImpl : ProductEntityMapper<Product> {
     override fun fromEntity(entity: Product) = com.example.domain.models.Product(

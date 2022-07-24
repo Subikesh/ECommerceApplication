@@ -6,18 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.session.SessionManager
 import com.example.data.repository.UserOrders
 import com.example.data.repository.UserShoppingCart
-import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
+import com.example.domain.repository.WishlistRepository
 import com.example.ecommerceapplication.util.ToastDuration
 import com.example.ecommerceapplication.util.ToastUtil
 import kotlinx.coroutines.launch
 
 class ProductViewModel constructor(
-    private val session: SessionManager,
-    private val userWishlist: UserWishlist,
-    private val userShoppingCart: UserShoppingCart,
-    private val userOrders: UserOrders,
-    private val toastUtil: ToastUtil
+        private val session: SessionManager,
+        private val userWishlist: WishlistRepository,
+        private val userShoppingCart: UserShoppingCart,
+        private val userOrders: UserOrders,
+        private val toastUtil: ToastUtil
 ) : ViewModel() {
 
     private lateinit var product: Product
@@ -71,11 +71,11 @@ class ProductViewModel constructor(
     fun isLoggedIn() = session.login
 
     class Factory constructor(
-        private val session: SessionManager,
-        private val userWishlist: UserWishlist,
-        private val userShoppingCart: UserShoppingCart,
-        private val userOrders: UserOrders,
-        private val toastUtil: ToastUtil
+            private val session: SessionManager,
+            private val userWishlist: WishlistRepository,
+            private val userShoppingCart: UserShoppingCart,
+            private val userOrders: UserOrders,
+            private val toastUtil: ToastUtil
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

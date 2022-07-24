@@ -20,7 +20,7 @@ import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
 import com.example.data.repository.UserOrders
 import com.example.data.repository.UserShoppingCart
-import com.example.data.repository.UserWishlist
+import com.example.domain.repository.WishlistRepository
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -41,7 +41,7 @@ class ProductFragment : Fragment() {
     @Inject
     lateinit var session: SessionManager
     @Inject
-    lateinit var userWishlist: UserWishlist
+    lateinit var userWishlist: WishlistRepository
     @Inject
     lateinit var userShoppingCart: UserShoppingCart
     @Inject

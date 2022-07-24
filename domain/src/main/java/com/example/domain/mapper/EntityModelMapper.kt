@@ -3,6 +3,7 @@ package com.example.domain.mapper
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.domain.models.User
+import com.example.domain.models.Wishlist
 
 /**
  * Maps an entity from roomDB to and from a model
@@ -19,3 +20,5 @@ interface UserEntityMapper<T> : EntityModelMapper<T, User>
 interface ProductEntityMapper<T> : EntityModelMapper<T, Product>
 
 interface CategoryEntityMapper<T> : EntityModelMapper<T, Category>
+
+interface WishlistEntityMapper<T> : EntityModelMapper<T, Wishlist>

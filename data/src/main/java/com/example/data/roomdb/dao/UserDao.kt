@@ -13,6 +13,9 @@ interface UserDao: BaseDao<User> {
     @Query("SELECT * FROM user")
     suspend fun getAll(): List<User>
 
+    @Query("SELECT * FROM user WHERE userId = :userId")
+    suspend fun getUserFromId(userId: Int): User
+
     /**
      * Select one user with the given email and password
      * @param email     user email

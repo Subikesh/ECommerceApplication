@@ -6,6 +6,7 @@ import com.example.data.roomdb.dao.WishlistDao
 import com.example.data.roomdb.entities.UserProductCrossRef
 import com.example.domain.models.Product
 import com.example.domain.models.User
+import com.example.domain.models.Wishlist
 import com.example.domain.repository.WishlistRepository
 import javax.inject.Inject
 
@@ -32,9 +33,15 @@ class WishlistRepositoryImpl @Inject constructor(
         return productModels
     }
 
+    /** Checks if the user and product is linked as wishlist and returns Wishlist domain model */
+    override suspend fun findWishlistOrNull(user: User, product: Product): Wishlist? {
+        val userProductRef = wishlistDao.findWishlist(user.userId, product.productId)
+        return userProductRef?.let { Wishlist(user, product) }
+    }
+
     /** Check if this product is already in user's wishlist */
     override suspend fun isInWishlist(user: User, product: Product): Boolean {
-        val userProductRef = wishlistDao.findWishlist(user.userId, product.productId)
+        val userProductRef = findWishlistOrNull(user, product)
         return userProductRef != null
     }
 }

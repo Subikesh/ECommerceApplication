@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.data.session.SessionManager
 import com.example.data.repository.Authentication
-import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
 import com.example.domain.models.User
+import com.example.domain.repository.WishlistRepository
 
 class UserViewModel constructor(
     private val authentication: Authentication,
     private val session: SessionManager,
-    private val userWishlist: UserWishlist
+    private val userWishlist: WishlistRepository
 ) : ViewModel() {
 
     var user: User? = null
@@ -65,7 +65,7 @@ class UserViewModel constructor(
     class Factory constructor(
         private val authentication: Authentication,
         private val session: SessionManager,
-        private val userWishlist: UserWishlist
+        private val userWishlist: WishlistRepository
     ) : ViewModelProvider.Factory {
 
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

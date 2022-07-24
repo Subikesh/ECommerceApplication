@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
 import com.example.data.repository.Authentication
-import com.example.data.repository.UserWishlist
+import com.example.domain.repository.WishlistRepository
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentWishlistBinding
@@ -35,7 +35,7 @@ class WishlistFragment : Fragment() {
     @Inject
     lateinit var session: SessionManager
     @Inject
-    lateinit var userWishlist: UserWishlist
+    lateinit var userWishlist: WishlistRepository
 
     private var _binding: FragmentWishlistBinding? = null
     private val binding get() = _binding!!

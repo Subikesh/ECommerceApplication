@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -67,6 +68,12 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    // Dagger hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
+    implementation "androidx.hilt:hilt-common:1.0.0"
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     implementation project(path: ':data')
     implementation project(":domain")

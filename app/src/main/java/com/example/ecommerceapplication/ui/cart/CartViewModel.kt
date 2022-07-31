@@ -11,9 +11,12 @@ import com.example.data.roomdb.relations.CartItemAndProduct
 import com.example.data.session.SessionManager
 import com.example.data.repository.UserOrders
 import com.example.data.repository.UserShoppingCart
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CartViewModel constructor(private val session: SessionManager, private val userShoppingCart: UserShoppingCart, private val userOrder: UserOrders) : ViewModel() {
+@HiltViewModel
+class CartViewModel @Inject constructor(private val session: SessionManager, private val userShoppingCart: UserShoppingCart, private val userOrder: UserOrders) : ViewModel() {
 
     private suspend fun getCartList(): List<CartItem>? {
         return if (session.login) {
@@ -60,16 +63,5 @@ class CartViewModel constructor(private val session: SessionManager, private val
 
     fun deleteCartItem(cartItem: CartItem) {
         viewModelScope.launch { userShoppingCart.removeCartItem(cartItem) }
-    }
-
-    class Factory constructor(
-        private val session: SessionManager,
-        private val userShoppingCart: UserShoppingCart,
-        private val userOrder: UserOrders
-    ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return CartViewModel(session, userShoppingCart, userOrder) as T
-        }
     }
 }

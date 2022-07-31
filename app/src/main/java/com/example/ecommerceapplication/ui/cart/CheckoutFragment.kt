@@ -11,14 +11,11 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
-import com.example.data.repository.UserOrders
-import com.example.data.repository.UserShoppingCart
 import com.example.data.roomdb.entities.ShoppingCart
-import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
@@ -27,23 +24,15 @@ import com.example.ecommerceapplication.extensions.initAlertDialog
 import com.example.ecommerceapplication.validators.TextValidators
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 const val SHOPPING_CART = "shoppingCart"
 
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {
 
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userShoppingCart: UserShoppingCart
-    @Inject
-    lateinit var userOrder: UserOrders
-
     private var _binding: FragmentCheckoutBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: CartViewModel
+    private val viewModel: CartViewModel by hiltNavGraphViewModels(R.id.checkoutFragment)
 
     private var cart: ShoppingCart? = null
 
@@ -52,8 +41,6 @@ class CheckoutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        val factory = CartViewModel.Factory(session, userShoppingCart, userOrder)
-        viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 
         val toolbar = binding.checkoutToolbar.root

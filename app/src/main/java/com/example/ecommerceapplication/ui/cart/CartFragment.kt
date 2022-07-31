@@ -7,14 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.data.mapper.ProductEntityMapperImpl
-import com.example.data.repository.UserOrders
-import com.example.data.repository.UserShoppingCart
-import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCartBinding
@@ -22,19 +19,11 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CartFragment : Fragment() {
 
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userShoppingCart: UserShoppingCart
-    @Inject
-    lateinit var userOrder: UserOrders
-
-    private lateinit var viewModel: CartViewModel
+    private val viewModel: CartViewModel by hiltNavGraphViewModels(R.id.navigation_cart)
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
@@ -43,8 +32,6 @@ class CartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val factory = CartViewModel.Factory(session, userShoppingCart, userOrder)
-        viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
 
         _binding = FragmentCartBinding.inflate(inflater, container, false)
 

@@ -6,32 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.data.repository.UserOrders
-import com.example.data.repository.UserShoppingCart
-import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentOrderBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class OrderFragment : Fragment() {
 
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userShoppingCart: UserShoppingCart
-    @Inject
-    lateinit var userOrder: UserOrders
-
-    private lateinit var viewModel: CartViewModel
+    private val viewModel: CartViewModel by hiltNavGraphViewModels(R.id.orderFragment)
     private var _binding: FragmentOrderBinding? = null
     private val binding get() = _binding!!
 
@@ -39,8 +28,6 @@ class OrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val factory = CartViewModel.Factory(session, userShoppingCart, userOrder)
-        viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)
 
         _binding = FragmentOrderBinding.inflate(inflater, container, false)
 

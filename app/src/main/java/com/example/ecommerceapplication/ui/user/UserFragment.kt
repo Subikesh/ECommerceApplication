@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.data.di.RoomModule
 import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentUserBinding
-import com.example.ecommerceapplication.di.AppModule
-import com.example.ecommerceapplication.di.DaggerAppComponent
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserFragment : Fragment() {
 
     private var _binding: FragmentUserBinding? = null
@@ -29,10 +28,6 @@ class UserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(requireActivity()))
-            .roomModule(RoomModule(requireActivity()))
-            .build().inject(this)
 
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root

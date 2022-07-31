@@ -8,18 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.data.di.RoomModule
-import com.example.data.session.SessionManager
 import com.example.data.repository.Authentication
 import com.example.data.repository.UserWishlist
+import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentProfileBinding
-import com.example.ecommerceapplication.di.AppModule
-import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initAlertDialog
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
     @Inject
     lateinit var authentication: Authentication
@@ -37,10 +36,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(requireActivity()))
-            .roomModule(RoomModule(requireActivity()))
-            .build().inject(this)
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val factory = UserViewModel.Factory(authentication, session, userWishlist)

@@ -11,23 +11,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.di.RoomModule
-import com.example.data.session.SessionManager
 import com.example.data.repository.Authentication
 import com.example.data.repository.UserWishlist
+import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentWishlistBinding
-import com.example.ecommerceapplication.di.AppModule
-import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.products.ProductRecyclerAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 // TODO: Move this fragment to app>ui>cart
-
+@AndroidEntryPoint
 class WishlistFragment : Fragment() {
 
     @Inject
@@ -45,10 +43,6 @@ class WishlistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(requireActivity()))
-            .roomModule(RoomModule(requireActivity()))
-            .build().inject(this)
         val factory = UserViewModel.Factory(authentication, session, userWishlist)
         viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
         _binding = FragmentWishlistBinding.inflate(inflater, container, false)

@@ -9,13 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.repository.CategoryDatabase
-import com.example.data.repository.GetCategories
-import com.example.data.repository.GetProducts
 import com.example.data.roomdb.entities.MutablePair
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -25,19 +22,11 @@ import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    @Inject
-    lateinit var categoryApi: GetCategories
-    @Inject
-    lateinit var productsApi: GetProducts
-    @Inject
-    lateinit var categoryDatabase: CategoryDatabase
-
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.navigation_home)
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -58,10 +47,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
-        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 

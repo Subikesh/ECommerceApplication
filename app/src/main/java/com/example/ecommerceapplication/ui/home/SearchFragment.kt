@@ -10,13 +10,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.repository.CategoryDatabase
-import com.example.data.repository.GetCategories
-import com.example.data.repository.GetProducts
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentSearchBinding
@@ -25,21 +22,13 @@ import com.example.ecommerceapplication.ui.home.products.ProductRecyclerAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 const val SEARCH_QUERY = "searchQuery"
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    @Inject
-    lateinit var categoryApi: GetCategories
-    @Inject
-    lateinit var productsApi: GetProducts
-    @Inject
-    lateinit var categoryDatabase: CategoryDatabase
-
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.searchFragment)
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -52,9 +41,6 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
-        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         if (searchQuery == null)

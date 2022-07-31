@@ -9,12 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.repository.CategoryDatabase
-import com.example.data.repository.GetCategories
-import com.example.data.repository.GetProducts
 import com.example.data.roomdb.entities.MutablePair
 import com.example.domain.models.Category
 import com.example.ecommerceapplication.MainActivity
@@ -24,7 +21,6 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.HomeViewModel
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 const val CATEGORY_OBJECT = "categoryObject"
 
@@ -34,16 +30,9 @@ const val CATEGORY_OBJECT = "categoryObject"
 @AndroidEntryPoint
 class CategoryFragment : Fragment() {
 
-    @Inject
-    lateinit var categoryApi: GetCategories
-    @Inject
-    lateinit var productsApi: GetProducts
-    @Inject
-    lateinit var categoryDatabase: CategoryDatabase
-
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.categoryFragment)
 
     /** Get the maximum product count to load at a time */
     private val PRODUCTS_COUNT = 100
@@ -53,9 +42,6 @@ class CategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
-        viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
         categoryObj = (arguments?.get(CATEGORY_OBJECT) as Category)

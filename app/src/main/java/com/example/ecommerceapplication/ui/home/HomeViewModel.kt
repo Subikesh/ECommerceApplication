@@ -9,9 +9,12 @@ import com.example.data.repository.GetCategories
 import com.example.data.repository.GetProducts
 import com.example.domain.models.Category
 import com.example.domain.models.Product
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val categoryApi: GetCategories,
     private val productsApi: GetProducts,
     private val categoryDatabase: CategoryDatabase
@@ -37,15 +40,4 @@ class HomeViewModel(
     }
 
     suspend fun searchProducts(search: String) = categoryDatabase.searchProducts(search)
-
-    class Factory constructor(
-        private val categoryApi: GetCategories,
-        private val productsApi: GetProducts,
-        private val categoryDatabase: CategoryDatabase
-    ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return HomeViewModel(categoryApi, productsApi, categoryDatabase) as T
-        }
-    }
 }

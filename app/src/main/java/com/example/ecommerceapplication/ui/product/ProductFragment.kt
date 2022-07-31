@@ -12,14 +12,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
-import com.example.data.repository.UserOrders
-import com.example.data.repository.UserShoppingCart
-import com.example.data.repository.UserWishlist
-import com.example.data.session.SessionManager
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -27,40 +23,39 @@ import com.example.ecommerceapplication.databinding.FragmentProductBinding
 import com.example.ecommerceapplication.extensions.NotificationChannels
 import com.example.ecommerceapplication.extensions.getGlideImage
 import com.example.ecommerceapplication.ui.cart.SHOPPING_CART
-import com.example.ecommerceapplication.util.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 const val PRODUCT_OBJECT = "productObject"
 
 @AndroidEntryPoint
 class ProductFragment : Fragment() {
 
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userWishlist: UserWishlist
-    @Inject
-    lateinit var userShoppingCart: UserShoppingCart
-    @Inject
-    lateinit var userOrders: UserOrders
-    @Inject
-    lateinit var toastUtil: ToastUtil
+    //    @Inject
+    //    lateinit var session: SessionManager
+    //    @Inject
+    //    lateinit var userWishlist: UserWishlist
+    //    @Inject
+    //    lateinit var userShoppingCart: UserShoppingCart
+    //    @Inject
+    //    lateinit var userOrders: UserOrders
+    //    @Inject
+    //    lateinit var toastUtil: ToastUtil
 
     private var _binding: FragmentProductBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var productObj: Product
-    private lateinit var viewModel: ProductViewModel
+    private val viewModel: ProductViewModel by hiltNavGraphViewModels(R.id.productFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        val factory = ProductViewModel.Factory(session, userWishlist, userShoppingCart, userOrders, toastUtil)
-        viewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
+//        val factory = ProductViewModel.Factory(session, userWishlist, userShoppingCart, userOrders, toastUtil)
+//        viewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
+//        viewModel = hiltViewModel<ProductViewModel>()
         _binding = FragmentProductBinding.inflate(inflater, container, false)
 
         productObj = arguments?.get(PRODUCT_OBJECT) as Product

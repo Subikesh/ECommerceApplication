@@ -10,9 +10,12 @@ import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.util.ToastDuration
 import com.example.ecommerceapplication.util.ToastUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductViewModel constructor(
+@HiltViewModel
+class ProductViewModel @Inject constructor(
     private val session: SessionManager,
     private val userWishlist: UserWishlist,
     private val userShoppingCart: UserShoppingCart,

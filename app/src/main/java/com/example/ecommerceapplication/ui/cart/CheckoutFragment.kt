@@ -15,24 +15,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
-import com.example.data.di.RoomModule
-import com.example.data.roomdb.entities.ShoppingCart
-import com.example.data.session.SessionManager
 import com.example.data.repository.UserOrders
 import com.example.data.repository.UserShoppingCart
+import com.example.data.roomdb.entities.ShoppingCart
+import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCheckoutBinding
-import com.example.ecommerceapplication.di.AppModule
-import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.NotificationChannels
 import com.example.ecommerceapplication.extensions.initAlertDialog
 import com.example.ecommerceapplication.validators.TextValidators
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val SHOPPING_CART = "shoppingCart"
 
+@AndroidEntryPoint
 class CheckoutFragment : Fragment() {
 
     @Inject
@@ -52,10 +51,6 @@ class CheckoutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(requireActivity()))
-            .roomModule(RoomModule(requireActivity()))
-            .build().inject(this)
 
         val factory = CartViewModel.Factory(session, userShoppingCart, userOrder)
         viewModel = ViewModelProvider(this, factory).get(CartViewModel::class.java)

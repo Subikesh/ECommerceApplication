@@ -72,17 +72,4 @@ class ProductViewModel @Inject constructor(
     suspend fun buyProduct() = userOrders.buyProduct(session.user!!, product)
 
     fun isLoggedIn() = session.login
-
-    class Factory constructor(
-        private val session: SessionManager,
-        private val userWishlist: UserWishlist,
-        private val userShoppingCart: UserShoppingCart,
-        private val userOrders: UserOrders,
-        private val toastUtil: ToastUtil
-    ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ProductViewModel(session, userWishlist, userShoppingCart, userOrders, toastUtil) as T
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package com.example.data.di
+package com.example.ecommerceapplication.di.module
 
 import android.content.Context
 import androidx.room.Room
@@ -6,16 +6,19 @@ import com.example.data.roomdb.EcommerceDatabase
 import com.example.data.roomdb.dao.*
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-class RoomModule(context: Context) {
-    private val database: EcommerceDatabase = Room.databaseBuilder(context, EcommerceDatabase::class.java, "demo-db").build()
+@InstallIn(SingletonComponent::class)
+object RoomModule {
 
     @Singleton
     @Provides
-    fun providesRoomDatabase(): EcommerceDatabase {
-        return database
+    fun providesEcommerceDatabase(@ApplicationContext context: Context): EcommerceDatabase {
+        return Room.databaseBuilder(context, EcommerceDatabase::class.java, "demo-db").build()
     }
 
     @Singleton

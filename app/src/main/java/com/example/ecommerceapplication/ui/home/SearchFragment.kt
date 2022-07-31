@@ -14,23 +14,22 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.di.RoomModule
 import com.example.data.repository.CategoryDatabase
 import com.example.data.repository.GetCategories
 import com.example.data.repository.GetProducts
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentSearchBinding
-import com.example.ecommerceapplication.di.AppModule
-import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.products.ProductRecyclerAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val SEARCH_QUERY = "searchQuery"
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     @Inject
@@ -53,10 +52,6 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(requireActivity()))
-            .roomModule(RoomModule(requireActivity()))
-            .build().inject(this)
 
         val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)

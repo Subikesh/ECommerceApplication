@@ -8,8 +8,10 @@ import androidx.navigation.ui.*
 import com.example.ecommerceapplication.databinding.ActivityMainBinding
 import com.example.ecommerceapplication.extensions.createNotificationChannels
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity @Inject constructor() : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

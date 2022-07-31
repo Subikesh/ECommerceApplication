@@ -13,22 +13,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.di.RoomModule
-import com.example.data.roomdb.entities.MutablePair
 import com.example.data.repository.CategoryDatabase
 import com.example.data.repository.GetCategories
 import com.example.data.repository.GetProducts
+import com.example.data.roomdb.entities.MutablePair
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
-import com.example.ecommerceapplication.di.AppModule
-import com.example.ecommerceapplication.di.DaggerAppComponent
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     @Inject
@@ -59,10 +58,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(requireActivity()))
-            .roomModule(RoomModule(requireActivity()))
-            .build().inject(this)
 
         val factory = HomeViewModel.Factory(categoryApi, productsApi, categoryDatabase)
         viewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)

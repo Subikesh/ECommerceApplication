@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -28,23 +29,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WishlistFragment : Fragment() {
 
-    @Inject
-    lateinit var authentication: Authentication
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userWishlist: UserWishlist
-
     private var _binding: FragmentWishlistBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: UserViewModel
+    private val viewModel: UserViewModel by hiltNavGraphViewModels(R.id.wishlistFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val factory = UserViewModel.Factory(authentication, session, userWishlist)
-        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
         _binding = FragmentWishlistBinding.inflate(inflater, container, false)
 
         // Toolbar

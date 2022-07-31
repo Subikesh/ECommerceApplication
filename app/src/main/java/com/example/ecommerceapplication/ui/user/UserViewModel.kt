@@ -7,8 +7,11 @@ import com.example.data.repository.Authentication
 import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
 import com.example.domain.models.User
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserViewModel constructor(
+@HiltViewModel
+class UserViewModel @Inject constructor(
     private val authentication: Authentication,
     private val session: SessionManager,
     private val userWishlist: UserWishlist
@@ -60,16 +63,5 @@ class UserViewModel constructor(
         if (session.user != null)
             products = userWishlist.getWishlist(session.user!!)
         return products
-    }
-
-    class Factory constructor(
-        private val authentication: Authentication,
-        private val session: SessionManager,
-        private val userWishlist: UserWishlist
-    ) : ViewModelProvider.Factory {
-
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return UserViewModel(authentication, session, userWishlist) as T
-        }
     }
 }

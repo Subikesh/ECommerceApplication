@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.data.repository.Authentication
-import com.example.data.repository.UserWishlist
 import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
@@ -21,16 +19,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
     @Inject
-    lateinit var authentication: Authentication
-    @Inject
     lateinit var session: SessionManager
-    @Inject
-    lateinit var userWishlist: UserWishlist
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: UserViewModel
+    private val viewModel: UserViewModel by hiltNavGraphViewModels(R.id.profileFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +32,6 @@ class ProfileFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val factory = UserViewModel.Factory(authentication, session, userWishlist)
-        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         // Toolbar
         val toolbar = binding.profileToolbar.root

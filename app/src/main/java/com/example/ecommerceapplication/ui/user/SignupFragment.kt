@@ -7,34 +7,23 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.data.repository.Authentication
-import com.example.data.repository.UserWishlist
-import com.example.data.session.SessionManager
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentSignupBinding
 import com.example.ecommerceapplication.validators.TextValidators
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignupFragment : Fragment() {
 
-    @Inject
-    lateinit var authentication: Authentication
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userWishlist: UserWishlist
-
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: UserViewModel
+    private val viewModel: UserViewModel by hiltNavGraphViewModels(R.id.signupFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +31,6 @@ class SignupFragment : Fragment() {
     ): View {
 
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
-
-        val factory = UserViewModel.Factory(authentication, session, userWishlist)
-        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         // Toolbar
         val toolbar = binding.signupToolbar.root

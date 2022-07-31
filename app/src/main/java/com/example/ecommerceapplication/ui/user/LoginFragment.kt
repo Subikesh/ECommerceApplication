@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -24,24 +25,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-    @Inject
-    lateinit var authentication: Authentication
-    @Inject
-    lateinit var session: SessionManager
-    @Inject
-    lateinit var userWishlist: UserWishlist
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    lateinit var viewModel: UserViewModel
+    val viewModel: UserViewModel by hiltNavGraphViewModels(R.id.loginFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        val factory = UserViewModel.Factory(authentication, session, userWishlist)
-        viewModel = ViewModelProvider(this, factory).get(UserViewModel::class.java)
 
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)

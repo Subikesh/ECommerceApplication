@@ -4,11 +4,19 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def apikeyPropertiesFile = rootProject.file('local.properties')
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 30
 
     defaultConfig {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // api secrets
+        buildConfigField("String", "API_ID", apikeyProperties['api.id'])
+        buildConfigField("String", "API_TOKEN", apikeyProperties['api.token'])
     }
 
     buildTypes {

@@ -1,13 +1,11 @@
 package com.example.data.api
 
+import com.example.data.api.ApiConstants.AFFILIATE_ID
+import com.example.data.api.ApiConstants.AFFILIATE_TOKEN
 import com.example.data.api.models.ProductsList
 import retrofit2.Call
 import com.example.data.api.models.CategoryResult
 import retrofit2.http.*
-
-const val AFFILIATE_ID = "amaratasi"
-// TODO: add affiliate token in secrets
-const val AFFILIATE_TOKEN = "34c929c04f054f20ad7143ac7dad8b26"
 
 interface GetApiDataService {
 
@@ -15,7 +13,7 @@ interface GetApiDataService {
      * Get complete category list
      */
     @Headers("Fk-Affiliate-Id: $AFFILIATE_ID", "Fk-Affiliate-Token: $AFFILIATE_TOKEN")
-    @GET("api/$AFFILIATE_ID.json")
+    @GET(ApiConstants.UrlEndpoints.categoriesUrl)
     fun getCategories(): Call<CategoryResult>
 
     /**
@@ -27,7 +25,7 @@ interface GetApiDataService {
      * @return ProductsList object which contains all the products in the category
      */
     @Headers("Fk-Affiliate-Id: $AFFILIATE_ID", "Fk-Affiliate-Token: $AFFILIATE_TOKEN")
-    @GET("1.0/feeds/amaratasi/category/{category_id}.json")
+    @GET(ApiConstants.UrlEndpoints.productsListUrl)
     fun getProductsList(
         @Path("category_id") categoryId: String,
         @Query("expiresAt") expires: String,

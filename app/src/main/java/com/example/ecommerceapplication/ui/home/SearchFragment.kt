@@ -32,6 +32,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
+    //TODO: Move this to viewmodel with live data
     private var searchQuery: String? = null
 
     private lateinit var searchToolbar: Toolbar

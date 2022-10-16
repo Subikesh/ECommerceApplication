@@ -1,8 +1,7 @@
 package com.example.ecommerceapplication.ui.home
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.data.roomdb.entities.MutablePair
 import com.example.data.repository.CategoryDatabase
 import com.example.data.repository.GetCategories
@@ -21,6 +20,10 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     var categoryList: MutableList<MutablePair<Category, List<Product>?>>? = null
+
+    //Todo: Use search query as this live data
+    private val _searchQuery: MutableLiveData<String> = MutableLiveData()
+    private val searchQuery: LiveData<String> = _searchQuery
 
     fun loadCategories() = categoryApi.callApi()
 

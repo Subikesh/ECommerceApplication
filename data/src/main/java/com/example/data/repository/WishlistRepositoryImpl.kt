@@ -6,24 +6,26 @@ import com.example.data.roomdb.dao.WishlistDao
 import com.example.data.roomdb.entities.UserProductCrossRef
 import com.example.domain.models.Product
 import com.example.domain.models.User
+import com.example.domain.models.Wishlist
+import com.example.domain.repository.WishlistRepository
 import javax.inject.Inject
 
-class UserWishlist @Inject constructor(
+class WishlistRepositoryImpl @Inject constructor(
     private val productDao: ProductDao,
     private val wishlistDao: WishlistDao
-) {
+) : WishlistRepository {
     /** Add product as wishlist for the user */
-    suspend fun addWishlist(user: User, product: Product) {
+    override suspend fun addWishlist(user: User, product: Product) {
         productDao.insert(ProductEntityMapperImpl.toEntity(product))
         wishlistDao.addWishlist(UserProductCrossRef(user.userId, product.productId))
     }
 
-    suspend fun removeWishlist(user: User, product: Product) {
+    override suspend fun removeWishlist(user: User, product: Product) {
         wishlistDao.removeWishlist(UserProductCrossRef(user.userId, product.productId))
     }
 
     /** Get the list of products saved in user's wishlist */
-    suspend fun getWishlist(user: User): List<Product> {
+    override suspend fun getWishlist(user: User): List<Product> {
         val products = wishlistDao.getWishlist(user.userId).products
 
         val productModels = mutableListOf<Product>()
@@ -31,9 +33,15 @@ class UserWishlist @Inject constructor(
         return productModels
     }
 
-    /** Check if this product is already in user's wishlist */
-    suspend fun isInWishlist(user: User, product: Product): Boolean {
+    /** Checks if the user and product is linked as wishlist and returns Wishlist domain model */
+    override suspend fun findWishlistOrNull(user: User, product: Product): Wishlist? {
         val userProductRef = wishlistDao.findWishlist(user.userId, product.productId)
+        return userProductRef?.let { Wishlist(user, product) }
+    }
+
+    /** Check if this product is already in user's wishlist */
+    override suspend fun isInWishlist(user: User, product: Product): Boolean {
+        val userProductRef = findWishlistOrNull(user, product)
         return userProductRef != null
     }
 }

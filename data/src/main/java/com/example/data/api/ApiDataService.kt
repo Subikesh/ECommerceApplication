@@ -7,7 +7,7 @@ import retrofit2.Call
 import com.example.data.api.models.CategoryResult
 import retrofit2.http.*
 
-interface GetApiDataService {
+interface ApiDataService {
 
     /**
      * Get complete category list

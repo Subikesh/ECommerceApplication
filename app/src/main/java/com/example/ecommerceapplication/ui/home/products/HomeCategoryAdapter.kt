@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.api.GetApiDataService
+import com.example.data.api.ApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
 import com.example.data.mapper.ProductApiMapperImpl
@@ -20,6 +20,7 @@ import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.HomeViewModel
+import com.example.ecommerceapplication.ui.home.products.CategoryFragment.Companion.CATEGORY_OBJECT
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,7 +61,7 @@ class HomeCategoryAdapter(
 
         holder.productsLoader.startShimmerAnimation()
         if (absPosition >= 0 && viewModel.categoryList!!.size > absPosition) {
-            val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
+            val service = RetrofitInstance.retrofitInstance?.create(ApiDataService::class.java)
             val call = service?.getProductsList(currCategory.productsUrl)
             var productList: ProductsList
 

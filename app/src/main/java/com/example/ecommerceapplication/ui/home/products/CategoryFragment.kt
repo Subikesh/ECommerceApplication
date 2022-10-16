@@ -22,8 +22,6 @@ import com.example.ecommerceapplication.ui.home.HomeViewModel
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import dagger.hilt.android.AndroidEntryPoint
 
-const val CATEGORY_OBJECT = "categoryObject"
-
 /**
  * Display single category items in a page
  */
@@ -36,7 +34,7 @@ class CategoryFragment : Fragment() {
 
     /** Get the maximum product count to load at a time */
     private val PRODUCTS_COUNT = 100
-    private lateinit var categoryObj: Category
+    private lateinit var category: Category
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +42,11 @@ class CategoryFragment : Fragment() {
     ): View {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
 
-        categoryObj = (arguments?.get(CATEGORY_OBJECT) as Category)
+        category = (arguments?.get(CATEGORY_OBJECT) as Category)
 
         // Toolbar
         val toolbar = binding.categoryToolbar.root
-        toolbar.title = categoryObj.categoryTitle
+        toolbar.title = category.categoryTitle
         (activity as MainActivity).setSupportActionBar(toolbar)
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -58,18 +56,18 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val productsUrl = categoryObj.productsUrl
+        val productsUrl = category.productsUrl
         val rvProducts = binding.categoryProducts
         val productsLoader = binding.categoryProductsLoader
         productsLoader.startShimmerAnimation()
 
-        viewModel.loadProducts(productsUrl, categoryObj.categoryId, PRODUCTS_COUNT)
+        viewModel.loadProducts(productsUrl, category.categoryId, PRODUCTS_COUNT)
             .observe(viewLifecycleOwner) { products ->
                 if (products != null) {
                     productsLoader.stopShimmerAnimation()
                     productsLoader.visibility = GONE
                     rvProducts.visibility = VISIBLE
-                    viewModel.loadCategoryDatabase(MutablePair(categoryObj, products))
+                    viewModel.loadCategoryDatabase(MutablePair(category, products))
 
                     rvProducts.initRecyclerView(
                         GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
@@ -101,6 +99,7 @@ class CategoryFragment : Fragment() {
     }
 
     companion object {
+        const val CATEGORY_OBJECT = "categoryObject"
         fun newInstance() = CategoryFragment()
     }
 }

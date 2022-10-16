@@ -1,7 +1,7 @@
 package com.example.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.data.api.GetApiDataService
+import com.example.data.api.ApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.CategoryResult
 import com.example.data.mapper.CategoryApiMapperImpl
@@ -15,7 +15,7 @@ class GetCategories @Inject constructor() {
     private var categoryList: MutableList<Category> = mutableListOf()
 
     fun callApi(): MutableLiveData<List<Category>> {
-        val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
+        val service = RetrofitInstance.retrofitInstance?.create(ApiDataService::class.java)
         val call = service?.getCategories()
 
         call?.enqueue(object : retrofit2.Callback<CategoryResult> {
@@ -41,7 +41,7 @@ class GetCategories @Inject constructor() {
      * @return complete list of categories that was loaded
      */
     fun loadMoreCategories(categoryCount: Int): MutableLiveData<List<Category>> {
-        val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
+        val service = RetrofitInstance.retrofitInstance?.create(ApiDataService::class.java)
         val call = service?.getCategories()
 
         call?.enqueue(object : retrofit2.Callback<CategoryResult> {

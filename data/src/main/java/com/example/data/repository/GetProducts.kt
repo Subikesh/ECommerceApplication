@@ -1,7 +1,7 @@
 package com.example.data.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.example.data.api.GetApiDataService
+import com.example.data.api.ApiDataService
 import com.example.data.api.RetrofitInstance
 import com.example.data.api.models.ProductsList
 import com.example.data.mapper.ProductApiMapperImpl
@@ -16,7 +16,7 @@ class GetProducts @Inject constructor() {
     private var productsList: List<Product> = listOf()
 
     fun callApi(productUrl: String, categoryId: String, itemCount: Int): MutableLiveData<List<Product>> {
-        val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
+        val service = RetrofitInstance.retrofitInstance?.create(ApiDataService::class.java)
         val call = service?.getProductsList(productUrl)
 
         call?.enqueue(object : Callback<ProductsList> {

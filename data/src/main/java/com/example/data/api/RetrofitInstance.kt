@@ -1,11 +1,11 @@
 package com.example.data.api
 
+import com.example.data.api.ApiConstants.BASE_URL
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit
 
 object RetrofitInstance {
     private var retrofit: Retrofit? = null
-    private const val BASE_URL = "https://affiliate-api.flipkart.net/affiliate/"
 
     /**
      * Create an instance of Retrofit object

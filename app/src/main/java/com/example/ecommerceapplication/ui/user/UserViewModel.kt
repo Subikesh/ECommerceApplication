@@ -1,12 +1,11 @@
 package com.example.ecommerceapplication.ui.user
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.data.session.SessionManager
 import com.example.data.repository.Authentication
-import com.example.data.repository.UserWishlist
+import com.example.data.session.SessionManager
 import com.example.domain.models.Product
 import com.example.domain.models.User
+import com.example.domain.repository.WishlistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,7 +13,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val authentication: Authentication,
     private val session: SessionManager,
-    private val userWishlist: UserWishlist
+    private val WishlistRepository: WishlistRepository
 ) : ViewModel() {
 
     var user: User? = null
@@ -61,7 +60,7 @@ class UserViewModel @Inject constructor(
     suspend fun getWishlist(): List<Product>? {
         var products: List<Product>? = null
         if (session.user != null)
-            products = userWishlist.getWishlist(session.user!!)
+            products = WishlistRepository.getWishlist(session.user!!)
         return products
     }
 }

@@ -31,17 +31,6 @@ const val PRODUCT_OBJECT = "productObject"
 @AndroidEntryPoint
 class ProductFragment : Fragment() {
 
-    //    @Inject
-    //    lateinit var session: SessionManager
-    //    @Inject
-    //    lateinit var userWishlist: UserWishlist
-    //    @Inject
-    //    lateinit var userShoppingCart: UserShoppingCart
-    //    @Inject
-    //    lateinit var userOrders: UserOrders
-    //    @Inject
-    //    lateinit var toastUtil: ToastUtil
-
     private var _binding: FragmentProductBinding? = null
     private val binding get() = _binding!!
 
@@ -53,9 +42,6 @@ class ProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-//        val factory = ProductViewModel.Factory(session, userWishlist, userShoppingCart, userOrders, toastUtil)
-//        viewModel = ViewModelProvider(this, factory).get(ProductViewModel::class.java)
-//        viewModel = hiltViewModel<ProductViewModel>()
         _binding = FragmentProductBinding.inflate(inflater, container, false)
 
         productObj = arguments?.get(PRODUCT_OBJECT) as Product

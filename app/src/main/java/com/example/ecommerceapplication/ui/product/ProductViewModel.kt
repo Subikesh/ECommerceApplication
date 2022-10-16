@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.session.SessionManager
 import com.example.data.repository.UserOrders
 import com.example.data.repository.UserShoppingCart
-import com.example.data.repository.UserWishlist
 import com.example.domain.models.Product
+import com.example.domain.repository.WishlistRepository
 import com.example.ecommerceapplication.util.ToastDuration
 import com.example.ecommerceapplication.util.ToastUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductViewModel @Inject constructor(
     private val session: SessionManager,
-    private val userWishlist: UserWishlist,
+    private val WishlistRepository: WishlistRepository,
     private val userShoppingCart: UserShoppingCart,
     private val userOrders: UserOrders,
     private val toastUtil: ToastUtil
@@ -30,7 +30,7 @@ class ProductViewModel @Inject constructor(
     }
 
     suspend fun inWishlist() =
-        session.login && userWishlist.isInWishlist(session.user!!, product)
+        session.login && WishlistRepository.isInWishlist(session.user!!, product)
 
     /**
      * Toggles wishlist status of a product
@@ -40,7 +40,7 @@ class ProductViewModel @Inject constructor(
     suspend fun wishlistProduct(): Boolean {
         val inWishlist = inWishlist()
         return if (inWishlist) {
-            userWishlist.removeWishlist(session.user!!, product)
+            WishlistRepository.removeWishlist(session.user!!, product)
             toastUtil.displayToast("Product removed from your wishlist", ToastDuration.SHORT)
             false
         } else if (!session.login) {
@@ -48,7 +48,7 @@ class ProductViewModel @Inject constructor(
             false
         } else {
             if (session.login)
-                userWishlist.addWishlist(session.user!!, product)
+                WishlistRepository.addWishlist(session.user!!, product)
             session.login
         }
     }

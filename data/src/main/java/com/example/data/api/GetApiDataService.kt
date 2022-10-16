@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 const val AFFILIATE_ID = "amaratasi"
 // TODO: add affiliate token in secrets
-const val AFFILIATE_TOKEN = "34c929c04f054f20ad7143ac7dad8b26"
+const val AFFILIATE_TOKEN = "11a6cc9035234bcfba18baab74fe9af2"
 
 interface GetApiDataService {
 

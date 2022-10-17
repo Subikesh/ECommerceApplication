@@ -25,8 +25,7 @@ class GetProducts @Inject constructor() {
                 response: Response<ProductsList>
             ) {
                 val productLists = response.body()!!
-                productLists.setCategory(categoryId)
-                productsList = ProductApiMapperImpl.fromApiModel(productLists, itemCount)
+                productsList = ProductApiMapperImpl.fromApiModel(productLists, categoryId, itemCount)
                 allProducts.value = productsList
             }
 

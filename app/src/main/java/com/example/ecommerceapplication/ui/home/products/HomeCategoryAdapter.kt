@@ -75,8 +75,7 @@ class HomeCategoryAdapter(
                     ) {
                         if (response.body() != null && viewModel.categoryList != null) {
                             productList = response.body()!!
-                            productList.setCategory(currCategory.categoryId)
-                            val productObjects = ProductApiMapperImpl.fromApiModel(productList)
+                            val productObjects = ProductApiMapperImpl.fromApiModel(productList,currCategory.categoryId)
                             viewModel.categoryList!![absPosition].second = productObjects
 
                             // Adding current category and corresponding products to the database

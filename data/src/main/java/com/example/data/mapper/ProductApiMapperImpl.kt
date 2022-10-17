@@ -11,10 +11,9 @@ object ProductApiMapperImpl : ProductApiMapper<ProductsList> {
      * @param itemCount Number of products to be retrieved
      * @return list of product model objects
      */
-    override fun fromApiModel(apiModel: ProductsList, itemCount: Int): List<Product> {
+    override fun fromApiModel(apiModel: ProductsList, categoryId: String, itemCount: Int): List<Product> {
         val productObjects = mutableListOf<Product>()
         var totalProducts = itemCount
-        val categoryId = apiModel.categoryId
         for (product in apiModel.products) {
             if (totalProducts-- > 0) {
                 val newProduct = Product(
@@ -35,5 +34,9 @@ object ProductApiMapperImpl : ProductApiMapper<ProductsList> {
             } else break
         }
         return productObjects
+    }
+
+    override fun fromApiModel(apiModel: ProductsList, itemCount: Int): List<Product> {
+        return fromApiModel(apiModel, apiModel.categoryId, itemCount)
     }
 }

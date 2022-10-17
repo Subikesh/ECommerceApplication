@@ -12,15 +12,20 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.roomdb.entities.MutablePair
+import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.models.Category
+import com.example.domain.models.Product
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.HomeViewModel
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Display single category items in a page
@@ -31,6 +36,9 @@ class CategoryFragment : Fragment() {
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.categoryFragment)
+
+    private lateinit var productsLoader: ShimmerFrameLayout
+    private lateinit var productsRv: RecyclerView
 
     /** Get the maximum product count to load at a time */
     private val PRODUCTS_COUNT = 100
@@ -57,40 +65,47 @@ class CategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val productsUrl = category.productsUrl
-        val rvProducts = binding.categoryProducts
-        val productsLoader = binding.categoryProductsLoader
-        productsLoader.startShimmerAnimation()
+        productsRv = binding.categoryProducts
+        productsLoader = binding.categoryProductsLoader
+        showLoading()
 
-        viewModel.loadProducts(productsUrl, category.categoryId, PRODUCTS_COUNT)
-            .observe(viewLifecycleOwner) { products ->
-                if (products != null) {
-                    productsLoader.stopShimmerAnimation()
-                    productsLoader.visibility = GONE
-                    rvProducts.visibility = VISIBLE
-                    viewModel.loadCategoryDatabase(MutablePair(category, products))
-
-                    rvProducts.initRecyclerView(
-                        GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
-                        ProductRecyclerAdapter(
-                            products,
-                            requireContext(),
-                            onItemClicked = { product ->
-                                val bundle = bundleOf(PRODUCT_OBJECT to product)
-                                findNavController().navigate(
-                                    R.id.action_categoryFragment_to_productFragment,
-                                    bundle
-                                )
-                            })
-                    )
-                } else {
-                    productsLoader.visibility = GONE
-                    Toast.makeText(
-                        context,
-                        "Products retrieval failed. Check your internet connection",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        kotlin.runCatching {
+            CoroutineScope(Dispatchers.Main).launch {
+                val products = viewModel.fetchProducts(productsUrl, category.categoryId, PRODUCTS_COUNT)
+                showProducts(products)
             }
+        }.onFailure {
+            productsLoader.visibility = GONE
+            Toast.makeText(
+                context,
+                "Products retrieval failed. Check your internet connection",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun showLoading() {
+        productsLoader.startShimmerAnimation()
+    }
+
+    private fun showProducts(products: List<Product>) {
+        productsLoader.stopShimmerAnimation()
+        productsLoader.visibility = GONE
+        productsRv.visibility = VISIBLE
+
+        productsRv.initRecyclerView(
+            GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false),
+            ProductRecyclerAdapter(
+                products,
+                requireContext(),
+                onItemClicked = { product ->
+                    val bundle = bundleOf(PRODUCT_OBJECT to product)
+                    findNavController().navigate(
+                        R.id.action_categoryFragment_to_productFragment,
+                        bundle
+                    )
+                })
+        )
     }
 
     override fun onDestroyView() {

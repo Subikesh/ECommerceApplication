@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    def okhttp_version = "4.8.0"
+    def retrofit_version = "2.6.3"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation 'androidx.core:core-ktx:1.6.0'
@@ -75,6 +77,12 @@ dependencies {
     implementation "androidx.hilt:hilt-common:1.0.0"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation 'com.google.code.gson:gson:2.8.2'
 
     implementation project(path: ':data')
     implementation project(":domain")

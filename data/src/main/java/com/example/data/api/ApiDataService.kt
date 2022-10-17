@@ -5,6 +5,7 @@ import com.example.data.api.ApiConstants.AFFILIATE_TOKEN
 import com.example.data.api.models.ProductsList
 import retrofit2.Call
 import com.example.data.api.models.CategoryResult
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiDataService {
@@ -41,4 +42,8 @@ interface ApiDataService {
     @Headers("Fk-Affiliate-Id: $AFFILIATE_ID", "Fk-Affiliate-Token: $AFFILIATE_TOKEN")
     @GET
     fun getProductsList(@Url apiUrl: String, @Query("inStock") inStock: Int = 1): Call<ProductsList>
+
+    @Headers("Fk-Affiliate-Id: $AFFILIATE_ID", "Fk-Affiliate-Token: $AFFILIATE_TOKEN")
+    @GET
+    suspend fun getProductsFromUrl(@Url apiUrl: String, @Query("inStock") inStock: Int = 1): Response<ProductsList>
 }

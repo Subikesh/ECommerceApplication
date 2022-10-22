@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
 
     fun loadMoreCategories(loadMoreCount: Int) = categoryApi.loadMoreCategories(loadMoreCount)
 
-    suspend fun fetchProducts(productsUrl: String, categoryId: String, itemCount: Int = 10): List<Product> =
+    suspend fun fetchProducts(productsUrl: String, categoryId: String, itemCount: Int = 10): Result<List<Product>> =
         productsRepository.getProducts(productsUrl, categoryId, itemCount)
 
     /**

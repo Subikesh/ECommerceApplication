@@ -71,8 +71,12 @@ class CategoryFragment : Fragment() {
 
         kotlin.runCatching {
             CoroutineScope(Dispatchers.Main).launch {
-                val products = viewModel.fetchProducts(productsUrl, category.categoryId, PRODUCTS_COUNT)
-                showProducts(products)
+                viewModel.fetchProducts(productsUrl, category.categoryId, PRODUCTS_COUNT).onSuccess {
+                    showProducts(it)
+                }.onFailure {
+                    productsLoader.visibility = GONE
+                    Toast.makeText(context, it.localizedMessage, Toast.LENGTH_SHORT)
+                }
             }
         }.onFailure {
             productsLoader.visibility = GONE

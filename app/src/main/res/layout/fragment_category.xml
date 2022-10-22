@@ -5,7 +5,7 @@
         android:layout_height="match_parent"
 
         android:orientation="vertical"
-        tools:context=".ui.home.products.CategoryFragment">
+        tools:context=".ui.category.CategoryFragment">
 
     <include
             android:id="@+id/category_toolbar"

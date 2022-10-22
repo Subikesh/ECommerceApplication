@@ -1,4 +1,4 @@
-package com.example.ecommerceapplication.ui.home.products
+package com.example.ecommerceapplication.ui.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
-import com.example.ecommerceapplication.ui.category.CategoryViewModel
+import com.example.ecommerceapplication.ui.home.products.ProductRecyclerAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint

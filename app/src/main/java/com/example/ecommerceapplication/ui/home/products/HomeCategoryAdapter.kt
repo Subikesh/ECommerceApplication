@@ -20,7 +20,7 @@ import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.HomeViewModel
-import com.example.ecommerceapplication.ui.home.products.CategoryFragment.Companion.CATEGORY_OBJECT
+import com.example.ecommerceapplication.ui.category.CategoryFragment.Companion.CATEGORY_OBJECT
 import com.facebook.shimmer.ShimmerFrameLayout
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,7 +70,7 @@ class HomeCategoryAdapter(
             } else {
                 call?.enqueue(object : Callback<ProductsList?> {
                     override fun onResponse(
-                        call: Call<ProductsList?>?,
+                        call: Call<ProductsList?>,
                         response: Response<ProductsList?>
                     ) {
                         if (response.body() != null && viewModel.categoryList != null) {
@@ -91,7 +91,7 @@ class HomeCategoryAdapter(
                         }
                     }
 
-                    override fun onFailure(call: Call<ProductsList?>?, t: Throwable) {
+                    override fun onFailure(call: Call<ProductsList?>, t: Throwable) {
                         holder.productsLoader.visibility = View.GONE
                         Toast.makeText(
                             context,

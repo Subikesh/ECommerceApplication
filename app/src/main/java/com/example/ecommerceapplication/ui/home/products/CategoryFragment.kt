@@ -19,7 +19,7 @@ import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentCategoryBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
-import com.example.ecommerceapplication.ui.home.HomeViewModel
+import com.example.ecommerceapplication.ui.category.CategoryViewModel
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +35,7 @@ class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.categoryFragment)
+    private val viewModel: CategoryViewModel by hiltNavGraphViewModels(R.id.categoryFragment)
 
     private lateinit var productsLoader: ShimmerFrameLayout
     private lateinit var productsRv: RecyclerView

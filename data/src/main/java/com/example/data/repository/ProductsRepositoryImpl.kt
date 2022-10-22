@@ -31,12 +31,10 @@ class ProductsRepositoryImpl @Inject constructor(
                 productDao.insertAll(productList.map {
                     ProductEntityMapperImpl.toEntity(it)
                 })
-                Log.i("Response-getProducts", "$products ")
                 Log.i("Result-getProducts", "$productList")
                 Result.success(productList)
             } else {
                 Result.failure(products.exceptionOrNull()!!)
             }
-//            val productList = ProductApiMapperImpl.fromApiModel(products.body()!!, categoryId, itemCount)
         }
 }

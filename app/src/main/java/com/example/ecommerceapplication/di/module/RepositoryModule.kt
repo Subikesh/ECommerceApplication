@@ -1,6 +1,8 @@
 package com.example.ecommerceapplication.di.module
 
+import com.example.data.repository.ProductsRepositoryImpl
 import com.example.data.repository.WishlistRepositoryImpl
+import com.example.domain.repository.ProductsRepository
 import com.example.domain.repository.WishlistRepository
 import dagger.Binds
 import dagger.Module
@@ -13,4 +15,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindWishlistRepository(withlistRepositoryImpl: WishlistRepositoryImpl): WishlistRepository
+
+    @Binds
+    fun bindProductsRepository(productsRepository: ProductsRepositoryImpl): ProductsRepository
 }

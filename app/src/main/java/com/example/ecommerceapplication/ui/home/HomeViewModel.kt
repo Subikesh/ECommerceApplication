@@ -1,12 +1,15 @@
 package com.example.ecommerceapplication.ui.home
 
-import androidx.lifecycle.*
-import com.example.data.repository.ProductsRepository
-import com.example.data.roomdb.entities.MutablePair
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.data.repository.CategoryDatabase
 import com.example.data.repository.GetCategories
+import com.example.data.roomdb.entities.MutablePair
 import com.example.domain.models.Category
 import com.example.domain.models.Product
+import com.example.domain.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

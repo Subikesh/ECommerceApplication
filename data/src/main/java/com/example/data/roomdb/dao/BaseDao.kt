@@ -13,6 +13,9 @@ interface BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(obj: T): Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(objList: List<T>)
+
     /**
      * Delete an object entry from the table
      * @param obj object entry to be deleted

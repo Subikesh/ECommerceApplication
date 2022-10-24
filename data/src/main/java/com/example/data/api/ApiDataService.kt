@@ -19,7 +19,7 @@ interface ApiDataService {
 
     @Headers("Fk-Affiliate-Id: $AFFILIATE_ID", "Fk-Affiliate-Token: $AFFILIATE_TOKEN")
     @GET(ApiConstants.UrlEndpoints.categoriesUrl)
-    fun getAllCategories(): Response<CategoryResult>
+    suspend fun getAllCategories(): Response<CategoryResult>
 
     /**
      * Gets list of all products from a specific category

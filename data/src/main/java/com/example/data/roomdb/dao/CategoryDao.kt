@@ -15,6 +15,9 @@ interface CategoryDao : BaseDao<Category> {
     @Query("SELECT * FROM category")
     suspend fun getAll(): List<Category>
 
+    @Query("SELECT c.* FROM category c LEFT JOIN product p ON c.categoryId = p.categoryId GROUP BY c.categoryId HAVING COUNT(p.productId) >= :minProducts")
+    suspend fun getCategoriesWithMinProducts(minProducts: Int): List<Category>
+
     @Query("SELECT * FROM category WHERE categoryId = :categoryId")
     suspend fun get(categoryId: String): Category
 }

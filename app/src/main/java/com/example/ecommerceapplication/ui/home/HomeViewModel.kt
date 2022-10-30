@@ -29,8 +29,8 @@ class HomeViewModel @Inject constructor(
 
     fun loadMoreCategories(loadMoreCount: Int) = categoryApi.loadMoreCategories(loadMoreCount)
 
-    suspend fun fetchCategories(): Result<List<Category>> {
-        return getAndSaveCategoriesUseCase.execute(GetAndSaveCategoriesUseCase.ReqParams(true))
+    suspend fun fetchCategories(reload: Boolean = false): Result<List<Category>> {
+        return getAndSaveCategoriesUseCase.execute(GetAndSaveCategoriesUseCase.ReqParams(reload))
     }
 
     suspend fun getTopProductsForCategory(category: Category): Result<List<Product>> {

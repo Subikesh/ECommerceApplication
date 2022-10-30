@@ -23,6 +23,7 @@ open class BaseRepository {
         } catch (socketException: SocketTimeoutException) {
             Result.failure(socketException)
         } catch (exception: Exception) {
+            exception.printStackTrace()
             Result.failure(NoNetworkException(throwable = exception))
         }
     }

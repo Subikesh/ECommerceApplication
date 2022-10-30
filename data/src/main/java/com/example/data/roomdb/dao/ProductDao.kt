@@ -17,4 +17,7 @@ interface ProductDao : BaseDao<Product> {
      */
     @Query("SELECT p.* FROM product p, category c WHERE c.categoryId = p.categoryId AND (LOWER(p.title) LIKE '%' || :query || '%' OR LOWER(p.brand) LIKE '%' || :query || '%' OR LOWER(c.title) LIKE '%' || :query || '%')")
     suspend fun searchProducts(query: String): List<Product>
+
+    @Query("SELECT * FROM product WHERE categoryId = :categoryId LIMIT :limit")
+    suspend fun getProductsFromCategory(categoryId: String, limit: Int): List<Product>
 }

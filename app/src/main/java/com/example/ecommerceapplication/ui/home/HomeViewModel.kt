@@ -10,6 +10,7 @@ import com.example.data.roomdb.entities.MutablePair
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.domain.usecase.GetAndSaveCategoriesUseCase
+import com.example.domain.usecase.GetProductsByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,16 +19,13 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val categoryApi: GetCategories,
     private val categoryDatabase: CategoryDatabase,
-    private val getAndSaveCategoriesUseCase: GetAndSaveCategoriesUseCase
+    private val getAndSaveCategoriesUseCase: GetAndSaveCategoriesUseCase,
+    private val getProductsByCategoryUseCase: GetProductsByCategoryUseCase
 ) : ViewModel() {
-
-    var categoryList: MutableList<MutablePair<Category, List<Product>?>>? = null
 
     //Todo: Use search query as this live data
     private val _searchQuery: MutableLiveData<String> = MutableLiveData()
     private val searchQuery: LiveData<String> = _searchQuery
-
-    fun loadCategories() = categoryApi.callApi()
 
     fun loadMoreCategories(loadMoreCount: Int) = categoryApi.loadMoreCategories(loadMoreCount)
 
@@ -35,6 +33,15 @@ class HomeViewModel @Inject constructor(
         return getAndSaveCategoriesUseCase.execute(GetAndSaveCategoriesUseCase.ReqParams(true))
     }
 
+    suspend fun getTopProductsForCategory(category: Category): Result<List<Product>> {
+        return getProductsByCategoryUseCase.execute(
+            GetProductsByCategoryUseCase.ReqParams(
+                category.productsUrl,
+                category.categoryId,
+                10
+            )
+        )
+    }
 
     /**
      * Loads the category and products from categoryPair to database

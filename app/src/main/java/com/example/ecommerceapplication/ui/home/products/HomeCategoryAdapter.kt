@@ -1,6 +1,7 @@
 package com.example.ecommerceapplication.ui.home.products
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.api.ApiDataService
-import com.example.data.api.RetrofitInstance
-import com.example.data.api.models.ProductsList
-import com.example.data.mapper.ProductApiMapperImpl
 import com.example.domain.models.Category
 import com.example.domain.models.Product
 import com.example.ecommerceapplication.R
@@ -22,9 +19,9 @@ import com.example.ecommerceapplication.extensions.initRecyclerView
 import com.example.ecommerceapplication.ui.home.HomeViewModel
 import com.example.ecommerceapplication.ui.category.CategoryFragment.Companion.CATEGORY_OBJECT
 import com.facebook.shimmer.ShimmerFrameLayout
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Adapter for recycler view to display products in home page
@@ -37,6 +34,8 @@ class HomeCategoryAdapter(
     private val viewModel: HomeViewModel,
     private val onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
+
+    private val categoryList: MutableList<Category> = categories.toMutableList()
 
     // Counts the number of categories removed (if api returns no products for that category)
     var emptyCategoryCount = 0
@@ -55,53 +54,27 @@ class HomeCategoryAdapter(
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val absPosition = holder.absoluteAdapterPosition
-        val currCategory = viewModel.categoryList!![holder.absoluteAdapterPosition].first
+        val currCategory = categoryList[holder.absoluteAdapterPosition]
         holder.textView.text = currCategory.categoryTitle
         holder.category = currCategory
         holder.productsUrl = currCategory.productsUrl
 
         holder.productsLoader.startShimmerAnimation()
-        if (absPosition >= 0 && viewModel.categoryList!!.size > absPosition) {
-            val service = RetrofitInstance.retrofitInstance?.create(ApiDataService::class.java)
-            val call = service?.getProductsList(currCategory.productsUrl)
-            var productList: ProductsList
+        if (absPosition >= 0 && categoryList.size > absPosition) {
 
-            if (viewModel.categoryList!![absPosition].second != null) {
-                initializeProducts(holder, absPosition)
-            } else {
-                call?.enqueue(object : Callback<ProductsList?> {
-                    override fun onResponse(
-                        call: Call<ProductsList?>,
-                        response: Response<ProductsList?>
-                    ) {
-                        if (response.body() != null && viewModel.categoryList != null) {
-                            productList = response.body()!!
-                            val productObjects = ProductApiMapperImpl.fromApiModel(productList,currCategory.categoryId)
-                            viewModel.categoryList!![absPosition].second = productObjects
-
-                            // Adding current category and corresponding products to the database
-                            viewModel.loadCategoryDatabase(viewModel.categoryList!![absPosition])
-                            initializeProducts(holder, absPosition)
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "Products retrieval failed. Check your internet connection",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ProductsList?>, t: Throwable) {
-                        holder.productsLoader.visibility = View.GONE
-                        Toast.makeText(
-                            context,
-                            "Product retrieval failed. Check your internet connection",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
-                })
+            CoroutineScope(Dispatchers.Main).launch {
+                val products = viewModel.getTopProductsForCategory(currCategory)
+                if (products.isFailure) {
+                    holder.productsLoader.visibility = View.GONE
+                    Toast.makeText(
+                        context,
+                        "Product retrieval failed. Check your internet connection",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Log.d("Products", "Category: ${currCategory.categoryTitle} Products: ${products.getOrNull()}")
+                    initializeProducts(products.getOrNull(), holder, absPosition)
+                }
             }
         }
     }
@@ -115,11 +88,12 @@ class HomeCategoryAdapter(
     }
 
 
-    private fun initializeProducts(holder: ViewHolder, position: Int) {
-        if (viewModel.categoryList!![position].second.isNullOrEmpty()) {
+    private fun initializeProducts(products: List<Product>?, holder: ViewHolder, position: Int) {
+        if (products.isNullOrEmpty()) {
             // if no products are returned for that category
-            viewModel.categoryList!!.removeAt(position)
+            categoryList.removeAt(position)
             emptyCategoryCount++
+            Log.d("Product", "Product ${holder.category.categoryTitle}")
             notifyItemRemoved(position)
         } else {
             holder.productsLoader.stopShimmerAnimation()
@@ -128,16 +102,12 @@ class HomeCategoryAdapter(
 
             holder.productsView.initRecyclerView(
                 LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false),
-                ProductRecyclerAdapter(
-                    viewModel.categoryList!![position].second!!,
-                    context,
-                    onItemClicked
-                )
+                ProductRecyclerAdapter(products, context, onItemClicked)
             )
         }
     }
 
-    override fun getItemCount() = viewModel.categoryList!!.size
+    override fun getItemCount() = categoryList.size
 
     /**
      * ViewHolder for each categoryRV. Contains nested RecyclerView for product cards

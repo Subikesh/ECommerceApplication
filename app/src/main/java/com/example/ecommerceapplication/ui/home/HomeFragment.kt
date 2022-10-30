@@ -2,6 +2,7 @@ package com.example.ecommerceapplication.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AbsListView
@@ -13,15 +14,17 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.roomdb.entities.MutablePair
+import com.example.domain.models.Category
 import com.example.ecommerceapplication.MainActivity
 import com.example.ecommerceapplication.R
 import com.example.ecommerceapplication.databinding.FragmentHomeBinding
 import com.example.ecommerceapplication.extensions.initRecyclerView
-import com.example.ecommerceapplication.extensions.observeOnce
 import com.example.ecommerceapplication.ui.home.products.HomeCategoryAdapter
 import com.example.ecommerceapplication.ui.product.PRODUCT_OBJECT
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -68,28 +71,20 @@ class HomeFragment : Fragment() {
     private fun loadHomepage() {
         val categoryShimmer = binding.categoryLoader
 
-        /** Loading all categories to be shown in homepage */
-        if (viewModel.categoryList != null) {
-            initializeCategories()
-        } else {
-            viewModel.loadCategories().observeOnce(viewLifecycleOwner) { categories ->
-                if (categories != null) {
-                    for (category in categories) {
-                        if (viewModel.categoryList != null)
-                            viewModel.categoryList?.add(MutablePair(category, null))
-                        else
-                            viewModel.categoryList = mutableListOf(MutablePair(category, null))
-                    }
-                    initializeCategories()
-                } else {
-                    categoryShimmer.visibility = View.GONE
-                    Toast.makeText(
-                        context,
-                        "Categories not retrieved. Check your internet connection.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        CoroutineScope(Dispatchers.Main).launch {
+            val categoryList = viewModel.fetchCategories()
+            Log.d("Categories", "Initial category fetch: $categoryList")
+
+            /** Loading all categories to be shown in homepage */
+            if (categoryList.isFailure) {
+                categoryShimmer.visibility = View.GONE
+                Toast.makeText(
+                    context,
+                    "Categories not retrieved. Check your internet connection.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+            initializeCategories(categoryList.getOrDefault(listOf()))
         }
     }
 
@@ -97,7 +92,8 @@ class HomeFragment : Fragment() {
      * Initialize categories recyclerview in homepage
      * Stops the shimmer loader and displays categories
      */
-    private fun initializeCategories() {
+    private fun initializeCategories(pCategories: List<Category>) {
+        val categories = pCategories.toMutableList()
         val rvCategories = binding.homeRecyclerView
         val categoryShimmer = binding.categoryLoader
 
@@ -105,7 +101,7 @@ class HomeFragment : Fragment() {
         categoryShimmer.visibility = View.GONE
         rvCategories.visibility = View.VISIBLE
 
-        homeAdapter = HomeCategoryAdapter(requireContext(), viewModel) { product ->
+        homeAdapter = HomeCategoryAdapter(categories, requireContext(), viewModel) { product ->
             val bundle = bundleOf(PRODUCT_OBJECT to product)
             findNavController().navigate(
                 R.id.action_navigation_home_to_productFragment,
@@ -133,7 +129,7 @@ class HomeFragment : Fragment() {
                 currentItemCount = manager.childCount
                 // Items loaded by recycler view
                 totalItems = manager.itemCount
-                if (isScrolling && ((currentItemCount + scrolledOutItems) == totalItems) && viewModel.categoryList!!.size <= TOTAL_CATEGORIES) {
+                if (isScrolling && ((currentItemCount + scrolledOutItems) == totalItems) && categories.size <= TOTAL_CATEGORIES) {
                     isScrolling = false
                     binding.rvLoaderProgress.visibility = View.VISIBLE
 
@@ -141,12 +137,9 @@ class HomeFragment : Fragment() {
                     viewModel.loadMoreCategories(COUNT_ON_LOAD_MORE)
                         .observe(viewLifecycleOwner) { categoryList ->
                             if (categoryList != null && categoryList.size > totalItems) {
-                                for (category in categoryList.subList(
-                                    viewModel.categoryList!!.size + homeAdapter.emptyCategoryCount,
-                                    categoryList.size
-                                )) {
-                                    viewModel.categoryList?.add(MutablePair(category, null))
-                                    homeAdapter.notifyItemInserted(viewModel.categoryList!!.size - 1)
+                                for (category in categoryList.subList(categories.size + homeAdapter.emptyCategoryCount, categoryList.size)) {
+                                    categories.add(category)
+                                    homeAdapter.notifyItemInserted(categories.size - 1)
                                     binding.rvLoaderProgress.visibility = View.INVISIBLE
                                 }
                             }

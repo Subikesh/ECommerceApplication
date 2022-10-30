@@ -64,17 +64,8 @@ class HomeCategoryAdapter(
 
             CoroutineScope(Dispatchers.Main).launch {
                 val products = viewModel.getTopProductsForCategory(currCategory)
-                if (products.isFailure) {
-                    holder.productsLoader.visibility = View.GONE
-                    Toast.makeText(
-                        context,
-                        "Product retrieval failed. Check your internet connection",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Log.d("Products", "Category: ${currCategory.categoryTitle} Products: ${products.getOrNull()}")
-                    initializeProducts(products.getOrNull(), holder, absPosition)
-                }
+                Log.d("Products", "Category: ${currCategory.categoryTitle} Products: ${products.getOrNull()}")
+                initializeProducts(products.getOrNull(), holder, absPosition)
             }
         }
     }

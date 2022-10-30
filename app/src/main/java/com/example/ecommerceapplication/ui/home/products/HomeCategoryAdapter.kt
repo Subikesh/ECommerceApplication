@@ -32,6 +32,7 @@ import retrofit2.Response
  * @param onItemClicked Onclick function to invoke on click single product
  */
 class HomeCategoryAdapter(
+    categories: List<Category>,
     val context: Context,
     private val viewModel: HomeViewModel,
     private val onItemClicked: (Product) -> Unit

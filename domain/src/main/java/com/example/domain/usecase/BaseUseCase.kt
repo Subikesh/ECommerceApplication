@@ -6,8 +6,13 @@ import kotlinx.coroutines.withContext
 
 abstract class BaseUseCase<Data, Param> {
     suspend fun execute(param: Param): Result<Data> = withContext(Dispatchers.IO) {
-        executeOnBackground(param)
+        try {
+            executeOnBackground(param)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.failure(e)
+        }
     }
 
-    abstract suspend fun executeOnBackground(param: Param): Result<Data>
+    protected abstract suspend fun executeOnBackground(param: Param): Result<Data>
 }

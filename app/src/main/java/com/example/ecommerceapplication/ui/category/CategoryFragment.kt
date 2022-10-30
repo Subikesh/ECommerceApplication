@@ -35,7 +35,7 @@ class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: CategoryViewModel by hiltNavGraphViewModels(R.id.categoryFragment)
+    private val viewModel: ProductsViewModel by hiltNavGraphViewModels(R.id.categoryFragment)
 
     private lateinit var productsLoader: ShimmerFrameLayout
     private lateinit var productsRv: RecyclerView
@@ -64,14 +64,13 @@ class CategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val productsUrl = category.productsUrl
         productsRv = binding.categoryProducts
         productsLoader = binding.categoryProductsLoader
         showLoading()
 
         kotlin.runCatching {
             CoroutineScope(Dispatchers.Main).launch {
-                viewModel.fetchProducts(productsUrl, category.categoryId, PRODUCTS_COUNT).onSuccess {
+                viewModel.fetchProducts(category, PRODUCTS_COUNT).onSuccess {
                     showProducts(it)
                 }.onFailure {
                     productsLoader.visibility = GONE

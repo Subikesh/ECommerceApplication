@@ -32,6 +32,7 @@ class HomeCategoryAdapter(
     categories: List<Category>,
     val context: Context,
     private val viewModel: HomeViewModel,
+    private val forceReload: Boolean,
     private val onItemClicked: (Product) -> Unit
 ) : RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder>() {
 
@@ -63,7 +64,7 @@ class HomeCategoryAdapter(
         if (absPosition >= 0 && categoryList.size > absPosition) {
 
             CoroutineScope(Dispatchers.Main).launch {
-                val products = viewModel.getTopProductsForCategory(currCategory)
+                val products = viewModel.getTopProductsForCategory(currCategory, forceReload)
                 Log.d("Products", "Category: ${currCategory.categoryTitle} Products: ${products.getOrNull()}")
                 initializeProducts(products.getOrNull(), holder, absPosition)
             }

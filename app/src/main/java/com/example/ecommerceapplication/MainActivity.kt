@@ -30,9 +30,7 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
         val navController = findNavController(R.id.nav_fragment)
 
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_user, R.id.navigation_cart
-            )
+            setOf(R.id.navigation_home, R.id.navigation_user, R.id.navigation_cart)
         )
 
         navView.setOnItemSelectedListener { item ->

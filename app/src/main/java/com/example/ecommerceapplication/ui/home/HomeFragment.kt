@@ -68,11 +68,11 @@ class HomeFragment : Fragment() {
         loadHomepage()
     }
 
-    private fun loadHomepage() {
+    private fun loadHomepage(forceReload: Boolean = false) {
         val categoryShimmer = binding.categoryLoader
 
         CoroutineScope(Dispatchers.Main).launch {
-            val categoryList = viewModel.fetchCategories()
+            val categoryList = viewModel.fetchCategories(forceReload)
             Log.d("Categories", "Initial category fetch: $categoryList")
 
             /** Loading all categories to be shown in homepage */
@@ -84,7 +84,7 @@ class HomeFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            initializeCategories(categoryList.getOrDefault(listOf()))
+            initializeCategories(categoryList.getOrDefault(listOf()), forceReload)
         }
     }
 
@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
      * Initialize categories recyclerview in homepage
      * Stops the shimmer loader and displays categories
      */
-    private fun initializeCategories(pCategories: List<Category>) {
+    private fun initializeCategories(pCategories: List<Category>, forceReload: Boolean = false) {
         val categories = pCategories.toMutableList()
         val rvCategories = binding.homeRecyclerView
         val categoryShimmer = binding.categoryLoader
@@ -101,7 +101,7 @@ class HomeFragment : Fragment() {
         categoryShimmer.visibility = View.GONE
         rvCategories.visibility = View.VISIBLE
 
-        homeAdapter = HomeCategoryAdapter(categories, requireContext(), viewModel) { product ->
+        homeAdapter = HomeCategoryAdapter(categories, requireContext(), viewModel, forceReload) { product ->
             val bundle = bundleOf(PRODUCT_OBJECT to product)
             findNavController().navigate(
                 R.id.action_navigation_home_to_productFragment,
@@ -184,7 +184,7 @@ class HomeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home_reload -> {
-                findNavController().navigate(R.id.action_navigation_home_self)
+                loadHomepage(true)
             }
         }
         return super.onOptionsItemSelected(item)

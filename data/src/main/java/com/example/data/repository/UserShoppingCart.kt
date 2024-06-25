@@ -42,8 +42,9 @@ class UserShoppingCart @Inject constructor(private val productDao: ProductDao, p
 
     /** Check if this product is already in user's shopping cart */
     suspend fun isInCartItem(user: User, product: Product): Boolean {
-        val userCartRef = cartDao.findCartItem(user.userId, product.productId)
-        return userCartRef != null
+        return false
+//        val userCartRef = cartDao.findCartItem(user.userId, product.productId)
+//        return userCartRef != null
     }
 
     suspend fun increaseProductQuantity(cartItem: CartItem, quantity: Int) {

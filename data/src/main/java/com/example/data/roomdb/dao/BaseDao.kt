@@ -11,12 +11,12 @@ interface BaseDao<T> {
      * @return success or error code if some conflict occurs
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(obj: T): Long
+    fun insert(obj: T): Long
 
     /**
      * Delete an object entry from the table
      * @param obj object entry to be deleted
      */
     @Delete
-    suspend fun delete(obj: T)
+    fun delete(obj: T)
 }

@@ -68,7 +68,7 @@ class CartViewModel constructor(private val session: SessionManager, private val
         private val userOrder: UserOrders
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return CartViewModel(session, userShoppingCart, userOrder) as T
         }
     }

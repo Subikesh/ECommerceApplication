@@ -68,7 +68,7 @@ class UserViewModel constructor(
         private val userWishlist: UserWishlist
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return UserViewModel(authentication, session, userWishlist) as T
         }
     }

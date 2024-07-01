@@ -11,7 +11,7 @@ interface UserDao: BaseDao<User> {
      * @return List of users selected
      */
     @Query("SELECT * FROM user")
-    suspend fun getAll(): List<User>
+    fun getAll(): List<User>
 
     /**
      * Select one user with the given email and password
@@ -20,5 +20,5 @@ interface UserDao: BaseDao<User> {
      * @return user selected from the query
      */
     @Query("SELECT * FROM user WHERE email = :email AND password = :password LIMIT 1")
-    suspend fun findLogin(email: String, password: String): User?
+    fun findLogin(email: String, password: String): User?
 }

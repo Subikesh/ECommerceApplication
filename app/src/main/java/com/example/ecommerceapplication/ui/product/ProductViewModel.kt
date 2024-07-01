@@ -70,7 +70,7 @@ class ProductViewModel constructor(
 
     fun isLoggedIn() = session.login
 
-    class Factory constructor(
+    class Factory(
         private val session: SessionManager,
         private val userWishlist: UserWishlist,
         private val userShoppingCart: UserShoppingCart,
@@ -78,7 +78,7 @@ class ProductViewModel constructor(
         private val toastUtil: ToastUtil
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return ProductViewModel(session, userWishlist, userShoppingCart, userOrders, toastUtil) as T
         }
     }

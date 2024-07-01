@@ -38,13 +38,13 @@ class HomeViewModel(
 
     suspend fun searchProducts(search: String) = categoryDatabase.searchProducts(search)
 
-    class Factory constructor(
+    class Factory(
         private val categoryApi: GetCategories,
         private val productsApi: GetProducts,
         private val categoryDatabase: CategoryDatabase
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return HomeViewModel(categoryApi, productsApi, categoryDatabase) as T
         }
     }

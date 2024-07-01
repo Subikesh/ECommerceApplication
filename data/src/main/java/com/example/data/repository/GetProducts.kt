@@ -24,10 +24,14 @@ class GetProducts @Inject constructor() {
                 call: Call<ProductsList>,
                 response: Response<ProductsList>
             ) {
-                val productLists = response.body()!!
-                productLists.setCategory(categoryId)
-                productsList = ProductApiMapperImpl.fromApiModel(productLists, itemCount)
-                allProducts.value = productsList
+                val productLists = response.body()
+                productLists?.setCategory(categoryId)
+                if (productLists != null) {
+                    productsList = ProductApiMapperImpl.fromApiModel(productLists, itemCount)
+                    allProducts.value = productsList
+                } else {
+                    allProducts.postValue(null)
+                }
             }
 
             override fun onFailure(call: Call<ProductsList>, t: Throwable) {

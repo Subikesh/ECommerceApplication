@@ -13,7 +13,7 @@ import com.example.data.repository.UserOrders
 import com.example.data.repository.UserShoppingCart
 import kotlinx.coroutines.launch
 
-class CartViewModel constructor(private val session: SessionManager, private val userShoppingCart: UserShoppingCart, private val userOrder: UserOrders) : ViewModel() {
+class CartViewModel(private val session: SessionManager, private val userShoppingCart: UserShoppingCart, private val userOrder: UserOrders) : ViewModel() {
 
     private suspend fun getCartList(): List<CartItem>? {
         return if (session.login) {
@@ -62,13 +62,13 @@ class CartViewModel constructor(private val session: SessionManager, private val
         viewModelScope.launch { userShoppingCart.removeCartItem(cartItem) }
     }
 
-    class Factory constructor(
+    class Factory(
         private val session: SessionManager,
         private val userShoppingCart: UserShoppingCart,
         private val userOrder: UserOrders
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return CartViewModel(session, userShoppingCart, userOrder) as T
         }
     }

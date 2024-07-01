@@ -62,13 +62,13 @@ class UserViewModel constructor(
         return products
     }
 
-    class Factory constructor(
+    class Factory(
         private val authentication: Authentication,
         private val session: SessionManager,
         private val userWishlist: UserWishlist
     ) : ViewModelProvider.Factory {
 
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return UserViewModel(authentication, session, userWishlist) as T
         }
     }

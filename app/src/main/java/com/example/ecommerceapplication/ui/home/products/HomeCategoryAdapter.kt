@@ -60,7 +60,7 @@ class HomeCategoryAdapter(
 
         holder.productsLoader.startShimmerAnimation()
         if (absPosition >= 0 && viewModel.categoryList!!.size > absPosition) {
-            val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
+            val service = RetrofitInstance.retrofitInstance.create(GetApiDataService::class.java)
             val call = service?.getProductsList(currCategory.productsUrl)
             var productList: ProductsList
 

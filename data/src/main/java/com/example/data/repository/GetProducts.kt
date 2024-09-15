@@ -16,7 +16,7 @@ class GetProducts @Inject constructor() {
     private var productsList: List<Product> = listOf()
 
     fun callApi(productUrl: String, categoryId: String, itemCount: Int): MutableLiveData<List<Product>> {
-        val service = RetrofitInstance.retrofitInstance?.create(GetApiDataService::class.java)
+        val service = RetrofitInstance.retrofitInstance.create(GetApiDataService::class.java)
         val call = service?.getProductsList(productUrl)
 
         call?.enqueue(object : Callback<ProductsList> {

@@ -5,12 +5,7 @@ import retrofit2.Call
 import com.example.data.api.models.CategoryResult
 import retrofit2.http.*
 
-const val AFFILIATE_ID = "amaratasi"
-// TODO: add affiliate token in secrets
-const val AFFILIATE_TOKEN = "11a6cc9035234bcfba18baab74fe9af2"
-
 interface GetApiDataService {
-
     /**
      * Get complete category list
      */
